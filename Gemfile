@@ -1,10 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'pillow', :path => File.expand_path("..", __FILE__)
-
-gem 'addressable', '~> 2.1'
-gem 'json', '~> 1.4'
-gem 'patron', '~> 0.4'
+gem 'webbed', :path => File.expand_path("..", __FILE__)
 
 group :development do
   gem 'rake'
