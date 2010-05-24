@@ -59,30 +59,30 @@ describe Webbed::Method do
   
   describe '#to_s' do
     it 'should return the name of the method' do
-      Webbed::Method.post.to_s.should == 'POST'
+      Webbed::Method::POST.to_s.should == 'POST'
     end
   end
   
   describe '#==' do
     it 'should equal the method name' do
-      Webbed::Method.post.should == 'POST'
+      Webbed::Method::POST.should == 'POST'
     end
     
     it 'should not be equal to anything else' do
-      Webbed::Method.post.should_not == 'PUT'
+      Webbed::Method::POST.should_not == 'PUT'
     end
     
     it 'should be equal to a method of the same name' do
-      Webbed::Method.post.should == Webbed::Method.post
+      Webbed::Method::POST.should == Webbed::Method::POST
     end
     
     it 'should not be equal to a method of a different name' do
-      Webbed::Method.post.should_not == Webbed::Method.put
+      Webbed::Method::POST.should_not == Webbed::Method::PUT
     end
   end
   
-  describe '#self.options' do
-    subject { Webbed::Method.options }
+  describe 'OPTIONS' do
+    subject { Webbed::Method::OPTIONS }
     specify { subject.name.should == 'OPTIONS' }
     it { should be_safe }
     it { should be_idempotent }
@@ -90,8 +90,8 @@ describe Webbed::Method do
     specify { subject.has_response_entity?.should be_true }
   end
   
-  describe '#self.get' do
-    subject { Webbed::Method.get }
+  describe 'GET' do
+    subject { Webbed::Method::GET }
     specify { subject.name.should == 'GET' }
     it { should be_safe }
     it { should be_idempotent }
@@ -99,8 +99,8 @@ describe Webbed::Method do
     specify { subject.has_response_entity?.should be_true }
   end
   
-  describe '#self.head' do
-    subject { Webbed::Method.head }
+  describe 'HEAD' do
+    subject { Webbed::Method::HEAD }
     specify { subject.name.should == 'HEAD' }
     it { should be_safe }
     it { should be_idempotent }
@@ -108,8 +108,8 @@ describe Webbed::Method do
     specify { subject.has_response_entity?.should be_false }
   end
   
-  describe '#self.post' do
-    subject { Webbed::Method.post }
+  describe 'POST' do
+    subject { Webbed::Method::POST }
     specify { subject.name.should == 'POST' }
     it { should_not be_safe }
     it { should_not be_idempotent }
@@ -117,8 +117,8 @@ describe Webbed::Method do
     specify { subject.has_response_entity?.should be_true }
   end
   
-  describe '#self.put' do
-    subject { Webbed::Method.put }
+  describe 'PUT' do
+    subject { Webbed::Method::PUT }
     specify { subject.name.should == 'PUT' }
     it { should_not be_safe }
     it { should be_idempotent }
@@ -126,8 +126,8 @@ describe Webbed::Method do
     specify { subject.has_response_entity?.should be_true }
   end
   
-  describe '#self.delete' do
-    subject { Webbed::Method.delete }
+  describe 'DELETE' do
+    subject { Webbed::Method::DELETE }
     specify { subject.name.should == 'DELETE' }
     it { should_not be_safe }
     it { should be_idempotent }
@@ -135,8 +135,8 @@ describe Webbed::Method do
     specify { subject.has_response_entity?.should be_true }
   end
   
-  describe '#self.trace' do
-    subject { Webbed::Method.trace }
+  describe 'TRACE' do
+    subject { Webbed::Method::TRACE }
     specify { subject.name.should == 'TRACE' }
     it { should be_safe }
     it { should be_idempotent }
@@ -144,8 +144,8 @@ describe Webbed::Method do
     specify { subject.has_response_entity?.should be_true }
   end
   
-  describe '#self.connect' do
-    subject { Webbed::Method.connect }
+  describe 'CONNECT' do
+    subject { Webbed::Method::CONNECT }
     specify { subject.name.should == 'CONNECT' }
     it { should_not be_safe }
     it { should_not be_idempotent }
@@ -153,8 +153,8 @@ describe Webbed::Method do
     specify { subject.has_response_entity?.should be_true }
   end
   
-  describe '#self.patch' do
-    subject { Webbed::Method.patch }
+  describe 'PATCH' do
+    subject { Webbed::Method::PATCH }
     specify { subject.name.should == 'PATCH' }
     it { should_not be_safe }
     it { should_not be_idempotent }

@@ -34,41 +34,13 @@ class Webbed::Method
     name == other_method.to_s
   end
   
-  class << self
-    def options
-      new 'OPTIONS', :safe, :only_response_entity
-    end
-    
-    def get
-      new 'GET', :safe, :only_response_entity
-    end
-    
-    def head
-      new 'HEAD', :safe, :headers_only
-    end
-    
-    def post
-      new 'POST', :unsafe, :both_entities
-    end
-    
-    def put
-      new 'PUT', :idempotent, :both_entities
-    end
-    
-    def delete
-      new 'DELETE', :idempotent, :only_response_entity
-    end
-    
-    def trace
-      new 'TRACE', :safe, :only_response_entity
-    end
-    
-    def connect
-      new 'CONNECT', :unsafe, :both_entities
-    end
-    
-    def patch
-      new 'PATCH', :unsafe, :both_entities
-    end
-  end
+  OPTIONS = new 'OPTIONS', :safe, :only_response_entity
+  GET = new 'GET', :safe, :only_response_entity
+  HEAD = new 'HEAD', :safe, :headers_only
+  POST = new 'POST', :unsafe, :both_entities
+  PUT = new 'PUT', :idempotent, :both_entities
+  DELETE = new 'DELETE', :idempotent, :only_response_entity
+  TRACE = new 'TRACE', :safe, :only_response_entity
+  CONNECT = new 'CONNECT', :unsafe, :both_entities
+  PATCH = new 'PATCH', :unsafe, :both_entities
 end
