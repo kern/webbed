@@ -1,4 +1,5 @@
 module Webbed
+  autoload :Header, 'webbed/header'
   autoload :HTTPVersion, 'webbed/http_version'
   autoload :Message, 'webbed/message'
   autoload :Method, 'webbed/method'
