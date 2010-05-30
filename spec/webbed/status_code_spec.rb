@@ -48,6 +48,7 @@ describe Webbed::StatusCode, 'with an informational status code' do
   it { should_not be_a_client_error }
   it { should_not be_a_server_error }
   it { should_not be_unknown }
+  it { should_not be_an_error }
 end
 
 describe Webbed::StatusCode, 'with a success status code' do
@@ -63,6 +64,7 @@ describe Webbed::StatusCode, 'with a success status code' do
   it { should_not be_a_client_error }
   it { should_not be_a_server_error }
   it { should_not be_unknown }
+  it { should_not be_an_error }
 end
 
 describe Webbed::StatusCode, 'with a redirect status code' do
@@ -78,6 +80,7 @@ describe Webbed::StatusCode, 'with a redirect status code' do
   it { should_not be_a_client_error }
   it { should_not be_a_server_error }
   it { should_not be_unknown }
+  it { should_not be_an_error }
 end
 
 describe Webbed::StatusCode, 'with a client error status code' do
@@ -93,6 +96,7 @@ describe Webbed::StatusCode, 'with a client error status code' do
   it { should be_a_client_error }
   it { should_not be_a_server_error }
   it { should_not be_unknown }
+  it { should be_an_error }
 end
 
 describe Webbed::StatusCode, 'with a server error status code' do
@@ -108,6 +112,7 @@ describe Webbed::StatusCode, 'with a server error status code' do
   it { should_not be_a_client_error }
   it { should be_a_server_error }
   it { should_not be_unknown }
+  it { should be_an_error }
 end
 
 describe Webbed::StatusCode, 'with an unknown status code' do
@@ -123,6 +128,7 @@ describe Webbed::StatusCode, 'with an unknown status code' do
   it { should_not be_a_client_error }
   it { should_not be_a_server_error }
   it { should be_unknown }
+  it { should_not be_an_error }
 end
 
 describe Webbed::StatusCode, 'equality' do

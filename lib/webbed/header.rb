@@ -12,5 +12,9 @@ module Webbed
     def field_content
       field_value.strip
     end
+    
+    def to_s
+      "#{field_name}: #{field_content}"
+    end
   end
 end
