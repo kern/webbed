@@ -1,59 +1,90 @@
 require 'spec_helper'
 
-describe Webbed::ReasonPhrase do
-  subject { Webbed::ReasonPhrase.new('Foo Bar') }
-  
-  context 'when created with a successful status code' do
-    subject { Webbed::ReasonPhrase.new(200) }
-    
-    it 'should store the status code default reason phrase' do
-      subject.reason_phrase.should == 'OK'
-    end
+describe Webbed::ReasonPhrase, 'created with a known status code' do
+  before do
+    @reason_phrase = Webbed::ReasonPhrase.new(200)
   end
   
-  context 'when created with an error status code' do
-    subject { Webbed::ReasonPhrase.new(400) }
-    
-    it 'should store the status code default reason phrase' do
-      subject.reason_phrase.should == 'Bad Request'
-    end
+  subject { @reason_phrase }
+  
+  it 'should look up the default reason phrase' do
+    Webbed::ReasonPhrase::REASON_PHRASES.should_receive(:[]).with(200)
+    Webbed::ReasonPhrase.new(200)
   end
   
-  context 'when created with an unknown status code' do
-    subject { Webbed::ReasonPhrase.new(600) }
-    
-    it 'should default to unknown' do
-      subject.reason_phrase.should == 'Unknown'
+  describe 'reason phrase' do
+    subject { @reason_phrase.reason_phrase }
+    it 'should be stored with the default status code reason phrase' do
+      should == 'OK'
     end
   end
-  
-  context 'when created with a reason phrase' do
-    it 'should store that reason phrase' do
-      subject.reason_phrase.should == 'Foo Bar'
-    end
+end
+
+describe Webbed::ReasonPhrase, 'created with an unknown status code' do
+  before do
+    @reason_phrase = Webbed::ReasonPhrase.new(600)
   end
   
-  describe '#to_s' do
-    it 'should return the reason phrase' do
-      subject.to_s.should == 'Foo Bar'
-    end
+  subject { @reason_phrase }
+  
+  it 'should attempt to look up the default reason phrase' do
+    Webbed::ReasonPhrase::REASON_PHRASES.should_receive(:[]).with(600)
+    Webbed::ReasonPhrase.new(600)
   end
   
-  describe '#==' do
-    it 'should be equal to a reason phrase that is identical' do
-      subject.should == Webbed::ReasonPhrase.new('Foo Bar')
+  describe 'reason phrase' do
+    subject { @reason_phrase.reason_phrase }
+    it { should == 'Unknown' }
+  end
+end
+
+describe Webbed::ReasonPhrase, 'created with a reason phrase' do
+  before do
+    @reason_phrase = Webbed::ReasonPhrase.new('Foo Bar')
+  end
+  
+  subject { @reason_phrase }
+  
+  describe 'reason_phrase' do
+    subject { @reason_phrase.reason_phrase }
+    it 'should be stored' do
+      should == 'Foo Bar'
     end
-    
-    it 'should not be equal to a reason phrase that is different' do
-      subject.should_not == Webbed::ReasonPhrase.new('Bar Foo')
-    end
-    
-    it 'should be equal to the string of the reason phrase' do
-      subject.should == 'Foo Bar'
-    end
-    
-    it 'should not be equal to any other string' do
-      subject.should_not == 'Bar Foo'
-    end
+  end
+end
+
+describe Webbed::ReasonPhrase, 'equality' do
+  before do
+    @reason_phrase = Webbed::ReasonPhrase.new(200)
+  end
+  
+  subject { @reason_phrase }
+  
+  it 'should equal the same stringified reason phrase' do
+    should == 'OK'
+  end
+  
+  it 'should equal an identical reason phrase' do
+    should == Webbed::ReasonPhrase.new(200)
+  end
+  
+  it 'should not equal a different string' do
+    should_not == 'Foo Bar'
+  end
+  
+  it 'should not equal any other reason phrase' do
+    should_not == Webbed::ReasonPhrase.new(400)
+  end
+end
+
+describe Webbed::ReasonPhrase, '#to_s' do
+  before do
+    @reason_phrase = Webbed::ReasonPhrase.new(200)
+  end
+  
+  subject { @reason_phrase }
+
+  it 'should return the reason phrase' do
+    subject.to_s.should == 'OK'
   end
 end

@@ -3,8 +3,12 @@ module Webbed
     
     attr_reader :status_code
     
-    def initialize(status_code)
+    def initialize(status_code = nil)
       @status_code = status_code
+    end
+    
+    def ==(other_status_code)
+      status_code == other_status_code
     end
     
     def to_s

@@ -8,4 +8,6 @@ end
 
 group :test do
   gem 'rspec', '~> 1.3', :require => 'spec'
+  gem 'activesupport'
+  gem 'factory_girl', '~> 1.2'
 end

@@ -4,6 +4,7 @@ Bundler.setup :default, :test
 require 'spec'
 
 require 'webbed'
+require 'factory_girl'
 require 'support/helpers'
 require 'support/matchers'
 
