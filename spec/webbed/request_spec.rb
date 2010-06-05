@@ -7,7 +7,7 @@ describe Webbed::Request do
   
   subject { @request }
   
-  it 'should include Webbed::GenericRequest' do
+  it 'should include Webbed::GenericMessage' do
     Webbed::Request.ancestors.should include(Webbed::GenericMessage)
   end
   
