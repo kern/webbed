@@ -4,7 +4,7 @@ module Webbed
     attr_writer :entity_body
     alias :body= :entity_body=
     
-    # Must be overridden by all inherited classes.
+    # Must be overridden
     def start_line
       "Invalid Start Line\r\n"
     end
