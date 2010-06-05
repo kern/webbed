@@ -1,2 +1,0 @@
-class Webbed::Message
-end

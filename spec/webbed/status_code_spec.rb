@@ -1,25 +1,5 @@
 require 'spec_helper'
 
-describe Webbed::StatusCode, 'created without a status code' do
-  before do
-    @status_code = Webbed::StatusCode.new
-  end
-  
-  subject { @status_code }
-  
-  describe 'status code' do
-    subject { @status_code.status_code }
-    it { should be_nil }
-  end
-  
-  it { should_not be_informational }
-  it { should_not be_a_success }
-  it { should_not be_a_redirection }
-  it { should_not be_a_client_error }
-  it { should_not be_a_server_error }
-  it { should be_unknown }
-end
-
 describe Webbed::StatusCode, 'created with a status code' do
   before do
     @status_code = Webbed::StatusCode.new(200)
@@ -169,7 +149,7 @@ describe Webbed::StatusCode, '#to_s' do
       @status_code = Webbed::StatusCode.new(99)
     end
     
-    it 'should have leading zeroes so it becomes 3 digits' do
+    it 'should have leading zeroes' do
       @status_code.to_s.should == '099'
     end
   end

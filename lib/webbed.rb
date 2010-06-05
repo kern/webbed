@@ -1,7 +1,7 @@
 module Webbed
-  autoload :Header, 'webbed/header'
+  autoload :Headers, 'webbed/headers'
   autoload :HTTPVersion, 'webbed/http_version'
-  autoload :Message, 'webbed/message'
+  autoload :GenericMessage, 'webbed/generic_message'
   autoload :Method, 'webbed/method'
   autoload :StatusCode, 'webbed/status_code'
   autoload :StatusLine, 'webbed/status_line'

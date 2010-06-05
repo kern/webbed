@@ -1,8 +1,8 @@
 module Webbed
   class Method
-  
+    
     attr_reader :name
-  
+    
     def initialize(name, safety = :unsafe, entities = :both_entities)
       @name = name
       @safe = safety == :safe
