@@ -60,7 +60,7 @@ describe Webbed::Method do
     subject { Webbed::Method.new('GET') }
     
     it 'should return the exact same method object each time' do
-      should === Webbed::Method::GET
+      should equal(Webbed::Method::GET)
     end
   end
   

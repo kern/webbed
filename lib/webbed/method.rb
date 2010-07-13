@@ -11,10 +11,10 @@ module Webbed
     
     def self.new(name, options = {})
       if const_defined? name
-        return const_get(name)
+        const_get(name)
+      else
+        super(name, options)
       end
-      
-      super(name, options)
     end
     
     def initialize(name, options = {})
