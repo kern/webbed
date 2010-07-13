@@ -12,4 +12,6 @@ end
 
 group :test do
   gem 'rspec', '~> 1.3', :require => 'spec'
+  gem 'heckle'
+  gem 'ruby2ruby', '1.2.2'
 end

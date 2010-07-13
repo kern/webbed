@@ -1,2 +1,3 @@
 -rubygems
 --color
+--format nested

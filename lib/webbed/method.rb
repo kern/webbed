@@ -2,13 +2,28 @@ module Webbed
   class Method
     
     attr_reader :name
+    alias :to_s :name
+    DEFAULTS = {
+      :safe => false,
+      :idempotent => false,
+      :entities => [:request, :response]
+    }
     
-    def initialize(name, safety = :unsafe, entities = :both_entities)
+    def self.new(name, options = {})
+      if const_defined? name
+        return const_get(name)
+      end
+      
+      super(name, options)
+    end
+    
+    def initialize(name, options = {})
+      options = DEFAULTS.merge options
       @name = name
-      @safe = safety == :safe
-      @idempotent = safety != :unsafe
-      @has_request_entity = entities == :both_entities
-      @has_response_entity = entities != :no_entities
+      @safe = options[:safe]
+      @idempotent = options[:safe] || options[:idempotent]
+      @has_request_entity = options[:entities].include? :request
+      @has_response_entity = options[:entities].include? :response
     end
     
     def safe?
@@ -27,22 +42,21 @@ module Webbed
       @has_response_entity
     end
     
-    def to_s
-      @name
-    end
-    
     def ==(other_method)
       name == other_method.to_s
     end
     
-    OPTIONS = new 'OPTIONS', :safe, :only_response_entity
-    GET = new 'GET', :safe, :only_response_entity
-    HEAD = new 'HEAD', :safe, :no_entities
-    POST = new 'POST', :unsafe, :both_entities
-    PUT = new 'PUT', :idempotent, :both_entities
-    DELETE = new 'DELETE', :idempotent, :only_response_entity
-    TRACE = new 'TRACE', :safe, :only_response_entity
-    CONNECT = new 'CONNECT', :unsafe, :both_entities
-    PATCH = new 'PATCH', :unsafe, :both_entities
+    # Common methods used and their settings. Most are defined in RFC 2616 with the exception of PATCH
+    # which is defined in RFC 5789. These are for caching purposes, so that new objects don't need to
+    # be created on each request.
+    OPTIONS = new 'OPTIONS', :safe => true,  :idempotent => true,  :entities => [:response]
+    GET     = new 'GET',     :safe => true,  :idempotent => true,  :entities => [:response]
+    HEAD    = new 'HEAD',    :safe => true,  :idempotent => true,  :entities => []
+    POST    = new 'POST',    :safe => false, :idempotent => false, :entities => [:request, :response]
+    PUT     = new 'PUT',     :safe => false, :idempotent => true,  :entities => [:request, :response]
+    DELETE  = new 'DELETE',  :safe => false, :idempotent => true,  :entities => [:response]
+    TRACE   = new 'TRACE',   :safe => true,  :idempotent => true,  :entities => [:response]
+    CONNECT = new 'CONNECT', :safe => false, :idempotent => false, :entities => [:request, :response]
+    PATCH   = new 'PATCH',   :safe => false, :idempotent => false, :entities => [:request, :response]
   end
 end

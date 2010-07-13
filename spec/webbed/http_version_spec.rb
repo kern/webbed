@@ -1,85 +1,88 @@
 require 'spec_helper'
 
-describe Webbed::HTTPVersion, 'created without a major and minor number' do
-  before do
-    @version = Webbed::HTTPVersion.new
+describe Webbed::HTTPVersion, 'when created from a HTTP Version string' do
+  subject { Webbed::HTTPVersion.new 'HTTP/2.5' }
+  
+  its(:major) { should == 2 }
+  its(:minor) { should == 5 }
+  
+  
+  it 'should have a string representation that is the same as its original representation' do
+    subject.to_s.should == 'HTTP/2.5'
   end
   
-  subject { @version }
-  
-  describe 'major number' do
-    subject { @version.major }
-    it { should == 1 }
+  context 'when major is 1 and minor is 1' do
+    subject { Webbed::HTTPVersion.new 'HTTP/1.1' }
+    it { should === Webbed::HTTPVersion::ONE_POINT_ONE }
   end
   
-  describe 'minor number' do
-    subject { @version.minor }
-    it { should == 1 }
+  context 'when major is 1 and minor is 0' do
+    subject { Webbed::HTTPVersion.new 'HTTP/1.0' }
+    it { should === Webbed::HTTPVersion::ONE_POINT_OH }
   end
 end
 
-describe Webbed::HTTPVersion, 'created with both a major and minor number' do
-  before do
-    @version = Webbed::HTTPVersion.new(2, 0)
-  end
+describe Webbed::HTTPVersion, 'when created with a major and minor number' do
+  subject { Webbed::HTTPVersion.new 3.5 }
   
-  describe 'major number' do
-    subject { @version.major }
-    it 'should be stored' do
-      should == 2
+  its(:major) { should == 3 }
+  its(:minor) { should == 5 }
+  
+  context 'when major is 1 and minor is 1' do
+    subject { Webbed::HTTPVersion.new 1.1 }
+    
+    it 'should return Webbed::HTTPVersion::ONE_POINT_ONE' do
+      should === Webbed::HTTPVersion::ONE_POINT_ONE
     end
   end
   
-  describe 'minor number' do
-    subject { @version.minor }
-    it 'should be stored' do
-      should == 0
+  context 'when major is 1 and minor is 0' do
+    subject { Webbed::HTTPVersion.new 1.0 }
+    
+    it 'should return Webbed::HTTPVersion::ONE_POINT_OH' do
+      should === Webbed::HTTPVersion::ONE_POINT_OH
     end
+  end
+end
+
+describe Webbed::HTTPVersion, '#to_f' do
+  subject { Webbed::HTTPVersion.new 'HTTP/1.6' }
+  
+  it 'should return a float of the major and minor numbers' do
+    subject.to_f.should == 1.6
   end
 end
 
 describe Webbed::HTTPVersion, '#to_s' do
-  before do
-    @version = Webbed::HTTPVersion.new
-  end
+  subject { Webbed::HTTPVersion.new 'HTTP/1.8' }
   
-  subject { @version }
-  
-  it 'shoud use the major number to create the version string' do
-    subject.should_receive(:major).and_return(1)
-    subject.to_s
-  end
-  
-  it 'shoud use the minor number to create the version string' do
-    subject.should_receive(:minor).and_return(1)
-    subject.to_s
-  end
-  
-  it 'should add the separators in between the digits' do
-    subject.to_s.should == 'HTTP/1.1'
+  it 'should concatenate the prefix, major, separator, and minor in that order' do
+    subject.to_s.should == 'HTTP/1.8'
   end
 end
 
-describe Webbed::HTTPVersion, 'equality' do
-  before do
-    @version = Webbed::HTTPVersion.new
+describe Webbed::HTTPVersion, '#==' do
+  subject { Webbed::HTTPVersion.new 'HTTP/1.9' }
+  
+  it 'should equal the string representation' do
+    should == 'HTTP/1.9'
   end
   
-  subject { @version }
-  
-  it 'should equal the stringified version' do
-    should == 'HTTP/1.1'
+  it 'should equal the float representation' do
+    should == 1.9
   end
+end
+
+describe Webbed::HTTPVersion::ONE_POINT_ONE do
+  subject { Webbed::HTTPVersion::ONE_POINT_ONE }
   
-  it 'should equal an identcal version' do
-    should == Webbed::HTTPVersion.new
-  end
+  its(:major) { should == 1 }
+  its(:minor) { should == 1 }
+end
+
+describe Webbed::HTTPVersion::ONE_POINT_OH do
+  subject { Webbed::HTTPVersion::ONE_POINT_OH }
   
-  it 'should not equal a different string version' do
-    should_not == 'HTTP/1.0'
-  end
-  
-  it 'should not equal a different version' do
-    should_not == Webbed::HTTPVersion.new(1, 2)
-  end
+  its(:major) { should == 1 }
+  its(:minor) { should == 0 }
 end
