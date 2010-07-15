@@ -1,15 +1,18 @@
 module Webbed
   module GenericMessage
     
-    attr_writer :entity_body
+    attr_reader :http_version
+    attr_accessor :entity_body
     
-    # Must be overridden
-    def start_line
-      "Invalid Start Line\r\n"
+    # This is purely for test/spec purposes.
+    def initialize
+      self.http_version = 'HTTP/1.1'
+      self.entity_body = ''
     end
     
-    def http_version
-      @http_version ||= Webbed::HTTPVersion::ONE_POINT_ONE
+    # Must be overridden!
+    def start_line
+      "Invalid Start Line\r\n"
     end
     
     def http_version=(http_version)
@@ -18,10 +21,6 @@ module Webbed
     
     def headers
       @headers ||= Webbed::Headers.new
-    end
-    
-    def entity_body
-      @entity_body ||= ''
     end
     
     def to_s
