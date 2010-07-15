@@ -1,92 +1,52 @@
 require 'spec_helper'
 
-describe Webbed::GenericMessage, 'start line' do
+describe Webbed::GenericMessage do
   before do
     @klass = Class.new { include Webbed::GenericMessage }
     @generic_message = @klass.new
-  end
-  
-  subject { @generic_message.start_line }
-  
-  it { should == "Invalid Start Line\r\n" }
-end
-
-describe Webbed::GenericMessage, 'headers' do
-  before do
-    @klass = Class.new { include Webbed::GenericMessage }
-    @generic_message = @klass.new
-  end
-  
-  subject { @generic_message.headers }
-  
-  it { should be_an_instance_of(Webbed::Headers) }
-  
-  context 'upon creation' do
-    it { should be_empty }
-  end
-end
-
-describe Webbed::GenericMessage, 'entity body' do
-  before do
-    @klass = Class.new { include Webbed::GenericMessage }
-    @generic_message = @klass.new
-  end
-  
-  subject { @generic_message.entity_body }
-  
-  context 'upon creation' do
-    it { should be_empty }
-  end
-  
-  it 'should be settable' do
-    @generic_message.entity_body = 'foo'
-    @generic_message.entity_body.should == 'foo'
-  end
-end
-
-describe Webbed::GenericMessage, 'body' do
-  before do
-    @klass = Class.new { include Webbed::GenericMessage }
-    @generic_message = @klass.new
-  end
-  
-  subject { @generic_message.body }
-  
-  it 'should have the same getter as #entity_body' do
-    @generic_message.method(:body).should == @generic_message.method(:entity_body)
-  end
-  
-  it 'should have the same setter as #entity_body' do
-    @generic_message.method(:body=).should == @generic_message.method(:entity_body=)
-  end
-end
-
-describe Webbed::GenericMessage, '#to_s' do
-  before do
-    @klass = Class.new { include Webbed::GenericMessage }
-    @generic_message = @klass.new
-    @generic_message.headers['Content-Type'] = 'text/plain'
-    @generic_message.entity_body = 'foo'
   end
   
   subject { @generic_message }
   
-  it 'should use the start line' do
-    @generic_message.should_receive(:start_line)
-    @generic_message.to_s
+  its(:start_line) { should == "Invalid Start Line\r\n" }
+  its(:headers) { should be_an_instance_of(Webbed::Headers) }
+  
+  context 'when created' do
+    its(:http_version) { should == Webbed::HTTPVersion::ONE_POINT_ONE }
+    its(:headers) { should be_empty }
+    its(:entity_body) { should be_empty }
   end
   
-  it 'should use the headers' do
-    @generic_message.headers.should_receive(:to_s)
-    @generic_message.to_s
+  context 'when the HTTP Version is modified' do
+    it 'should change the HTTP Version' do
+      lambda {
+        subject.http_version = 'HTTP/1.0'
+      }.should change(subject, :http_version).from(Webbed::HTTPVersion::ONE_POINT_ONE).to(Webbed::HTTPVersion::ONE_POINT_OH)
+    end
   end
   
-  it 'should use the entity body' do
-    @generic_message.should_receive(:entity_body)
-    @generic_message.to_s
+  context 'when the entity body is modified' do
+    it 'should change the entity body' do
+      lambda {
+        subject.entity_body = 'foo'
+      }.should change(subject, :entity_body).from('').to('foo')
+    end
   end
   
-  it 'should be correct according to RFC 2616' do
-    @generic_message.to_s.should == "Invalid Start Line\r\nContent-Type: text/plain\r\n\r\nfoo"
+  describe '#to_s' do
+    before do
+      @generic_message.stubs(:start_line).returns("Start Line\r\n")
+      @generic_message.stubs(:headers).returns("Headers\r\n")
+      @generic_message.stubs(:entity_body).returns('Entity Body')
+      @string = @generic_message.to_s
+    end
+    
+    it { should have_received(:start_line) }
+    it { should have_received(:headers) }
+    it { should have_received(:entity_body) }
+    
+    it 'should concatenate the start line, headers, and entity body in that order' do
+      @string.should == "Start Line\r\nHeaders\r\n\r\nEntity Body"
+    end
   end
 end

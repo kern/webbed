@@ -67,6 +67,14 @@ describe Webbed::HTTPVersion do
     end
   end
   
+  describe '#inspect' do
+    subject { Webbed::HTTPVersion.new 'HTTP/1.8' }
+    
+    it 'should concatenate the prefix, major, separator, and minor in that order' do
+      subject.inspect.should == 'HTTP/1.8'
+    end
+  end
+  
   describe '#==' do
     subject { Webbed::HTTPVersion.new 'HTTP/1.9' }
     

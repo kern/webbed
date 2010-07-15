@@ -36,6 +36,7 @@ module Webbed
     def to_s
       "#{PREFIX}#{major}#{SEPARATOR}#{minor}"
     end
+    alias :inspect :to_s
     
     def to_f
       major + (minor.to_f / 10**minor.to_s.length) # TODO: Fix this ugly hack

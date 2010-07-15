@@ -81,6 +81,12 @@ describe Webbed::Method do
       Webbed::Method::POST.to_s.should == 'POST'
     end
   end
+  
+  describe '#inspect' do
+    it 'should return the name of the method' do
+      Webbed::Method::POST.inspect.should == 'POST'
+    end
+  end
 end
 
 describe Webbed::Method::OPTIONS do

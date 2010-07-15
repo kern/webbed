@@ -28,6 +28,7 @@ describe Webbed::StatusCode do
   context 'when two identical status codes are created' do
     it 'should cache them so they are exactly equal' do
       Webbed::StatusCode.new(200).should equal(Webbed::StatusCode.new(200))
+      Webbed::StatusCode.new(300).should equal(Webbed::StatusCode.new(300))
     end
   end
   

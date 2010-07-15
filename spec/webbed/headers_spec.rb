@@ -86,7 +86,7 @@ end
 describe Webbed::Headers, '#to_s' do
   before do
     @header_group = Webbed::Headers.new('Content-Type' => 'application/json',
-                                            'Host' => 'foo.com')
+                                                'Host' => 'foo.com')
   end
   
   subject { @header_group }
