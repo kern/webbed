@@ -1,10 +1,8 @@
 module Webbed
   class HTTPVersion
     
-    attr_reader :major, :minor
-    REGEX = /^HTTP\/(\d+)\.(\d+)$/
-    PREFIX = 'HTTP/'
-    SEPARATOR = '.'
+    include Comparable
+    REGEX = /^HTTP\/(\d+\.\d+)$/
     
     def self.new(http_version, dup = false)
       unless dup
@@ -21,38 +19,37 @@ module Webbed
     end
     
     def initialize(http_version)
-      if http_version.respond_to? :match
-        # It's matchable
-        http_version = REGEX.match http_version
-        @major = http_version[1].to_i
-        @minor = http_version[2].to_i
-      else
-        # It's a number
-        @major = http_version.floor
-        @minor = (http_version - @major).to_s[2..-1].to_i # TODO: Fix this ugly hack
-      end
+      @http_version = to_f(http_version)
     end
     
     def to_s
-      "#{PREFIX}#{major}#{SEPARATOR}#{minor}"
+      "HTTP/#{to_f}"
     end
     alias :inspect :to_s
     
-    def to_f
-      major + (minor.to_f / 10**minor.to_s.length) # TODO: Fix this ugly hack
-    end
-    
-    def ==(other_version)
-      if other_version.respond_to? :integer?
-        # It's a number
-        to_s == "#{PREFIX}#{other_version.to_f}"
+    # This feels like a hack. Oh well.
+    def to_f(http_version = @http_version)
+      if http_version.respond_to? :match
+        REGEX.match(http_version)[1].to_f
       else
-        # It's a string
-        to_s == other_version.to_s
+        http_version.to_f
       end
     end
     
-    ONE_POINT_ONE = HTTPVersion.new('HTTP/1.1', true)
-    ONE_POINT_OH = HTTPVersion.new('HTTP/1.0', true)
+    def <=>(other_version)
+      to_f <=> to_f(other_version)
+    end
+    
+    def major
+      to_f.floor
+    end
+    
+    # TODO: Fix this ugly hack! :x
+    def minor
+      (to_f - to_f.floor).to_s[2..-1].to_i
+    end
+    
+    ONE_POINT_ONE = HTTPVersion.new(1.1, true)
+    ONE_POINT_OH = HTTPVersion.new(1.0, true)
   end
 end
