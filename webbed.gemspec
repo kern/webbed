@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version = Webbed::VERSION
   s.platform = Gem::Platform::RUBY
   s.summary = 'Take control of HTTP.'
-  s.description = 'Consistent library of manipulating HTTP messages.'
+  s.description = 'Sane library for manipulating HTTP messages.'
   s.required_ruby_version = '>= 1.8.7'
   
   s.author = 'Alexander Kern'
