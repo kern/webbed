@@ -1,5 +1,5 @@
 module Webbed
-  # Stolen directly from Rack.
+  # This class is stolen directly from Rack.
   class Headers < Hash
     def self.new(hash={})
       Headers === hash ? hash : super(hash)
