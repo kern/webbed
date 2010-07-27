@@ -1,6 +1,7 @@
 require 'bundler'
 Bundler.setup :default, :development, :test
 
+require 'webbed'
 require 'spec/rake/spectask'
 
 Spec::Rake::SpecTask.new do |t|
