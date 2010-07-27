@@ -4,9 +4,9 @@ Gem::Specification.new do |s|
   s.name = 'webbed'
   s.version = Webbed::VERSION
   s.platform = Gem::Platform::RUBY
-  s.summary = 'Library for manipulating HTTP messages'
-  s.description = 'Ruby library that allows you to take full advantage of all the data HTTP messages can offer.'
-  s.required_ruby_version = '>= 1.8.6'
+  s.summary = 'Consistent library of manipulating HTTP messages'
+  s.description = 'Consistent library of manipulating HTTP messages'
+  s.required_ruby_version = '>= 1.8.7'
   
   s.author = 'Alexander Kern'
   s.email = 'alex@kernul.com'
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   
   s.rubyforge_project = 'webbed'
   
-  s.files = Dir['lib/**/*', 'LICENSE', '*.md']
+  s.files = Dir['lib/**/*', 'LICENSE', '*.md', 'Rakefile', 'Gemfile']
   s.require_path = 'lib'
   
   require 'bundler'

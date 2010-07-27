@@ -1,9 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'webbed', :path => File.expand_path("..", __FILE__)
-
 gem 'addressable', '~> 2.1'
-gem 'cicphash'
 
 group :development do
   gem 'rake'

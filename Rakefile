@@ -1,7 +1,6 @@
 require 'bundler'
 Bundler.setup :default, :development, :test
 
-require 'rake'
 require 'spec/rake/spectask'
 
 Spec::Rake::SpecTask.new do |t|
@@ -14,5 +13,5 @@ task :build => "#{gemspec.full_name}.gem"
 
 file "#{gemspec.full_name}.gem" => gemspec.files + ['webbed.gemspec'] do
   system 'gem build webbed.gemspec'
-  system "gem install webbed-#{HTTPMessage::VERSION}.gem"
+  system "gem install webbed-#{Webbed::VERSION}.gem"
 end
