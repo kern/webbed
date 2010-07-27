@@ -1,6 +1,7 @@
 module Webbed
   class StatusCode
     
+    include Comparable
     attr_reader :status_code, :default_reason_phrase
     CACHED = {}
     
@@ -58,8 +59,8 @@ module Webbed
       @default_reason_phrase = REASON_PHRASES[status_code] || UNKNOWN_REASON_PHRASE
     end
     
-    def ==(other_status_code)
-      status_code == other_status_code
+    def <=>(other_status_code)
+      status_code <=> other_status_code.to_i
     end
     
     def to_i

@@ -75,7 +75,7 @@ describe Webbed::HTTPVersion do
     end
   end
   
-  describe '#==' do
+  describe '#<=>' do
     subject { Webbed::HTTPVersion.new 'HTTP/1.9' }
     
     it 'should equal the string representation' do
@@ -84,6 +84,22 @@ describe Webbed::HTTPVersion do
     
     it 'should equal the float representation' do
       should == 1.9
+    end
+    
+    it 'should be less than a greater float representation' do
+      should < 2.0
+    end
+    
+    it 'should be greater than a lesser float representation' do
+      should > 1.1
+    end
+    
+    it 'should be less than a greater string representation' do
+      should < 'HTTP/5.99'
+    end
+    
+    it 'should be greater than a lesser string representation' do
+      should > 'HTTP/0.2'
     end
   end
 end

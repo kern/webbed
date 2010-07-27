@@ -4,7 +4,7 @@ module Webbed
   class Request
     
     include Webbed::GenericMessage
-    attr_reader :request_uri, :entity_body
+    attr_reader :request_uri
     DEFAULTS = {
       :method => 'GET',
       :request_uri => '*',

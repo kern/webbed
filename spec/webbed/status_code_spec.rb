@@ -104,15 +104,23 @@ describe Webbed::StatusCode do
     it { should_not be_an_error }
   end
   
-  describe '#==' do
+  describe '#<=>' do
     subject { Webbed::StatusCode.new(200) }
     
-    it 'should be equal to the numeric status code' do
-      subject.should == 200
+    it 'should equal the numeric status code' do
+      should == 200
     end
     
-    it 'should be equal to an identical status code' do
-      subject.should == Webbed::StatusCode.new(200)
+    it 'should equal an identical status code' do
+      should == Webbed::StatusCode.new(200)
+    end
+    
+    it 'should be higher than a lower status code' do
+      should > 199
+    end
+    
+    it 'should be less than a higher status code' do
+      should < 900
     end
   end
   

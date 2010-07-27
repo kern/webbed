@@ -21,7 +21,7 @@ describe Webbed::GenericMessage do
     it 'should change the HTTP Version' do
       lambda {
         subject.http_version = 'HTTP/1.0'
-      }.should change(subject, :http_version).from(Webbed::HTTPVersion::ONE_POINT_ONE).to(Webbed::HTTPVersion::ONE_POINT_OH)
+      }.should change(subject, :http_version).from(1.1).to(1.0)
     end
   end
   

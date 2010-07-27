@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe Webbed::Request do
-  it 'should include Webbed::GenericMessage' do
-    Webbed::Request.ancestors.should include(Webbed::GenericMessage)
-  end
-  
   context 'when created without arguments' do
     before do
       @request = Webbed::Request.new
@@ -28,7 +24,7 @@ describe Webbed::Request do
         :http_version => 'HTTP/1.0',
         :headers => {
           'Content-Type' => 'text/plain',
-          'Content-Length' => '0',
+          'Content-Length' => '10',
           'Host' => 'google.com'
         },
         :entity_body => 'Test 1 2 3'
@@ -49,7 +45,7 @@ describe Webbed::Request do
     
     it 'should store the headers' do
       subject.headers['Content-Type'].should == 'text/plain'
-      subject.headers['Content-Length'].should == '0'
+      subject.headers['Content-Length'].should == '10'
       subject.headers['Host'].should == 'google.com'
     end
     

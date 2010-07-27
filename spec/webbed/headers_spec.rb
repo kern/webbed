@@ -1,8 +1,10 @@
 require 'spec_helper'
 
+# TODO: Add more tests to this. Since it was stolen from Rack, I'm pretty darn
+# sure that it works correctly. Still, at a matter of principle, it should have
+# all the necessary tests to make sure it works correctly when it changes. But
+# yeah, very low priority at the moment. Just a note for the future.
 describe Webbed::Headers do
-  it { should be_a_kind_of(CICPHash) }
-  
   context 'when created without arguments' do
     subject { Webbed::Headers.new }
     it { should be_empty }
@@ -30,16 +32,12 @@ describe Webbed::Headers do
         'Content-Type' => 'application/json',
         'Host' => 'foo.com'
       )
-      @headers.stubs(:[]).returns('foo')
-      @string = @headers.to_s
     end
     
-    it 'should use each field content' do
-      @headers.should have_received(:[]).twice
-    end
+    subject { @headers.to_s }
     
-    it 'should be correct according to RFC 2616' do
-      @string.should == "Content-Type: foo\r\nHost: foo\r\n"
+    it "should join all the headers together with CRLF's after each one" do
+      should == "Content-Type: application/json\r\nHost: foo.com\r\n"
     end
   end
 end

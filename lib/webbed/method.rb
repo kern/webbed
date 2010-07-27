@@ -48,9 +48,9 @@ module Webbed
       name == other_method.to_s
     end
     
-    # Common methods used and their settings. Most are defined in RFC 2616 with the exception of PATCH
-    # which is defined in RFC 5789. These are for caching purposes, so that new objects don't need to
-    # be created on each request.
+    # Common methods used and their settings. Most are defined in RFC 2616 with
+    # the exception of PATCH which is defined in RFC 5789. These are for caching
+    # purposes, so that new objects don't need to be created on each request.
     OPTIONS = new 'OPTIONS', :safe => true,  :idempotent => true,  :entities => [:response]
     GET     = new 'GET',     :safe => true,  :idempotent => true,  :entities => [:response]
     HEAD    = new 'HEAD',    :safe => true,  :idempotent => true,  :entities => []
