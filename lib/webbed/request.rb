@@ -40,5 +40,10 @@ module Webbed
       "#{method} #{request_uri} #{http_version}\r\n"
     end
     alias :start_line :request_line
+    
+    # Extensions
+    include Webbed::Extensions::MethodAliases
+    include Webbed::Extensions::RequestUriAliases
+    
   end
 end
