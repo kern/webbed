@@ -1,7 +1,6 @@
 module Webbed
-  class Response
+  class Response < GenericMessage
     
-    include Webbed::GenericMessage
     attr_reader :status_code
     attr_writer :reason_phrase
     DEFAULTS = {
@@ -38,5 +37,8 @@ module Webbed
       "#{http_version} #{status_code} #{reason_phrase}\r\n"
     end
     alias :start_line :status_line
+    
+    # Default helpers
+    
   end
 end

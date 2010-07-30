@@ -1,12 +1,7 @@
 require 'spec_helper'
 
 describe Webbed::GenericMessage do
-  before do
-    @klass = Class.new { include Webbed::GenericMessage }
-    @generic_message = @klass.new
-  end
-  
-  subject { @generic_message }
+  subject { Webbed::GenericMessage.new }
   
   its(:start_line) { should == "Invalid Start Line\r\n" }
   its(:headers) { should be_an_instance_of(Webbed::Headers) }
@@ -35,10 +30,10 @@ describe Webbed::GenericMessage do
   
   describe '#to_s' do
     before do
-      @generic_message.stubs(:start_line).returns("Start Line\r\n")
-      @generic_message.stubs(:headers).returns("Headers\r\n")
-      @generic_message.stubs(:entity_body).returns('Entity Body')
-      @string = @generic_message.to_s
+      subject.stubs(:start_line).returns("Start Line\r\n")
+      subject.stubs(:headers).returns("Headers\r\n")
+      subject.stubs(:entity_body).returns('Entity Body')
+      @string = subject.to_s
     end
     
     it { should have_received(:start_line) }

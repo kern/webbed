@@ -1,9 +1,8 @@
 require 'addressable/uri'
 
 module Webbed
-  class Request
+  class Request < GenericMessage
     
-    include Webbed::GenericMessage
     attr_reader :request_uri
     DEFAULTS = {
       :method => 'GET',
@@ -41,9 +40,9 @@ module Webbed
     end
     alias :start_line :request_line
     
-    # Extensions
-    include Webbed::Extensions::MethodAliases
-    include Webbed::Extensions::RequestUriAliases
+    # Default helpers
+    include Helpers::MethodHelper
+    include Helpers::RequestUriHelper
     
   end
 end

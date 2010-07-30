@@ -7,8 +7,8 @@ module Webbed
   autoload :Request, 'webbed/request'
   autoload :Response, 'webbed/response'
   
-  module Extensions
-    autoload :MethodAliases, 'webbed/extensions/method_aliases'
-    autoload :RequestUriAliases, 'webbed/extensions/request_uri_aliases'
+  module Helpers
+    autoload :MethodHelper, 'webbed/helpers/method_helper'
+    autoload :RequestUriHelper, 'webbed/helpers/request_uri_helper'
   end
 end

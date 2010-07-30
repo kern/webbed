@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Webbed::Extensions::RequestUriAliases do
+describe Webbed::Helpers::RequestUriHelper do
   subject { Webbed::Request.new }
   
   it 'should alias #uri, #url, and #request_url all to #request_uri' do

@@ -1,6 +1,6 @@
 module Webbed
-  module Extensions
-    module RequestUriAliases
+  module Helpers
+    module RequestUriHelper
       def self.included(base)
         base.class_eval do
           alias :uri :request_uri
