@@ -40,13 +40,11 @@ describe Webbed::HTTPVersion do
     
     context 'when major is 1 and minor is 1' do
       subject { Webbed::HTTPVersion.new 1.1 }
-      
       it { should equal(Webbed::HTTPVersion::ONE_POINT_ONE) }
     end
     
     context 'when major is 1 and minor is 0' do
       subject { Webbed::HTTPVersion.new 1.0 }
-      
       it { should equal(Webbed::HTTPVersion::ONE_POINT_OH) }
     end
   end

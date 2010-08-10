@@ -30,7 +30,7 @@ module Webbed
     # This feels like a hack. Oh well.
     def to_f(http_version = @http_version)
       if http_version.respond_to? :match
-        REGEX.match(http_version)[1].to_f
+        http_version.match(REGEX)[1].to_f
       else
         http_version.to_f
       end
