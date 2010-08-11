@@ -3,3 +3,8 @@ tmp
 pkg
 *.gem
 .bundle
+.yardoc/
+bin/
+doc/
+gems/
+specifications/

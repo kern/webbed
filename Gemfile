@@ -5,6 +5,8 @@ gem 'addressable', '~> 2.1'
 
 group :development do
   gem 'rake'
+  gem 'yard'
+  gem 'bluecloth'
 end
 
 group :test do
