@@ -15,16 +15,6 @@ describe Webbed::HTTPVersion do
     it 'should have a string representation that is the same as its original representation' do
       subject.to_s.should == 'HTTP/2.5'
     end
-    
-    context 'when major is 1 and minor is 1' do
-      subject { Webbed::HTTPVersion.new 'HTTP/1.1' }
-      it { should equal(Webbed::HTTPVersion::ONE_POINT_ONE) }
-    end
-    
-    context 'when major is 1 and minor is 0' do
-      subject { Webbed::HTTPVersion.new 'HTTP/1.0' }
-      it { should equal(Webbed::HTTPVersion::ONE_POINT_OH) }
-    end
   end
   
   context 'when created with a major and minor number' do
@@ -37,67 +27,45 @@ describe Webbed::HTTPVersion do
     it 'should store the minor number' do
       subject.minor.should == 5
     end
-    
-    context 'when major is 1 and minor is 1' do
-      subject { Webbed::HTTPVersion.new 1.1 }
-      it { should equal(Webbed::HTTPVersion::ONE_POINT_ONE) }
-    end
-    
-    context 'when major is 1 and minor is 0' do
-      subject { Webbed::HTTPVersion.new 1.0 }
-      it { should equal(Webbed::HTTPVersion::ONE_POINT_OH) }
-    end
   end
   
   describe '#to_f' do
-    subject { Webbed::HTTPVersion.new 'HTTP/1.6' }
+    subject { Webbed::HTTPVersion.new('HTTP/1.6').to_f }
     
     it 'should return a float of the major and minor numbers' do
-      subject.to_f.should == 1.6
+      should == 1.6
     end
   end
   
   describe '#to_s' do
-    subject { Webbed::HTTPVersion.new 'HTTP/1.8' }
+    subject { Webbed::HTTPVersion.new('HTTP/1.8').to_s }
     
     it 'should concatenate the prefix, major, separator, and minor in that order' do
-      subject.to_s.should == 'HTTP/1.8'
+      should == 'HTTP/1.8'
     end
   end
   
   describe '#inspect' do
-    subject { Webbed::HTTPVersion.new 'HTTP/1.8' }
+    subject { Webbed::HTTPVersion.new('HTTP/1.8').inspect }
     
     it 'should concatenate the prefix, major, separator, and minor in that order' do
-      subject.inspect.should == 'HTTP/1.8'
+      should == 'HTTP/1.8'
     end
   end
   
   describe '#<=>' do
     subject { Webbed::HTTPVersion.new 'HTTP/1.9' }
     
-    it 'should equal the string representation' do
-      should == 'HTTP/1.9'
-    end
-    
-    it 'should equal the float representation' do
+    it 'should equal the same HTTP-Version' do
       should == 1.9
     end
     
-    it 'should be less than a greater float representation' do
+    it 'should be less than a greater HTTP-Version' do
       should < 2.0
     end
     
-    it 'should be greater than a lesser float representation' do
+    it 'should be greater than a lesser HTTP-Version' do
       should > 1.1
-    end
-    
-    it 'should be less than a greater string representation' do
-      should < 'HTTP/5.99'
-    end
-    
-    it 'should be greater than a lesser string representation' do
-      should > 'HTTP/0.2'
     end
   end
 end
