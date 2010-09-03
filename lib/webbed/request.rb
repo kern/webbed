@@ -1,8 +1,9 @@
 require 'addressable/uri'
 
 module Webbed
-  class Request < GenericMessage
+  class Request
     
+    include GenericMessage
     attr_reader :request_uri
     DEFAULTS = {
       :method => 'GET',

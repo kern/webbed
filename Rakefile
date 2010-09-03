@@ -1,22 +1,9 @@
 require 'bundler'
-Bundler.setup :default, :development, :test
+Bundler::GemHelper.install_tasks
 
-require 'webbed'
-require 'spec/rake/spectask'
-require 'yard'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new :spec
 
-Spec::Rake::SpecTask.new do |t|
-  t.libs << 'lib'
-end
-
-gemspec = eval(File.read('webbed.gemspec'))
-
-task :build => "#{gemspec.full_name}.gem"
-
-file "#{gemspec.full_name}.gem" => gemspec.files + ['webbed.gemspec'] do
-  system 'gem build webbed.gemspec'
-  system "gem install webbed-#{Webbed::VERSION}.gem"
-end
-
-YARD::Rake::YardocTask.new do |t|
+task :autospec do
+  system 'bundle exec watchr spec/autospec.watchr'
 end

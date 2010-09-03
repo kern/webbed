@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 describe Webbed::GenericMessage do
-  subject { Webbed::GenericMessage.new }
+  before do
+    @klass = Class.new
+    @klass.instance_eval { include Webbed::GenericMessage }
+  end
   
-  its(:start_line) { should == "Invalid Start Line\r\n" }
-  its(:headers) { should be_an_instance_of(Webbed::Headers) }
+  subject { @klass.new }
   
   context 'when created' do
-    its(:http_version) { should == Webbed::HTTPVersion::ONE_POINT_ONE }
     its(:headers) { should be_empty }
     its(:entity_body) { should be_empty }
   end
@@ -16,7 +17,7 @@ describe Webbed::GenericMessage do
     it 'should change the HTTP Version' do
       lambda {
         subject.http_version = 'HTTP/1.0'
-      }.should change(subject, :http_version).from(1.1).to(1.0)
+      }.should change(subject, :http_version).from(nil).to(1.0)
     end
   end
   
@@ -30,9 +31,12 @@ describe Webbed::GenericMessage do
   
   describe '#to_s' do
     before do
-      subject.stubs(:start_line).returns("Start Line\r\n")
-      subject.stubs(:headers).returns("Headers\r\n")
-      subject.stubs(:entity_body).returns('Entity Body')
+      subject.stub_methods({
+        :start_line => "Start Line\r\n",
+        :headers => "Headers\r\n",
+        :entity_body => 'Entity Body'
+      })
+      
       @string = subject.to_s
     end
     

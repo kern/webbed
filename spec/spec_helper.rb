@@ -1,12 +1,11 @@
-require 'bundler'
-Bundler.setup :default, :test
+require 'bundler/setup'
 
-require 'spec'
-require 'bourne'
+require 'rspec'
+require 'not_a_mock'
 
 require 'webbed'
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
 
-Spec::Runner.configure do |config|
-  config.mock_with :mocha
+RSpec.configure do |config|
+  config.mock_with NotAMock::RspecMockFrameworkAdapter
 end
