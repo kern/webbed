@@ -1,46 +1,53 @@
 require 'spec_helper'
 
 describe Webbed::Response do
-  context 'when created without arguments' do
-    before do
-      @response = Webbed::Response.new
-    end
-    
-    subject { @response }
-    
-    its(:http_version) { should == Webbed::HTTPVersion::ONE_POINT_ONE }
-    its(:status_code) { should == 200 }
-    its(:reason_phrase) { should == 'OK' }
-    its(:default_reason_phrase) { should == 'OK' }
-    its(:headers) { should be_empty }
-    its(:status_line) { should == "HTTP/1.1 200 OK\r\n" }
-    its(:start_line) { should == @response.status_line }
+  subject do
+    Webbed::Response.new([
+      'HTTP/1.0',
+      '200 OK',
+      {
+        'Content-Type' => 'text/plain',
+        'Content-Length' => '10'
+      },
+      'Test 1 2 3'
+    ])
   end
   
-  context 'when created with a response hash' do
-    subject do
-      Webbed::Response.new({
-        :http_version => 'HTTP/1.0',
-        :status_code => 404,
-        :reason_phrase => 'File Not Found',
-        :headers => {
-          'Content-Type' => 'text/plain',
-          'Content-Length' => '10'
-        },
-        :entity_body => 'Test 1 2 3'
-      })
+  context 'when created' do
+    context 'with a Reason-Phrase' do
+      it 'should store the Reason-Phrase' do
+        subject.reason_phrase.to_s.should == 'OK'
+      end
+      
+      it 'should store the Status-Code' do
+        subject.status_code.should == Webbed::StatusCode.new(200)
+      end
+    end
+    
+    context 'without a Reason-Phrase' do
+      subject do
+        Webbed::Response.new([
+          'HTTP/1.0',
+          404,
+          {
+            'Content-Type' => 'text/plain',
+            'Content-Length' => '10'
+          },
+          'Test 1 2 3'
+        ])
+      end
+      
+      it 'should store the default Reason-Phrase' do
+        subject.reason_phrase.to_s.should == 'Not Found'
+      end
+      
+      it 'should store the Status-Code' do
+        subject.status_code.should == Webbed::StatusCode.new(404)
+      end
     end
     
     it 'should store the HTTP Version' do
       subject.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
-    end
-    
-    it 'should store the status code' do
-      subject.status_code.should == Webbed::StatusCode.new(404)
-    end
-    
-    it 'should store the Reason Phrase' do
-      subject.reason_phrase.to_s.should == 'File Not Found'
     end
     
     it 'should store the headers' do
@@ -54,8 +61,6 @@ describe Webbed::Response do
   end
   
   context 'when the status code is set' do
-    subject { Webbed::Response.new }
-    
     it 'should change the status code' do
       lambda {
         subject.status_code = 500
@@ -69,8 +74,6 @@ describe Webbed::Response do
     end
     
     context 'when an override reason phrase is set' do
-      subject { Webbed::Response.new :reason_phrase => 'foo' }
-      
       it 'should have the same reason phrase' do
         lambda {
           subject.status_code = 500
@@ -79,7 +82,9 @@ describe Webbed::Response do
     end
     
     context 'when no override reason phrase is set' do
-      subject { Webbed::Response.new }
+      before do
+        subject.reason_phrase = nil
+      end
       
       it 'should also change the default reason phrase' do
         lambda {

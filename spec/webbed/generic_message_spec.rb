@@ -9,8 +9,8 @@ describe Webbed::GenericMessage do
   subject { @klass.new }
   
   context 'when created' do
-    its(:headers) { should be_empty }
-    its(:entity_body) { should be_empty }
+    its(:headers) { should be_nil }
+    its(:entity_body) { should be_nil }
   end
   
   context 'when the HTTP Version is modified' do
@@ -21,11 +21,19 @@ describe Webbed::GenericMessage do
     end
   end
   
+  context 'when the headers are modified' do
+    it 'should change the headers' do
+      lambda {
+        subject.headers = {'Host' => 'foo.bar'}
+      }.should change(subject, :headers).from(nil).to({'Host' => 'foo.bar'})
+    end
+  end
+  
   context 'when the entity body is modified' do
     it 'should change the entity body' do
       lambda {
         subject.entity_body = 'foo'
-      }.should change(subject, :entity_body).from('').to('foo')
+      }.should change(subject, :entity_body).from(nil).to('foo')
     end
   end
   

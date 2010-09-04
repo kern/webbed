@@ -5,22 +5,13 @@ module Webbed
     
     include GenericMessage
     attr_reader :request_uri
-    DEFAULTS = {
-      :method => 'GET',
-      :request_uri => '*',
-      :http_version => 'HTTP/1.1',
-      :headers => {},
-      :entity_body => ''
-    }
     
-    def initialize(request_hash = {})
-      request_hash = DEFAULTS.merge(request_hash)
-      
-      self.method = request_hash[:method]
-      self.request_uri = request_hash[:request_uri]
-      self.http_version = request_hash[:http_version]
-      self.headers.merge!(request_hash[:headers])
-      self.entity_body = request_hash[:entity_body]
+    def initialize(request_array)
+      self.method       = request_array[0]
+      self.request_uri  = request_array[1]
+      self.http_version = request_array[2]
+      self.headers      = request_array[3]
+      self.entity_body  = request_array[4]
     end
     
     def method(*args)

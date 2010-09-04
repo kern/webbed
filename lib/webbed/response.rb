@@ -4,22 +4,21 @@ module Webbed
     include GenericMessage
     attr_reader :status_code
     attr_writer :reason_phrase
-    DEFAULTS = {
-      :http_version => 'HTTP/1.1',
-      :status_code => 200,
-      :reason_phrase => nil,
-      :headers => {},
-      :entity_body => ''
-    }
+    STATUS_CODE_REGEX = /^(\d{3}) (.*)$/
     
-    def initialize(response_hash = {})
-      response_hash = DEFAULTS.merge(response_hash)
+    def initialize(response_array)
+      self.http_version = response_array[0]
       
-      self.http_version = response_hash[:http_version]
-      self.status_code = response_hash[:status_code]
-      self.reason_phrase = response_hash[:reason_phrase]
-      self.headers.merge!(response_hash[:headers])
-      self.entity_body = response_hash[:entity_body]
+      if response_array[1].respond_to?(:match)
+        match = response_array[1].match STATUS_CODE_REGEX
+        self.status_code = match[1]
+        self.reason_phrase = match[2]
+      else
+        self.status_code = response_array[1]
+      end
+      
+      self.headers = response_array[2]
+      self.entity_body = response_array[3]
     end
     
     def reason_phrase

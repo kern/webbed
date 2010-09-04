@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Webbed::Helpers::RequestUriHelper do
-  subject { Webbed::Request.new }
+  subject { Webbed::Request.new ['GET', '*', 'HTTP/1.1', {}, ''] }
   
   it 'should alias #uri, #url, and #request_url all to #request_uri' do
     request_uri = subject.method(:request_uri)

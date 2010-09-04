@@ -2,28 +2,28 @@ require 'spec_helper'
 
 describe Webbed::Helpers::MethodHelper do
   context 'when the request uses a safe method' do
-    subject { Webbed::Request.new :method => 'GET' }
+    subject { Webbed::Request.new ['GET', '*', 'HTTP/1.1', {}, ''] }
     
     it { should be_safe }
     it { should be_idempotent }
   end
   
   context 'when the request uses an idempotent method' do
-    subject { Webbed::Request.new :method => 'PUT' }
+    subject { Webbed::Request.new ['PUT', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_safe }
     it { should be_idempotent }
   end
   
   context 'when the request uses a nonidempotent method' do
-    subject { Webbed::Request.new :method => 'POST' }
+    subject { Webbed::Request.new ['POST', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_safe }
     it { should_not be_idempotent }
   end
   
   context 'when the request uses OPTIONS' do
-    subject { Webbed::Request.new :method => 'OPTIONS' }
+    subject { Webbed::Request.new ['OPTIONS', '*', 'HTTP/1.1', {}, ''] }
     
     it { should be_options }
     it { should_not be_get }
@@ -37,7 +37,7 @@ describe Webbed::Helpers::MethodHelper do
   end
   
   context 'when the request uses GET' do
-    subject { Webbed::Request.new :method => 'GET' }
+    subject { Webbed::Request.new ['GET', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_options }
     it { should be_get }
@@ -51,7 +51,7 @@ describe Webbed::Helpers::MethodHelper do
   end
   
   context 'when the request uses HEAD' do
-    subject { Webbed::Request.new :method => 'HEAD' }
+    subject { Webbed::Request.new ['HEAD', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_options }
     it { should_not be_get }
@@ -65,7 +65,7 @@ describe Webbed::Helpers::MethodHelper do
   end
   
   context 'when the request uses POST' do
-    subject { Webbed::Request.new :method => 'POST' }
+    subject { Webbed::Request.new ['POST', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_options }
     it { should_not be_get }
@@ -79,7 +79,7 @@ describe Webbed::Helpers::MethodHelper do
   end
   
   context 'when the request uses PUT' do
-    subject { Webbed::Request.new :method => 'PUT' }
+    subject { Webbed::Request.new ['PUT', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_options }
     it { should_not be_get }
@@ -93,7 +93,7 @@ describe Webbed::Helpers::MethodHelper do
   end
   
   context 'when the request uses DELETE' do
-    subject { Webbed::Request.new :method => 'DELETE' }
+    subject { Webbed::Request.new ['DELETE', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_options }
     it { should_not be_get }
@@ -107,7 +107,7 @@ describe Webbed::Helpers::MethodHelper do
   end
   
   context 'when the request uses TRACE' do
-    subject { Webbed::Request.new :method => 'TRACE' }
+    subject { Webbed::Request.new ['TRACE', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_options }
     it { should_not be_get }
@@ -121,7 +121,7 @@ describe Webbed::Helpers::MethodHelper do
   end
   
   context 'when the request uses CONNECT' do
-    subject { Webbed::Request.new :method => 'CONNECT' }
+    subject { Webbed::Request.new ['CONNECT', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_options }
     it { should_not be_get }
@@ -135,7 +135,7 @@ describe Webbed::Helpers::MethodHelper do
   end
   
   context 'when the request uses PATCH' do
-    subject { Webbed::Request.new :method => 'PATCH' }
+    subject { Webbed::Request.new ['PATCH', '*', 'HTTP/1.1', {}, ''] }
     
     it { should_not be_options }
     it { should_not be_get }

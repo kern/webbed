@@ -1,20 +1,11 @@
 require 'spec_helper'
 
 describe Webbed::Helpers::RackResponseHelper do
-  subject do
-    Webbed::Response.new({
-      :http_version => 'HTTP/1.1',
-      :status_code => 200,
-      :headers => {
-        'Content-Type' => 'text/plain'
-      },
-      :entity_body => ''
-    })
-  end
+  subject { Webbed::Response.new ['HTTP/1.1', 200, {}, ''] }
   
   describe '#to_rack' do
     it 'should convert the response to a Rack response array' do
-      subject.to_rack.should == [200, {'Content-Type' => 'text/plain'}, '']
+      subject.to_rack.should == [200, {}, '']
     end
   end
   

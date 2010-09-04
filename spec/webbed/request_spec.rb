@@ -1,36 +1,21 @@
 require 'spec_helper'
 
 describe Webbed::Request do
-  context 'when created without arguments' do
-    before do
-      @request = Webbed::Request.new
-    end
-    
-    subject { @request }
-    
-    its(:method) { should == Webbed::Method::GET }
-    its(:request_uri) { subject.to_s.should == '*' }
-    its(:http_version) { should == Webbed::HTTPVersion::ONE_POINT_ONE }
-    its(:headers) { should be_empty }
-    its(:request_line) { should == "GET * HTTP/1.1\r\n" }
-    its(:start_line) { should == @request.request_line }
+  subject do
+    Webbed::Request.new([
+      'POST',
+      'http://google.com',
+      'HTTP/1.0',
+      {
+        'Content-Type' => 'text/plain',
+        'Content-Length' => '10',
+        'Host' => 'google.com'
+      },
+      'Test 1 2 3'
+    ])
   end
   
-  context 'when created with a request hash' do
-    subject do
-      Webbed::Request.new({
-        :method => 'POST',
-        :request_uri => 'http://google.com',
-        :http_version => 'HTTP/1.0',
-        :headers => {
-          'Content-Type' => 'text/plain',
-          'Content-Length' => '10',
-          'Host' => 'google.com'
-        },
-        :entity_body => 'Test 1 2 3'
-      })
-    end
-    
+  context 'when created with a full request array' do
     it 'should store the method' do
       subject.method.should == Webbed::Method::POST
     end
@@ -55,17 +40,16 @@ describe Webbed::Request do
   end
   
   context 'when the method is set' do
-    subject { Webbed::Request.new }
-    
     it 'should change the method' do
       lambda {
-        subject.method = 'POST'
-      }.should change(subject, :method).from(Webbed::Method::GET).to(Webbed::Method::POST)
+        subject.method = 'GET'
+      }.should change(subject, :method).from(Webbed::Method::POST).to(Webbed::Method::GET)
     end
   end
   
   describe '#method with arguments' do
-    subject { Webbed::Request.new.method(:__send__) }
-    it { should be_an_instance_of(Method) }
+    it 'should call super' do
+      subject.method(:__send__).should be_an_instance_of(Method)
+    end
   end
 end
