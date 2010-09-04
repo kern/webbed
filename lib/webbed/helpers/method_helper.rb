@@ -5,16 +5,8 @@ module Webbed
         method.safe?
       end
       
-      def unsafe?
-        !safe?
-      end
-      
       def idempotent?
         method.idempotent?
-      end
-      
-      def nonidempotent?
-        !idempotent?
       end
       
       def options?

@@ -2,7 +2,7 @@ module Webbed
   class MediaType
     
     attr_accessor :type, :subtype, :parameters
-    REGEX = /^([-\w.+]+)\/([-\w.+]*)$/
+    MIME_TYPE_REGEX = /^([-\w.+]+)\/([-\w.+]*)$/
     PARAMETERS_REGEX = /=|\s*;\s*/
     
     def initialize(media_type)
@@ -15,7 +15,7 @@ module Webbed
     end
     
     def mime_type=(mime_type)
-      match = mime_type.match REGEX
+      match = mime_type.match MIME_TYPE_REGEX
       self.type = match[1]
       self.subtype = match[2]
     end
