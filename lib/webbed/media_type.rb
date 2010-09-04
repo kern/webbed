@@ -24,7 +24,7 @@ module Webbed
       if parameters.empty?
         mime_type
       else
-        parameters = self.parameters.map { |k, v| "#{k}=#{v}" }.join '; '
+        parameters = self.parameters.map { |k, v| "#{k}=#{v}" }.join('; ')
         "#{mime_type}; #{parameters}"
       end
     end
