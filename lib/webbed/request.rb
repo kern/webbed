@@ -41,7 +41,7 @@ module Webbed
     end
     alias :start_line :request_line
     
-    # Default helpers
+    # Helpers
     include Helpers::MethodHelper
     include Helpers::RequestUriHelper
     

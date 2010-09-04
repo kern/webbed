@@ -39,7 +39,8 @@ module Webbed
     end
     alias :start_line :status_line
     
-    # Default helpers
+    # Helpers
+    include Helpers::RackResponseHelper
     
   end
 end
