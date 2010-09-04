@@ -2,7 +2,7 @@
 # specific entity.
 RSpec::Matchers.define :have_entity do |entity|
   match do |method|
-    method.send("has_#{entity}_entity?")
+    method.entities.include? entity
   end
   
   failure_message_for_should do |method|

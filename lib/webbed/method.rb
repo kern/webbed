@@ -1,7 +1,7 @@
 module Webbed
   class Method
     
-    attr_reader :name
+    attr_reader :name, :entities
     alias :to_s :name
     alias :inspect :name
     
@@ -24,8 +24,7 @@ module Webbed
       @name = name
       @safe = options[:safe]
       @idempotent = options[:safe] || options[:idempotent]
-      @has_request_entity = options[:entities].include? :request
-      @has_response_entity = options[:entities].include? :response
+      @entities = options[:entities] || [:request, :response]
     end
     
     def safe?
@@ -34,14 +33,6 @@ module Webbed
     
     def idempotent?
       @idempotent
-    end
-    
-    def has_request_entity?
-      @has_request_entity
-    end
-    
-    def has_response_entity?
-      @has_response_entity
     end
     
     def ==(other_method)
