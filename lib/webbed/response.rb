@@ -1,6 +1,5 @@
 module Webbed
   class Response
-    
     include GenericMessage
     attr_reader :status_code
     attr_writer :reason_phrase

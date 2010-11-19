@@ -5,8 +5,8 @@ describe Webbed::Method do
   let(:method) { Webbed::Method.new 'FAKE', options }
   let(:options) { {} }
   
-  context 'when created without options' do
-    it 'should set the method name' do
+  context "when created without options" do
+    it "should set the method name" do
       method.name.should == 'FAKE'
     end
     
@@ -16,58 +16,58 @@ describe Webbed::Method do
     it { should have_entity(:response) }
   end
   
-  context 'when created as a safe method' do
+  context "when created as a safe method" do
     let(:options) { { :safe => true } }
     it { should be_safe }
     it { should be_idempotent }
   end
   
-  context 'when created as an idempotent method' do
+  context "when created as an idempotent method" do
     let(:options) { { :idempotent => true } }
     it { should_not be_safe }
     it { should be_idempotent }
   end
   
-  context 'when created as an unsafe method' do
+  context "when created as an unsafe method" do
     let(:options) { { :safe => false } }
     it { should_not be_safe }
     it { should_not be_idempotent }
   end
   
-  context 'when created as a headers only method' do
+  context "when created as a headers only method" do
     let(:options) { { :entities => [] } }
     it { should_not have_entity(:request) }
     it { should_not have_entity(:response) }
   end
   
-  context 'when created as a response entity only method' do
+  context "when created as a response entity only method" do
     let(:options) { { :entities => [:response] } }
     it { should_not have_entity(:request) }
     it { should have_entity(:response) }
   end
   
-  context 'when created as a two entity method' do
+  context "when created as a two entity method" do
     let(:options) { { :entities => [:request, :response] } }
     it { should have_entity(:request) }
     it { should have_entity(:response) }
   end
   
-  context 'when created with a known method name' do
+  context "when created with a known method name" do
     let(:method) { Webbed::Method.new('GET') }
     
-    it 'should return the exact same method object each time' do
+    it "should return the exact same method object each time" do
       method.should equal(Webbed::Method::GET)
     end
   end
   
-  describe '#==' do
-    it 'should equal the method name' do
+  describe "#==" do
+    it "should equal the method name" do
       method.should == 'FAKE'
     end
   end
   
-  describe '#to_s' do
-    it 'should return the name of the method' do
+  describe "#to_s" do
+    it "should return the name of the method" do
       method.to_s.should == 'FAKE'
     end
   end

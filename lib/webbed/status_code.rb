@@ -1,10 +1,10 @@
 module Webbed
   class StatusCode
-    
     include Comparable
     attr_reader :status_code, :default_reason_phrase
-    CACHED = {}
+    alias :to_i :status_code
     
+    CACHED = {}
     UNKNOWN_REASON_PHRASE = 'Unknown Status Code'
     REASON_PHRASES = {
       100 => 'Continue',
@@ -63,12 +63,8 @@ module Webbed
       status_code <=> other_status_code.to_i
     end
     
-    def to_i
-      status_code
-    end
-    
     def to_s
-      '%03d' % status_code
+      status_code.to_s
     end
     
     def informational?
