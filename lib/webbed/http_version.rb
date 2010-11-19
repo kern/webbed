@@ -44,7 +44,7 @@ module Webbed
       end
     end
     
-    # Stringifies according to RFC 2616.
+    # Converts to String according to RFC 2616.
     # 
     # @example
     #   version = Webbed::HTTPVersion.new(1.1)
@@ -54,9 +54,8 @@ module Webbed
     def to_s
       "HTTP/#{to_f}"
     end
-    alias :inspect :to_s
     
-    # Float-ifies!
+    # Converts to float.
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/1.1')

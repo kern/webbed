@@ -1,71 +1,55 @@
 require 'spec_helper'
 
 describe Webbed::HTTPVersion do
-  context 'when created from a HTTP Version string' do
-    subject { Webbed::HTTPVersion.new 'HTTP/2.5' }
-    
-    it 'should store the major number' do
-      subject.major.should == 2
+  let(:one_point_oh) { Webbed::HTTPVersion.new 'HTTP/1.0' }
+  let(:one_point_one) { Webbed::HTTPVersion.new 'HTTP/1.1' }
+  let(:two_point_oh) { Webbed::HTTPVersion.new 'HTTP/2.0' }
+  
+  context "when created from a HTTP Version string" do
+    it "should set the major number" do
+      one_point_one.major.should == 1
     end
     
-    it 'should store the minor number' do
-      subject.minor.should == 5
-    end
-    
-    it 'should have a string representation that is the same as its original representation' do
-      subject.to_s.should == 'HTTP/2.5'
+    it "should set the minor number" do
+      one_point_one.minor.should == 1
     end
   end
   
-  context 'when created with a major and minor number' do
-    subject { Webbed::HTTPVersion.new 3.5 }
+  context "when created with a major and minor number" do
+    let(:three_point_five) { Webbed::HTTPVersion.new 3.5 }
     
-    it 'should store the major number' do
-      subject.major.should == 3
+    it "should set the major number" do
+      three_point_five.major.should == 3
     end
     
-    it 'should store the minor number' do
-      subject.minor.should == 5
-    end
-  end
-  
-  describe '#to_f' do
-    subject { Webbed::HTTPVersion.new('HTTP/1.6').to_f }
-    
-    it 'should return a float of the major and minor numbers' do
-      should == 1.6
+    it "should set the minor number" do
+      three_point_five.minor.should == 5
     end
   end
   
-  describe '#to_s' do
-    subject { Webbed::HTTPVersion.new('HTTP/1.8').to_s }
-    
-    it 'should concatenate the prefix, major, separator, and minor in that order' do
-      should == 'HTTP/1.8'
+  describe "#to_f" do
+    it "should convert to a Float" do
+      one_point_one.should == 1.1
     end
   end
   
-  describe '#inspect' do
-    subject { Webbed::HTTPVersion.new('HTTP/1.8').inspect }
-    
-    it 'should concatenate the prefix, major, separator, and minor in that order' do
-      should == 'HTTP/1.8'
+  describe "#to_s" do
+    it "should concatenate the prefix, major, separator, and minor" do
+      one_point_oh.to_s.should == 'HTTP/1.0'
     end
   end
   
-  describe '#<=>' do
-    subject { Webbed::HTTPVersion.new 'HTTP/1.9' }
-    
-    it 'should equal the same HTTP-Version' do
-      should == 1.9
+  describe "#<=>" do
+    it "should equal the same version" do
+      one_point_oh.should == 1.0
     end
     
-    it 'should be less than a greater HTTP-Version' do
-      should < 2.0
+    it "should be less than a bigger version" do
+      one_point_oh.should < 2.0
     end
     
-    it 'should be greater than a lesser HTTP-Version' do
-      should > 1.1
+    it "should be greater than a smaller version" do
+      one_point_oh.should > 0.9
     end
   end
 end
