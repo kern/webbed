@@ -7,27 +7,31 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    addressable (2.2.0)
+    addressable (2.2.2)
     derickbailey-notamock (0.0.1)
       rspec (>= 1.2.9)
     diff-lcs (1.1.2)
-    rspec (2.0.0.beta.20)
-      rspec-core (= 2.0.0.beta.20)
-      rspec-expectations (= 2.0.0.beta.20)
-      rspec-mocks (= 2.0.0.beta.20)
-    rspec-core (2.0.0.beta.20)
-    rspec-expectations (2.0.0.beta.20)
-      diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0.beta.20)
-    watchr (0.7)
+    fuubar (0.0.2)
+      rspec (~> 2.0)
+      rspec-instafail (~> 0.1.4)
+      ruby-progressbar (~> 0.0.9)
+    rspec (2.1.0)
+      rspec-core (~> 2.1.0)
+      rspec-expectations (~> 2.1.0)
+      rspec-mocks (~> 2.1.0)
+    rspec-core (2.1.0)
+    rspec-expectations (2.1.0)
+      diff-lcs (~> 1.1.2)
+    rspec-instafail (0.1.4)
+    rspec-mocks (2.1.0)
+    ruby-progressbar (0.0.9)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   addressable (~> 2.2)
-  bundler (~> 1.0)
   derickbailey-notamock (~> 0.0.1)
-  rspec (= 2.0.0.beta.20)
-  watchr (~> 0.6)
+  fuubar (~> 0.0.2)
+  rspec (~> 2.0)
   webbed!

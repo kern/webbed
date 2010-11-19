@@ -111,7 +111,7 @@ module Webbed
     # 
     # @return [Fixnum] Minor HTTP-Version number
     def minor
-      (to_f - to_f.floor).to_s[2..-1].to_i
+      to_f.to_s.split('.')[1].to_i
     end
     
     ONE_POINT_ONE = HTTPVersion.new(1.1)
