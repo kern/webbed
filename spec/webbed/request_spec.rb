@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Webbed::Request do
-  subject do
+  let(:post) do
     Webbed::Request.new([
       'POST',
       'http://google.com',
@@ -15,41 +15,49 @@ describe Webbed::Request do
     ])
   end
   
-  context 'when created with a full request array' do
-    it 'should store the method' do
-      subject.method.should == Webbed::Method::POST
+  context "when created" do
+    it "should set #method" do
+      post.method.should == Webbed::Method::POST
     end
     
-    it 'should store the Request URI' do
-      subject.request_uri.to_s.should == 'http://google.com'
+    it "should set #request_uri" do
+      post.request_uri.to_s.should == 'http://google.com'
     end
     
-    it 'should store the HTTP Version' do
-      subject.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
+    it "should set #http_version" do
+      post.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
     end
     
-    it 'should store the headers' do
-      subject.headers['Content-Type'].should == 'text/plain'
-      subject.headers['Content-Length'].should == '10'
-      subject.headers['Host'].should == 'google.com'
+    it "should set #headers" do
+      post.headers['Content-Type'].should == 'text/plain'
+      post.headers['Content-Length'].should == '10'
+      post.headers['Host'].should == 'google.com'
     end
     
-    it 'should store the entity body' do
-      subject.entity_body.should == 'Test 1 2 3'
+    it "should set #entity_body" do
+      post.entity_body.should == 'Test 1 2 3'
     end
   end
   
-  context 'when the method is set' do
-    it 'should change the method' do
+  describe "#method=" do
+    it "should change #method" do
       lambda {
-        subject.method = 'GET'
-      }.should change(subject, :method).from(Webbed::Method::POST).to(Webbed::Method::GET)
+        post.method = 'GET'
+      }.should change(post, :method).from(Webbed::Method::POST).to(Webbed::Method::GET)
     end
   end
   
-  describe '#method with arguments' do
-    it 'should call super' do
-      subject.method(:__send__).should be_an_instance_of(Method)
+  describe "#method" do
+    context "when called with arguments" do
+      it "should call super" do
+        post.method(:__send__).should be_an_instance_of(Method)
+      end
+    end
+    
+    context "when called without arguments" do
+      it "should return the method" do
+        post.method.should == Webbed::Method::POST
+      end
     end
   end
 end
