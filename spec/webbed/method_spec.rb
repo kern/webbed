@@ -1,11 +1,13 @@
 require 'spec_helper'
 
 describe Webbed::Method do
+  subject { method }
+  let(:method) { Webbed::Method.new 'FAKE', options }
+  let(:options) { {} }
+  
   context 'when created without options' do
-    subject { Webbed::Method.new('FAKE') }
-    
-    it 'should store the method name' do
-      subject.name.should == 'FAKE'
+    it 'should set the method name' do
+      method.name.should == 'FAKE'
     end
     
     it { should_not be_safe }
@@ -15,76 +17,58 @@ describe Webbed::Method do
   end
   
   context 'when created as a safe method' do
-    subject { Webbed::Method.new('FAKE', :safe => true) }
-    
+    let(:options) { { :safe => true } }
     it { should be_safe }
     it { should be_idempotent }
   end
   
   context 'when created as an idempotent method' do
-    subject { Webbed::Method.new('FAKE', :idempotent => true) }
-    
+    let(:options) { { :idempotent => true } }
     it { should_not be_safe }
     it { should be_idempotent }
   end
   
   context 'when created as an unsafe method' do
-    subject { Webbed::Method.new('FAKE', :safe => false) }
-    
+    let(:options) { { :safe => false } }
     it { should_not be_safe }
     it { should_not be_idempotent }
   end
   
   context 'when created as a headers only method' do
-    subject { Webbed::Method.new('FAKE', :entities => []) }
-    
+    let(:options) { { :entities => [] } }
     it { should_not have_entity(:request) }
     it { should_not have_entity(:response) }
   end
   
   context 'when created as a response entity only method' do
-    subject { Webbed::Method.new('FAKE', :entities => [:response]) }
-    
+    let(:options) { { :entities => [:response] } }
     it { should_not have_entity(:request) }
     it { should have_entity(:response) }
   end
   
   context 'when created as a two entity method' do
-    subject { Webbed::Method.new('FAKE', :entities => [:request, :response]) }
-    
+    let(:options) { { :entities => [:request, :response] } }
     it { should have_entity(:request) }
     it { should have_entity(:response) }
   end
   
   context 'when created with a known method name' do
-    subject { Webbed::Method.new('GET') }
+    let(:method) { Webbed::Method.new('GET') }
     
     it 'should return the exact same method object each time' do
-      should equal(Webbed::Method::GET)
+      method.should equal(Webbed::Method::GET)
     end
   end
   
   describe '#==' do
-    subject { Webbed::Method::POST }
-    
     it 'should equal the method name' do
-      should == 'POST'
-    end
-    
-    it 'should equal an identical method' do
-      should == Webbed::Method::POST
+      method.should == 'FAKE'
     end
   end
   
   describe '#to_s' do
     it 'should return the name of the method' do
-      Webbed::Method::POST.to_s.should == 'POST'
-    end
-  end
-  
-  describe '#inspect' do
-    it 'should return the name of the method' do
-      Webbed::Method::POST.inspect.should == 'POST'
+      method.to_s.should == 'FAKE'
     end
   end
 end
@@ -100,7 +84,7 @@ describe Webbed::Method::OPTIONS do
 end
 
 describe Webbed::Method::GET do
-  subject { @method = Webbed::Method::GET }
+  subject { Webbed::Method::GET }
   
   its(:name) { should == 'GET' }
   it { should be_safe }

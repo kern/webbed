@@ -3,7 +3,6 @@ module Webbed
     
     attr_reader :name, :entities
     alias :to_s :name
-    alias :inspect :name
     
     DEFAULTS = {
       :safe => false,
