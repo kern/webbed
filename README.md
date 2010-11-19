@@ -3,6 +3,16 @@ Webbed
 
 Take control of HTTP.
 
+Requirements
+------------
+
+ * [Addressable](http://github.com/sporkmonger/addressable)
+
+Install
+-------
+
+ * `gem install webbed`
+
 Note on Releases
 ----------------
 
@@ -26,17 +36,6 @@ Note on Patches/Pull Requests
    have your own version, that is fine but bump version in a commit by itself in
    another branch so I can ignore when I pull)
  * Send me a pull request. Bonus points for topic branches.
-
-Requirements
-------------
-
- * [Bundler](http://github.com/carlhuda/bundler)
- * [Addressable](http://github.com/sporkmonger/addressable)
-
-Install
--------
-
- * `gem install webbed`
 
 License
 -------
