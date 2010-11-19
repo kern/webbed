@@ -6,7 +6,7 @@ describe Webbed::Method do
   let(:options) { {} }
   
   context "when created without options" do
-    it "should set the method name" do
+    it "should set #name" do
       method.name.should == 'FAKE'
     end
     
@@ -75,7 +75,6 @@ end
 
 describe Webbed::Method::OPTIONS do
   subject { Webbed::Method::OPTIONS }
-  
   its(:name) { should == 'OPTIONS' }
   it { should be_safe }
   it { should be_idempotent }
@@ -85,7 +84,6 @@ end
 
 describe Webbed::Method::GET do
   subject { Webbed::Method::GET }
-  
   its(:name) { should == 'GET' }
   it { should be_safe }
   it { should be_idempotent }
@@ -95,7 +93,6 @@ end
 
 describe Webbed::Method::HEAD do
   subject { Webbed::Method::HEAD }
-  
   its(:name) { should == 'HEAD' }
   it { should be_safe }
   it { should be_idempotent }
@@ -105,7 +102,6 @@ end
 
 describe Webbed::Method::POST do
   subject { Webbed::Method::POST }
-  
   its(:name) { should == 'POST' }
   it { should_not be_safe }
   it { should_not be_idempotent }
@@ -115,7 +111,6 @@ end
 
 describe Webbed::Method::PUT do
   subject { Webbed::Method::PUT }
-  
   its(:name) { should == 'PUT' }
   it { should_not be_safe }
   it { should be_idempotent }
@@ -125,7 +120,6 @@ end
 
 describe Webbed::Method::DELETE do
   subject { Webbed::Method::DELETE }
-  
   its(:name) { should == 'DELETE' }
   it { should_not be_safe }
   it { should be_idempotent }
@@ -135,7 +129,6 @@ end
 
 describe Webbed::Method::TRACE do
   subject { Webbed::Method::TRACE }
-  
   its(:name) { should == 'TRACE' }
   it { should be_safe }
   it { should be_idempotent }
@@ -145,7 +138,6 @@ end
 
 describe Webbed::Method::CONNECT do
   subject { Webbed::Method::CONNECT }
-  
   its(:name) { should == 'CONNECT' }
   it { should_not be_safe }
   it { should_not be_idempotent }
@@ -155,7 +147,6 @@ end
 
 describe Webbed::Method::PATCH do
   subject { Webbed::Method::PATCH }
-  
   its(:name) { should == 'PATCH' }
   it { should_not be_safe }
   it { should_not be_idempotent }

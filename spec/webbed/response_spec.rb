@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Webbed::Response do
-  subject do
+  let(:ok) do
     Webbed::Response.new([
       'HTTP/1.0',
       '200 OK',
@@ -13,83 +13,79 @@ describe Webbed::Response do
     ])
   end
   
-  context 'when created' do
-    context 'with a Reason-Phrase' do
-      it 'should store the Reason-Phrase' do
-        subject.reason_phrase.to_s.should == 'OK'
-      end
-      
-      it 'should store the Status-Code' do
-        subject.status_code.should == Webbed::StatusCode.new(200)
-      end
+  let(:not_found) do
+    Webbed::Response.new([
+      'HTTP/1.0',
+      404,
+      {
+        'Content-Type' => 'text/plain',
+        'Content-Length' => '10'
+      },
+      'Test 1 2 3'
+    ])
+  end
+  
+  context "when created with a Reason Phrase" do
+    it "should set #reason_phrase" do
+      ok.reason_phrase.to_s.should == 'OK'
     end
     
-    context 'without a Reason-Phrase' do
-      subject do
-        Webbed::Response.new([
-          'HTTP/1.0',
-          404,
-          {
-            'Content-Type' => 'text/plain',
-            'Content-Length' => '10'
-          },
-          'Test 1 2 3'
-        ])
-      end
-      
-      it 'should store the default Reason-Phrase' do
-        subject.reason_phrase.to_s.should == 'Not Found'
-      end
-      
-      it 'should store the Status-Code' do
-        subject.status_code.should == Webbed::StatusCode.new(404)
-      end
-    end
-    
-    it 'should store the HTTP Version' do
-      subject.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
-    end
-    
-    it 'should store the headers' do
-      subject.headers['Content-Type'].should == 'text/plain'
-      subject.headers['Content-Length'].should == '10'
-    end
-    
-    it 'should store the entity body' do
-      subject.entity_body.should == 'Test 1 2 3'
+    it "should set #status_code" do
+      ok.status_code.should == 200
     end
   end
   
-  context 'when the status code is set' do
-    it 'should change the status code' do
-      lambda {
-        subject.status_code = 500
-      }.should change(subject, :status_code).from(200).to(500)
+  context "when created without a Reason Phrase" do
+    it "should set the #reason_phrase to the default" do
+      not_found.reason_phrase.to_s.should == 'Not Found'
     end
     
-    it 'should change the default reason phrase' do
-      lambda {
-        subject.status_code = 100
-      }.should change(subject, :default_reason_phrase).from('OK').to('Continue')
+    it "should set #status_code" do
+      not_found.status_code.should == 404
+    end
+  end
+  
+  context "when created" do
+    it "should set #http_version" do
+      ok.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
     end
     
-    context 'when an override reason phrase is set' do
-      it 'should have the same reason phrase' do
+    it "should set #headers" do
+      ok.headers['Content-Type'].should == 'text/plain'
+      ok.headers['Content-Length'].should == '10'
+    end
+    
+    it "should set #entity_body" do
+      ok.entity_body.should == 'Test 1 2 3'
+    end
+  end
+  
+  describe "#status_code=" do
+    it "should change #status_code" do
+      lambda {
+        ok.status_code = 500
+      }.should change(ok, :status_code).from(200).to(500)
+    end
+    
+    it "should change #default_reason_phrase" do
+      lambda {
+        ok.status_code = 100
+      }.should change(ok, :default_reason_phrase).from('OK').to('Continue')
+    end
+    
+    context "when #reason_phrase is set" do
+      it "should have the same #reason_phrase" do
         lambda {
-          subject.status_code = 500
-        }.should_not change(subject, :reason_phrase)
+          ok.status_code = 500
+        }.should_not change(ok, :reason_phrase)
       end
     end
     
-    context 'when no override reason phrase is set' do
-      before do
-        subject.reason_phrase = nil
-      end
-      
-      it 'should also change the default reason phrase' do
+    context "when no #reason_phrase is set" do
+      it "should change #reason_phrase" do
         lambda {
-          subject.status_code = 100
-        }.should change(subject, :reason_phrase).from('OK').to('Continue')
+          not_found.status_code = 100
+        }.should change(not_found, :reason_phrase).from('Not Found').to('Continue')
       end
     end
   end

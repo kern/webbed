@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 shared_examples_for 'HTTP/1.1' do
-  it "should set the major number" do
+  it "should set #major" do
     one_point_one.major.should == 1
   end
   
-  it "should set the minor number" do
+  it "should set #minor" do
     one_point_one.minor.should == 1
   end
 end
