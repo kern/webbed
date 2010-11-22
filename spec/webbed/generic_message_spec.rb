@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Webbed::GenericMessage do
+  subject { message }
   let(:message) do
     klass = Class.new
     klass.instance_eval { include Webbed::GenericMessage }
@@ -8,7 +9,6 @@ describe Webbed::GenericMessage do
   end
   
   context "when created" do
-    subject { message }
     its(:headers) { should be_nil }
     its(:entity_body) { should be_nil }
   end

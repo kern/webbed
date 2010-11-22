@@ -6,7 +6,7 @@ module Webbed
     PARAMETERS_REGEX = /=|\s*;\s*/
     
     def initialize(media_type)
-      self.mime_type, *parameters = media_type.split(/=|\s*;\s*/)
+      self.mime_type, *parameters = media_type.split(PARAMETERS_REGEX)
       self.parameters = Hash[*parameters] || {}
     end
     
