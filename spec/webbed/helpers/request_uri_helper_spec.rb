@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Webbed::Helpers::RequestUriHelper do
+describe Webbed::Helpers::RequestURIHelper do
   let(:request) { Webbed::Request.new ['GET', '/foo', 'HTTP/1.1', {'Host' => 'example.com'}, ''] }
   let(:request_without_host) { Webbed::Request.new ['GET', '/foo', 'HTTP/1.1', {}, ''] }
   let(:proxied_request) { Webbed::Request.new ['GET', 'http://example2.com/foo', 'HTTP/1.1', {'Host' => 'example.com'}, ''] }

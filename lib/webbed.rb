@@ -11,6 +11,6 @@ module Webbed
   module Helpers
     autoload :MethodHelper, 'webbed/helpers/method_helper'
     autoload :RackResponseHelper, 'webbed/helpers/rack_response_helper'
-    autoload :RequestUriHelper, 'webbed/helpers/request_uri_helper'
+    autoload :RequestURIHelper, 'webbed/helpers/request_uri_helper'
   end
 end

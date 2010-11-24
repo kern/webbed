@@ -34,7 +34,7 @@ module Webbed
     
     # Helpers
     include Helpers::MethodHelper
-    include Helpers::RequestUriHelper
+    include Helpers::RequestURIHelper
     
   end
 end
