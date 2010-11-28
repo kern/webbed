@@ -1,74 +1,82 @@
 require 'spec_helper'
 
 describe Webbed::Method do
-  subject { method }
-  let(:method) { Webbed::Method.new 'FAKE', options }
-  let(:options) { {} }
+  before do
+    @get = Webbed::Method.new 'GET'
+    
+    @default    = Webbed::Method.new 'FAKE'
+    @safe       = Webbed::Method.new 'FAKE', :safe => true
+    @idempotent = Webbed::Method.new 'FAKE', :idempotent => true
+    @unsafe     = Webbed::Method.new 'FAKE', :safe => false
+    
+    @headers_only = Webbed::Method.new 'FAKE', :entities => []
+    @response_only = Webbed::Method.new 'FAKE', :entities => [:response]
+    @two_entities = Webbed::Method.new 'FAKE', :entities => [:request, :response]
+  end
   
   context "when created without options" do
-    it "should set #name" do
-      method.name.should == 'FAKE'
-    end
-    
+    subject { @default }
     it { should_not be_safe }
     it { should_not be_idempotent }
     it { should have_entity(:request) }
     it { should have_entity(:response) }
+    
+    it "should set #name" do
+      @default.name.should == 'FAKE'
+    end
   end
   
   context "when created as a safe method" do
-    let(:options) { { :safe => true } }
+    subject { @safe }
     it { should be_safe }
     it { should be_idempotent }
   end
   
   context "when created as an idempotent method" do
-    let(:options) { { :idempotent => true } }
+    subject { @idempotent }
     it { should_not be_safe }
     it { should be_idempotent }
   end
   
   context "when created as an unsafe method" do
-    let(:options) { { :safe => false } }
+    subject { @unsafe }
     it { should_not be_safe }
     it { should_not be_idempotent }
   end
   
   context "when created as a headers only method" do
-    let(:options) { { :entities => [] } }
+    subject { @headers_only }
     it { should_not have_entity(:request) }
     it { should_not have_entity(:response) }
   end
   
   context "when created as a response entity only method" do
-    let(:options) { { :entities => [:response] } }
+    subject { @response_only }
     it { should_not have_entity(:request) }
     it { should have_entity(:response) }
   end
   
   context "when created as a two entity method" do
-    let(:options) { { :entities => [:request, :response] } }
+    subject { @two_entities }
     it { should have_entity(:request) }
     it { should have_entity(:response) }
   end
   
   context "when created with a known method name" do
-    let(:method) { Webbed::Method.new('GET') }
-    
     it "should return the exact same method object each time" do
-      method.should equal(Webbed::Method::GET)
+      @get.should equal(Webbed::Method::GET)
     end
   end
   
   describe "#==" do
     it "should equal the method name" do
-      method.should == 'FAKE'
+      @get.should == 'GET'
     end
   end
   
   describe "#to_s" do
     it "should return the name of the method" do
-      method.to_s.should == 'FAKE'
+      @get.to_s.should == 'GET'
     end
   end
 end
