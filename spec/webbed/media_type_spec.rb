@@ -2,9 +2,11 @@ require 'spec_helper'
 
 describe Webbed::MediaType do
   before do
-    @no_params    = Webbed::MediaType.new 'text/html'
-    @media_type   = Webbed::MediaType.new 'text/html; foo=bar; lol=rofl; test=test'
-    @weird_spaces = Webbed::MediaType.new 'text/html;   foo=bar ; lol=rofl'
+    @no_params       = Webbed::MediaType.new 'text/html'
+    @media_type      = Webbed::MediaType.new 'text/html; foo=bar; lol=rofl'
+    @weird_spaces    = Webbed::MediaType.new 'text/html;   foo=bar ; lol=rofl'
+    @vendor_specific = Webbed::MediaType.new 'application/vnd.lol+xml'
+    @suffixed        = Webbed::MediaType.new 'application/atom+xml'
   end
   
   context "when created with just a MIME type" do
@@ -40,7 +42,6 @@ describe Webbed::MediaType do
     it "should set #parameters" do
       @media_type.parameters['foo'].should == 'bar'
       @media_type.parameters['lol'].should == 'rofl'
-      @media_type.parameters['test'].should == 'test'
     end
   end
   
@@ -54,108 +55,107 @@ describe Webbed::MediaType do
   describe "#mime_type" do
     it "should change #type" do
       lambda {
-        media_type.mime_type = 'application/json'
-      }.should change(media_type, :type).from('text').to('application')
+        @media_type.mime_type = 'application/json'
+      }.should change(@media_type, :type).from('text').to('application')
     end
     
     it "should store the subtype" do
       lambda {
-        media_type.mime_type = 'application/json'
-      }.should change(media_type, :subtype).from('html').to('json')
+        @media_type.mime_type = 'application/json'
+      }.should change(@media_type, :subtype).from('html').to('json')
     end
     
     it "should store the original MIME type" do
       lambda {
-        media_type.mime_type = 'application/json'
-      }.should change(media_type, :mime_type).from('text/html').to('application/json')
+        @media_type.mime_type = 'application/json'
+      }.should change(@media_type, :mime_type).from('text/html').to('application/json')
     end
   end
   
   describe "#set=" do
     it "should change #type" do
       lambda {
-        media_type.type = 'image'
-      }.should change(media_type, :type).from('text').to('image')
+        @media_type.type = 'image'
+      }.should change(@media_type, :type).from('text').to('image')
     end
     
     it "should change #mime_type" do
       lambda {
-        media_type.type = 'image'
-      }.should change(media_type, :mime_type).from('text/html').to('image/html')
+        @media_type.type = 'image'
+      }.should change(@media_type, :mime_type).from('text/html').to('image/html')
     end
   end
   
   describe "#subtype=" do
     it "should change #subtype" do
       lambda {
-        media_type.subtype = 'json'
-      }.should change(media_type, :subtype).from('html').to('json')
+        @media_type.subtype = 'json'
+      }.should change(@media_type, :subtype).from('html').to('json')
     end
     
     it "should change #mime_type" do
       lambda {
-        media_type.subtype = 'json'
-      }.should change(media_type, :mime_type).from('text/html').to('text/json')
+        @media_type.subtype = 'json'
+      }.should change(@media_type, :mime_type).from('text/html').to('text/json')
     end
   end
   
   describe "#parameters=" do
     it "should change the parameters" do
       lambda {
-        media_type.parameters = {'test' => 'lol'}
-      }.should change(media_type, :parameters).to('test' => 'lol')
+        @media_type.parameters = {'test' => 'lol'}
+      }.should change(@media_type, :parameters).to('test' => 'lol')
     end
   end
   
   describe "#to_s" do
     context "when there is only a MIME type" do
       it "should be #mime_type" do
-        no_params.to_s.should == 'text/html'
+        @no_params.to_s.should == 'text/html'
       end
     end
     
     context "when there are parameters" do
       it "should be the concatenation of the MIME type and all parameters" do
-        media_type.to_s.should == 'text/html; foo=bar; lol=rofl; test=test'
+        @media_type.to_s.should == 'text/html; foo=bar; lol=rofl'
       end
     end
   end
   
   describe "#vendor_specific?" do
     context "when #subtype starts with vnd." do
-      let(:media_type) { Webbed::MediaType.new 'application/vnd.lol+xml' }
+      subject { @vendor_specific }
       it { should be_vendor_specific }
     end
     
     context "when #subtype does not start with a vnd." do
+      subject { @media_type }
       it { should_not be_vendor_specific }
     end
   end
   
   describe "#suffix" do
     context "when #mime_type has a suffix" do
-      let(:media_type) { Webbed::MediaType.new 'application/atom+xml' }
-      
       it "should be set" do
-        media_type.suffix.should == 'xml'
+        @suffixed.suffix.should == 'xml'
       end
       
       it "should be interpretable as #mime_type" do
-        media_type.interpretable_as.should include('application/atom+xml')
+        @suffixed.interpretable_as.should include('application/atom+xml')
       end
       
       it "should be able interpretable the suffix MIME type" do
-        media_type.interpretable_as.should include('application/xml')
+        @suffixed.interpretable_as.should include('application/xml')
       end
     end
     
     context "when the MIME type does not have a suffix" do
       it "should not be set" do
-        media_type.suffix.should be_nil
+        @media_type.suffix.should be_nil
       end
       
       it "should only be able to be interpretable as the #mime_type" do
-        media_type.interpretable_as.should == ['text/html']
+        @media_type.interpretable_as.should == ['text/html']
       end
     end
   end
