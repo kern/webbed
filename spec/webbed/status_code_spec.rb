@@ -2,15 +2,16 @@ require 'spec_helper'
 
 shared_examples_for '200 OK Status Code' do
   it "should set #status_code" do
-    ok.status_code.should == 200
+    subject.status_code.should == 200
   end
   
   it "should set #default_reason_phrase" do
-    ok.default_reason_phrase.should == 'OK'
+    subject.default_reason_phrase.should == 'OK'
   end
 end
 
 describe Webbed::StatusCode do
+  subject { ok }
   let(:continue) { Webbed::StatusCode.new 100 }
   let(:ok) { Webbed::StatusCode.new 200 }
   let(:multiple_choices) { Webbed::StatusCode.new 300 }
@@ -45,7 +46,6 @@ describe Webbed::StatusCode do
   end
   
   context "when it is a success status code" do
-    subject { ok }
     it { should_not be_informational }
     it { should be_a_success }
     it { should_not be_a_redirection }
