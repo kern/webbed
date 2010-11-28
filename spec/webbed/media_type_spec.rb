@@ -1,54 +1,53 @@
 require 'spec_helper'
 
 describe Webbed::MediaType do
-  subject { media_type }
-  let(:no_params) { Webbed::MediaType.new 'text/html' }
-  let(:media_type) { Webbed::MediaType.new 'text/html; foo=bar; lol=rofl; test=test' }
+  before do
+    @no_params    = Webbed::MediaType.new 'text/html'
+    @media_type   = Webbed::MediaType.new 'text/html; foo=bar; lol=rofl; test=test'
+    @weird_spaces = Webbed::MediaType.new 'text/html;   foo=bar ; lol=rofl'
+  end
   
   context "when created with just a MIME type" do
-    let(:media_type) { Webbed::MediaType.new 'application/json' }
+    subject { @no_params }
+    its(:parameters) { should be_empty }
     
     it "should set #type" do
-      media_type.type.should == 'application'
+      @no_params.type.should == 'text'
     end
     
     it "should set #subtype" do
-      media_type.subtype.should == 'json'
+      @no_params.subtype.should == 'html'
     end
     
     it "should set #mime_type" do
-      media_type.mime_type.should == 'application/json'
+      @no_params.mime_type.should == 'text/html'
     end
-    
-    its(:parameters) { should be_empty }
   end
   
   context "when created with both a MIME type and parameters" do
     it "should set #type" do
-      media_type.type.should == 'text'
+      @media_type.type.should == 'text'
     end
     
     it "should set #subtype" do
-      media_type.subtype.should == 'html'
+      @media_type.subtype.should == 'html'
     end
     
     it "should set #mime_type" do
-      media_type.mime_type.should == 'text/html'
+      @media_type.mime_type.should == 'text/html'
     end
     
     it "should set #parameters" do
-      media_type.parameters['foo'].should == 'bar'
-      media_type.parameters['lol'].should == 'rofl'
-      media_type.parameters['test'].should == 'test'
+      @media_type.parameters['foo'].should == 'bar'
+      @media_type.parameters['lol'].should == 'rofl'
+      @media_type.parameters['test'].should == 'test'
     end
   end
   
-  context "when created with parameters that have random spaces" do
-    let(:media_type) { Webbed::MediaType.new 'text/html;   foo=bar ; lol=rofl' }
-    
+  context "when created with parameters that have random weird spaces" do
     it "should set #parameters to the trimmed parameters" do
-      media_type.parameters['foo'].should == 'bar'
-      media_type.parameters['lol'].should == 'rofl'
+      @weird_spaces.parameters['foo'].should == 'bar'
+      @weird_spaces.parameters['lol'].should == 'rofl'
     end
   end
   
