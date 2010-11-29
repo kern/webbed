@@ -5,19 +5,18 @@ module Webbed
     attr_writer :reason_phrase
     STATUS_CODE_REGEX = /^(\d{3}) (.*)$/
     
-    def initialize(response_array)
-      self.http_version = response_array[0]
+    def initialize(response_array, options = {})
+      self.http_version = options.delete(:http_version) || Webbed::HTTPVersion::ONE_POINT_ONE
       
-      if response_array[1].respond_to?(:match)
-        match = response_array[1].match STATUS_CODE_REGEX
-        self.status_code = match[1]
-        self.reason_phrase = match[2]
+      if STATUS_CODE_REGEX =~ response_array[0].to_s
+        self.status_code = $1
+        self.reason_phrase = $2
       else
-        self.status_code = response_array[1]
+        self.status_code = response_array[0]
       end
       
-      self.headers = response_array[2]
-      self.entity_body = response_array[3]
+      self.headers = response_array[1]
+      self.entity_body = response_array[2]
     end
     
     def reason_phrase

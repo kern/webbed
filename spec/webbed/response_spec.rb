@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Webbed::Response do
   before do
     @ok = Webbed::Response.new([
-      'HTTP/1.0',
       '200 OK',
       {
         'Content-Type' => 'text/plain',
@@ -13,14 +12,13 @@ describe Webbed::Response do
     ])
     
     @not_found = Webbed::Response.new([
-      'HTTP/1.0',
       404,
       {
         'Content-Type' => 'text/plain',
         'Content-Length' => '10'
       },
       'Test 1 2 3'
-    ])
+    ], :http_version => 1.0)
   end
   
   context "when created with a Reason Phrase" do
@@ -43,11 +41,18 @@ describe Webbed::Response do
     end
   end
   
-  context "when created" do
-    it "should set #http_version" do
-      @ok.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
+  context "when created without an #http_version" do
+    subject { @ok }
+    its(:http_version) { should == Webbed::HTTPVersion::ONE_POINT_ONE }
+  end
+  
+  context "when created with an #http_version" do
+    it 'should set the #http_version' do
+      @not_found.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
     end
-    
+  end
+  
+  context "when created" do
     it "should set #headers" do
       @ok.headers['Content-Type'].should == 'text/plain'
       @ok.headers['Content-Length'].should == '10'

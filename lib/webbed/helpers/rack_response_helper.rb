@@ -4,7 +4,10 @@ module Webbed
       def to_rack
         [status_code, headers, entity_body]
       end
-      alias :to_a :to_rack
+      
+      def to_a
+        ["#{status_code} #{reason_phrase}", headers, entity_body]
+      end
     end
   end
 end
