@@ -21,6 +21,8 @@ module Webbed
           request_uri
         end
       end
+      
+      alias :url :uri
     end
   end
 end

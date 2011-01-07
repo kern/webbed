@@ -3,14 +3,14 @@ require 'spec_helper'
 describe Webbed::Helpers::MethodHelper do
   before do
     @options = Webbed::Request.new ['OPTIONS', '*', 'HTTP/1.1', {}, '']
-    @get = Webbed::Request.new ['GET', '*', 'HTTP/1.1', {}, '']
-    @head = Webbed::Request.new ['HEAD', '*', 'HTTP/1.1', {}, '']
-    @post = Webbed::Request.new ['POST', '*', 'HTTP/1.1', {}, '']
-    @put = Webbed::Request.new ['PUT', '*', 'HTTP/1.1', {}, '']
-    @delete = Webbed::Request.new ['DELETE', '*', 'HTTP/1.1', {}, '']
-    @trace = Webbed::Request.new ['TRACE', '*', 'HTTP/1.1', {}, '']
+    @get     = Webbed::Request.new ['GET', '*', 'HTTP/1.1', {}, '']
+    @head    = Webbed::Request.new ['HEAD', '*', 'HTTP/1.1', {}, '']
+    @post    = Webbed::Request.new ['POST', '*', 'HTTP/1.1', {}, '']
+    @put     = Webbed::Request.new ['PUT', '*', 'HTTP/1.1', {}, '']
+    @delete  = Webbed::Request.new ['DELETE', '*', 'HTTP/1.1', {}, '']
+    @trace   = Webbed::Request.new ['TRACE', '*', 'HTTP/1.1', {}, '']
     @connect = Webbed::Request.new ['CONNECT', '*', 'HTTP/1.1', {}, '']
-    @patch = Webbed::Request.new ['PATCH', '*', 'HTTP/1.1', {}, '']
+    @patch   = Webbed::Request.new ['PATCH', '*', 'HTTP/1.1', {}, '']
   end
   
   context "when the request uses a safe method" do
