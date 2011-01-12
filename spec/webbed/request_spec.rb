@@ -22,7 +22,7 @@ describe Webbed::Request do
         'Host' => 'google.com'
       },
       'Test 1 2 3'
-    ], :http_version => 1.0)
+    ], :http_version => 1.0, :scheme => 'https')
   end
   
   context "when created" do
@@ -54,6 +54,18 @@ describe Webbed::Request do
   context "when created with an #http_version" do
     it "should set #http_version" do
       @one_point_oh.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
+    end
+  end
+  
+  context "when created without a #scheme" do
+    it "should set #scheme to http" do
+      @request.scheme.should == 'http'
+    end
+  end
+  
+  context "when created with a #scheme" do
+    it "should set #scheme" do
+      @one_point_oh.scheme == 'https'
     end
   end
   

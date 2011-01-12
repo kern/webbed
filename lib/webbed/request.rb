@@ -4,6 +4,7 @@ module Webbed
   class Request
     include GenericMessage
     attr_reader :request_uri
+    attr_accessor :scheme
     
     def initialize(request_array, options = {})
       self.method       = request_array[0]
@@ -11,6 +12,7 @@ module Webbed
       self.headers      = request_array[2]
       self.entity_body  = request_array[3]
       self.http_version = options.delete(:http_version) || 1.1
+      self.scheme       = options.delete(:scheme) || 'http'
     end
     
     def method(*args)
@@ -36,5 +38,6 @@ module Webbed
     include Helpers::MethodHelper
     include Helpers::RequestURIHelper
     include Helpers::RackRequestHelper
+    include Helpers::SchemeHelper
   end
 end

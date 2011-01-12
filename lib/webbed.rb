@@ -13,5 +13,6 @@ module Webbed
     autoload :RackRequestHelper,  'webbed/helpers/rack_request_helper'
     autoload :RackResponseHelper, 'webbed/helpers/rack_response_helper'
     autoload :RequestURIHelper,   'webbed/helpers/request_uri_helper'
+    autoload :SchemeHelper,       'webbed/helpers/scheme_helper'
   end
 end
