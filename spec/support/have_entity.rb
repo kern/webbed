@@ -1,5 +1,4 @@
-# This matcher passes if the Webbed::Method supplied is allowed to have a
-# specific entity.
+# Passes if the Webbed::Method supplied is allowed to have a specific entity.
 RSpec::Matchers.define :have_entity do |entity|
   match do |method|
     method.entities.include? entity

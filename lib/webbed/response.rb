@@ -6,7 +6,7 @@ module Webbed
     STATUS_CODE_REGEX = /^(\d{3}) (.*)$/
     
     def initialize(response_array, options = {})
-      self.http_version = options.delete(:http_version) || Webbed::HTTPVersion::ONE_POINT_ONE
+      self.http_version = options.delete(:http_version) || 1.1
       
       if STATUS_CODE_REGEX =~ response_array[0].to_s
         self.status_code = $1
@@ -35,9 +35,9 @@ module Webbed
       "#{http_version} #{status_code} #{reason_phrase}\r\n"
     end
     alias :start_line :status_line
-    
-    # Helpers
+  end
+  
+  Response.class_eval do
     include Helpers::RackResponseHelper
-    
   end
 end

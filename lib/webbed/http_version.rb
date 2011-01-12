@@ -2,8 +2,8 @@ module Webbed
   # Webbed supports both primary versions of HTTP, HTTP/1.0 and HTTP/1.1.
   # Although the use of HTTP/1.1 has been strongly encouraged since its creation
   # in 1999, it remains relatively common for older command line tools (such as
-  # wget) and some search engines. Webbed can also be extended in the future
-  # to support new versions of HTTP, should one ever come into existence.
+  # wget) and some search engines. Webbed can also be extended in the future to
+  # support new versions of HTTP, should one ever come into existence.
   # 
   # {Webbed::HTTPVersion} is a small abstraction on top of the HTTP-Version as
   # defined in RFC 2616. According to the RFC, its simple format is:
@@ -21,7 +21,6 @@ module Webbed
   # 
   # @author Alexander Kern
   class HTTPVersion
-    
     include Comparable
     REGEX = /^HTTP\/(\d+\.\d+)$/
     
@@ -37,8 +36,8 @@ module Webbed
     # @param [#match, #to_f] http_version The HTTP-Version to create
     # @return [Webbed::HTTPVersion] The new HTTPVersion
     def initialize(http_version)
-      if http_version.respond_to? :match
-        @http_version = http_version.match(REGEX)[1].to_f
+      if REGEX =~ http_version.to_s
+        @http_version = $1.to_f
       else
         @http_version = http_version.to_f
       end
@@ -113,7 +112,10 @@ module Webbed
       to_f.to_s.split('.')[1].to_i
     end
     
+    # HTTP/1.1
     ONE_POINT_ONE = HTTPVersion.new(1.1)
+    
+    # HTTP/1.0
     ONE_POINT_OH = HTTPVersion.new(1.0)
   end
 end

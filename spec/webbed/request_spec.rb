@@ -5,7 +5,6 @@ describe Webbed::Request do
     @request = Webbed::Request.new([
       'POST',
       'http://google.com',
-      'HTTP/1.0',
       {
         'Content-Type' => 'text/plain',
         'Content-Length' => '10',
@@ -13,6 +12,17 @@ describe Webbed::Request do
       },
       'Test 1 2 3'
     ])
+    
+    @one_point_oh = Webbed::Request.new([
+      'POST',
+      'http://google.com',
+      {
+        'Content-Type' => 'text/plain',
+        'Content-Length' => '10',
+        'Host' => 'google.com'
+      },
+      'Test 1 2 3'
+    ], :http_version => 1.0)
   end
   
   context "when created" do
@@ -24,10 +34,6 @@ describe Webbed::Request do
       @request.request_uri.to_s.should == 'http://google.com'
     end
     
-    it "should set #http_version" do
-      @request.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
-    end
-    
     it "should set #headers" do
       @request.headers['Content-Type'].should == 'text/plain'
       @request.headers['Content-Length'].should == '10'
@@ -36,6 +42,18 @@ describe Webbed::Request do
     
     it "should set #entity_body" do
       @request.entity_body.should == 'Test 1 2 3'
+    end
+  end
+  
+  context "when created without an #http_version" do
+    it "should set #http_version to HTTP/1.1" do
+      @request.http_version.should == Webbed::HTTPVersion::ONE_POINT_ONE
+    end
+  end
+  
+  context "when created with an #http_version" do
+    it "should set #http_version" do
+      @one_point_oh.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
     end
   end
   

@@ -1,6 +1,5 @@
 module Webbed
   class Method
-    
     attr_reader :name, :entities
     alias :to_s :name
     
@@ -10,6 +9,18 @@ module Webbed
       :entities => [:request, :response]
     }
     
+    # Creates a new Method unless the Method has been cached.
+    # 
+    # The standard HTTP methods that are in RFC 2616 as well as the new method
+    # PATCH are all cached.
+    # 
+    # @example
+    #   Webbed::Method.new('FAKE') # => New Method called FAKE
+    #   Webbed::Method.new('GET') # => Webbed::Method::GET
+    # 
+    # @param [String] http_version The Method to create
+    # @param [Hash] options Options to pass to #initialize
+    # @return [Webbed::Method] The new or cached Method
     def self.new(name, options = {})
       if const_defined? name
         const_get(name)
@@ -23,7 +34,7 @@ module Webbed
       @name = name
       @safe = options[:safe]
       @idempotent = options[:safe] || options[:idempotent]
-      @entities = options[:entities] || [:request, :response]
+      @entities = options[:entities]
     end
     
     def safe?
@@ -35,7 +46,7 @@ module Webbed
     end
     
     def ==(other_method)
-      name == other_method.to_s
+      to_s == other_method.to_s
     end
     
     # Common methods used and their settings. Most are defined in RFC 2616 with

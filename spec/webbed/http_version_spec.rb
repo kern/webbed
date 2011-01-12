@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-shared_examples_for 'HTTP/1.1' do
+shared_examples_for "HTTP/1.1" do
   it "should set #major" do
     subject.major.should == 1
   end
