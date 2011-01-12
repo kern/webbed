@@ -2,7 +2,6 @@ require 'addressable/uri'
 
 module Webbed
   class Request
-    
     include GenericMessage
     attr_reader :request_uri
     
@@ -31,10 +30,11 @@ module Webbed
       "#{method} #{request_uri} #{http_version}\r\n"
     end
     alias :start_line :request_line
-    
-    # Helpers
+  end
+  
+  Request.class_eval do
     include Helpers::MethodHelper
     include Helpers::RequestURIHelper
-    
+    include Helpers::RackRequestHelper
   end
 end

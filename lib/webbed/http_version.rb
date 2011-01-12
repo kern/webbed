@@ -21,7 +21,6 @@ module Webbed
   # 
   # @author Alexander Kern
   class HTTPVersion
-    
     include Comparable
     REGEX = /^HTTP\/(\d+\.\d+)$/
     

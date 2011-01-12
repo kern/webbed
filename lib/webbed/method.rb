@@ -1,6 +1,5 @@
 module Webbed
   class Method
-    
     attr_reader :name, :entities
     alias :to_s :name
     
@@ -47,7 +46,7 @@ module Webbed
     end
     
     def ==(other_method)
-      name == other_method.to_s
+      to_s == other_method.to_s
     end
     
     # Common methods used and their settings. Most are defined in RFC 2616 with

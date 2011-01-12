@@ -1,6 +1,5 @@
 module Webbed
   class MediaType
-    
     attr_accessor :type, :subtype, :parameters
     MIME_TYPE_REGEX = /^([-\w.+]+)\/([-\w.+]*)$/
     PARAMETERS_REGEX = /=|\s*;\s*/

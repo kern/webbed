@@ -1,6 +1,5 @@
 module Webbed
   module GenericMessage
-    
     attr_reader :headers, :http_version
     attr_accessor :entity_body
     
