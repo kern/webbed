@@ -1,14 +1,14 @@
 require 'test_helper'
 
 class StatusCodeTest < MiniTest::Unit::TestCase
-  def test_create_with_string
+  def test_initialize_with_string
     status_code = Webbed::StatusCode.new('200')
     assert_equal 200, status_code.to_i
     assert_equal '200', status_code.to_s
     assert_equal 'OK', status_code.default_reason_phrase
   end
   
-  def test_create_with_fixnum
+  def test_initialize_with_fixnum
     status_code = Webbed::StatusCode.new(200)
     assert_equal 200, status_code.to_i
     assert_equal '200', status_code.to_s

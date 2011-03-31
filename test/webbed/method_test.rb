@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MethodTest < MiniTest::Unit::TestCase
-  def test_create_without_options
+  def test_initialize_without_options
     fake = Webbed::Method.new('FAKE')
     
     assert_equal 'FAKE', fake.to_s
@@ -11,37 +11,37 @@ class MethodTest < MiniTest::Unit::TestCase
     assert_includes fake.allowable_entities, :response
   end
   
-  def test_create_safe
+  def test_initialize_safe
     fake = Webbed::Method.new('FAKE', :safe => true)
     assert fake.safe?
     assert fake.idempotent?
   end
   
-  def test_create_idempotent
+  def test_initialize_idempotent
     fake = Webbed::Method.new('FAKE', :idempotent => true)
     refute fake.safe?
     assert fake.idempotent?
   end
   
-  def test_create_unsafe
+  def test_initialize_unsafe
     fake = Webbed::Method.new('FAKE', :safe => false)
     refute fake.safe?
     refute fake.idempotent?
   end
   
-  def test_create_headers_only
+  def test_initialize_headers_only
     fake = Webbed::Method.new('FAKE', :allowable_entities => [])
     refute_includes fake.allowable_entities, :request
     refute_includes fake.allowable_entities, :response
   end
   
-  def test_create_response_entity_only
+  def test_initialize_response_entity_only
     fake = Webbed::Method.new('FAKE', :allowable_entities => [:response])
     refute_includes fake.allowable_entities, :request
     assert_includes fake.allowable_entities, :response
   end
   
-  def test_create_two_entity
+  def test_initialize_two_entity
     fake = Webbed::Method.new('FAKE', :allowable_entities => [:request, :response])
     assert_includes fake.allowable_entities, :request
     assert_includes fake.allowable_entities, :response

@@ -8,7 +8,7 @@ class GenericMessageTest < MiniTest::Unit::TestCase
   end
   
   def test_initialize
-    assert_equal 1.1, @message.http_version
+    assert_nil @message.http_version
     assert_nil @message.headers
     assert_nil @message.entity_body
   end

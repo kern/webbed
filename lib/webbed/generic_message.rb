@@ -1,14 +1,10 @@
 module Webbed
   module GenericMessage
-    attr_reader :headers
+    attr_reader :headers, :http_version
     attr_accessor :entity_body
     
     def headers=(headers)
       @headers = Webbed::Headers.new(headers)
-    end
-    
-    def http_version
-      @http_version ||= Webbed::HTTPVersion::ONE_POINT_ONE
     end
     
     def http_version=(http_version)

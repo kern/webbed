@@ -5,12 +5,12 @@ require 'test_helper'
 # all the necessary tests to make sure it works correctly when it changes. But
 # yeah, very low priority at the moment.
 class HeadersTest < MiniTest::Unit::TestCase
-  def test_create_without_headers
+  def test_initialize_without_headers
     headers = Webbed::Headers.new
     assert headers.empty?
   end
   
-  def test_create_with_headers
+  def test_initialize_with_headers
     headers = Webbed::Headers.new({ 'Host' => 'foo.com' })
     
     refute headers.empty?
