@@ -1,8 +1,7 @@
 module Webbed
   class StatusCode
     include Comparable
-    attr_reader :status_code, :default_reason_phrase
-    alias :to_i :status_code
+    attr_reader :default_reason_phrase
     
     CACHED = {}
     UNKNOWN_REASON_PHRASE = 'Unknown Status Code'
@@ -49,50 +48,54 @@ module Webbed
       505 => 'HTTP Version not supported'
     }
     
-    def self.new(status_code)
-      CACHED[status_code] ||= super(status_code)
+    def self.new(value)
+      value = value.to_i
+      CACHED[value] ||= super(value)
     end
     
-    def initialize(status_code)
-      status_code = status_code.to_i
-      @status_code = status_code
-      @default_reason_phrase = REASON_PHRASES[status_code] || UNKNOWN_REASON_PHRASE
+    def initialize(value)
+      @value = value
+      @default_reason_phrase = REASON_PHRASES[@value] || UNKNOWN_REASON_PHRASE
     end
     
     def <=>(other_status_code)
-      status_code <=> other_status_code.to_i
+      @value <=> other_status_code.to_i
+    end
+    
+    def to_i
+      @value
     end
     
     def to_s
-      status_code.to_s
+      @value.to_s
     end
     
     def informational?
-      (100...200).include? status_code
+      (100...200).include?(@value)
     end
     
-    def success?
-      (200...300).include? status_code
+    def successful?
+      (200...300).include?(@value)
     end
     
     def redirection?
-      (300...400).include? status_code
+      (300...400).include?(@value)
     end
     
     def client_error?
-      (400...500).include? status_code
+      (400...500).include?(@value)
     end
     
     def server_error?
-      (500...600).include? status_code
+      (500...600).include?(@value)
     end
     
     def unknown?
-      !(100...600).include? status_code
+      !(100...600).include?(@value)
     end
     
     def error?
-      (400...600).include? status_code
+      (400...600).include?(@value)
     end
   end
 end

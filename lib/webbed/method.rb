@@ -1,12 +1,11 @@
 module Webbed
   class Method
-    attr_reader :name, :entities
-    alias :to_s :name
+    attr_reader :allowable_entities
     
     DEFAULTS = {
       :safe => false,
       :idempotent => false,
-      :entities => [:request, :response]
+      :allowable_entities => [:request, :response]
     }
     
     # Creates a new Method unless the Method has been cached.
@@ -21,20 +20,20 @@ module Webbed
     # @param [String] http_version The Method to create
     # @param [Hash] options Options to pass to #initialize
     # @return [Webbed::Method] The new or cached Method
-    def self.new(name, options = {})
-      if const_defined? name
-        const_get(name)
+    def self.new(value, options = {})
+      if const_defined?(value)
+        const_get(value)
       else
-        super(name, options)
+        super(value, options)
       end
     end
     
-    def initialize(name, options = {})
-      options = DEFAULTS.merge options
-      @name = name
+    def initialize(value, options = {})
+      options = DEFAULTS.merge(options)
+      @value = value
       @safe = options[:safe]
       @idempotent = options[:safe] || options[:idempotent]
-      @entities = options[:entities]
+      @allowable_entities = options[:allowable_entities]
     end
     
     def safe?
@@ -45,6 +44,10 @@ module Webbed
       @idempotent
     end
     
+    def to_s
+      @value
+    end
+    
     def ==(other_method)
       to_s == other_method.to_s
     end
@@ -52,14 +55,14 @@ module Webbed
     # Common methods used and their settings. Most are defined in RFC 2616 with
     # the exception of PATCH which is defined in RFC 5789. These are for caching
     # purposes, so that new objects don't need to be created on each request.
-    OPTIONS = new 'OPTIONS', :safe => true,  :idempotent => true,  :entities => [:response]
-    GET     = new 'GET',     :safe => true,  :idempotent => true,  :entities => [:response]
-    HEAD    = new 'HEAD',    :safe => true,  :idempotent => true,  :entities => []
-    POST    = new 'POST',    :safe => false, :idempotent => false, :entities => [:request, :response]
-    PUT     = new 'PUT',     :safe => false, :idempotent => true,  :entities => [:request, :response]
-    DELETE  = new 'DELETE',  :safe => false, :idempotent => true,  :entities => [:response]
-    TRACE   = new 'TRACE',   :safe => true,  :idempotent => true,  :entities => [:response]
-    CONNECT = new 'CONNECT', :safe => false, :idempotent => false, :entities => [:request, :response]
-    PATCH   = new 'PATCH',   :safe => false, :idempotent => false, :entities => [:request, :response]
+    OPTIONS = new('OPTIONS', :safe => true,  :idempotent => true,  :allowable_entities => [:response])
+    GET     = new('GET',     :safe => true,  :idempotent => true,  :allowable_entities => [:response])
+    HEAD    = new('HEAD',    :safe => true,  :idempotent => true,  :allowable_entities => [])
+    POST    = new('POST',    :safe => false, :idempotent => false, :allowable_entities => [:request, :response])
+    PUT     = new('PUT',     :safe => false, :idempotent => true,  :allowable_entities => [:request, :response])
+    DELETE  = new('DELETE',  :safe => false, :idempotent => true,  :allowable_entities => [:response])
+    TRACE   = new('TRACE',   :safe => true,  :idempotent => true,  :allowable_entities => [:response])
+    CONNECT = new('CONNECT', :safe => false, :idempotent => false, :allowable_entities => [:request, :response])
+    PATCH   = new('PATCH',   :safe => false, :idempotent => false, :allowable_entities => [:request, :response])
   end
 end

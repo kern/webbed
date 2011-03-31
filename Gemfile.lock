@@ -9,10 +9,12 @@ GEM
   specs:
     addressable (2.2.4)
     minitest (2.0.2)
+    mocha (0.9.12)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   minitest (~> 2.0)
+  mocha (~> 0.9)
   webbed!
