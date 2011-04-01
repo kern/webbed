@@ -14,11 +14,8 @@ class TestHTTPVersion < MiniTest::Unit::TestCase
   end
   
   def test_to_s
-    version = Webbed::HTTPVersion.new('HTTP/2.0')
-    assert_equal 'HTTP/2.0', version.to_s
-    
-    version = Webbed::HTTPVersion.new(2.0)
-    assert_equal 'HTTP/2.0', version.to_s
+    assert_equal 'HTTP/2.0', Webbed::HTTPVersion.new('HTTP/2.0').to_s
+    assert_equal 'HTTP/2.0', Webbed::HTTPVersion.new(2.0).to_s
   end
   
   def test_to_f
@@ -33,6 +30,8 @@ class TestHTTPVersion < MiniTest::Unit::TestCase
     one_point_one = Webbed::HTTPVersion.new('HTTP/1.1')
     two_point_oh = Webbed::HTTPVersion.new('HTTP/2.0')
     
+    assert_equal 1.1, one_point_one
+    assert_equal one_point_one, one_point_one
     refute_equal one_point_one, two_point_oh
     assert one_point_one < two_point_oh
     assert two_point_oh > one_point_one

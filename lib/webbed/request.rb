@@ -32,12 +32,12 @@ module Webbed
       "#{method} #{request_uri} #{http_version}\r\n"
     end
     alias :start_line :request_line
-  end
-  
-  Request.class_eval do
+    
     include Helpers::MethodHelper
     include Helpers::RequestURIHelper
     include Helpers::RackRequestHelper
     include Helpers::SchemeHelper
+    include Helpers::RequestHeadersHelper
+    include Helpers::EntityHeadersHelper
   end
 end

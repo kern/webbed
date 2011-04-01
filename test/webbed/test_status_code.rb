@@ -97,6 +97,8 @@ class TestStatusCode < MiniTest::Unit::TestCase
     ok = Webbed::StatusCode.new(200)
     found = Webbed::StatusCode.new(302)
     
+    assert_equal 200, ok
+    assert_equal ok, ok
     refute_equal ok, found
     assert ok < found
     assert found > ok

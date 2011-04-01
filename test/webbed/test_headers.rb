@@ -6,8 +6,7 @@ require 'test_helper'
 # yeah, very low priority at the moment.
 class TestHeaders < MiniTest::Unit::TestCase
   def test_initialize_without_headers
-    headers = Webbed::Headers.new
-    assert headers.empty?
+    assert Webbed::Headers.new.empty?
   end
   
   def test_initialize_with_headers

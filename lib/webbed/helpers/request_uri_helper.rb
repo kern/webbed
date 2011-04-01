@@ -7,10 +7,6 @@ module Webbed
         end
       end
       
-      def host
-        headers['Host']
-      end
-      
       def uri
         if host && !request_uri.host
           request_uri.dup.tap do |uri|

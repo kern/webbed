@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TestRackRequestHelper < MiniTest::Unit::TestCase
-  def test_to_rack
+  def test_from_rack
     rack_env = {
       'REQUEST_METHOD'  => 'GET',
       'SCRIPT_NAME'     => '',
@@ -30,7 +30,7 @@ class TestRackRequestHelper < MiniTest::Unit::TestCase
     assert_same rack_env, request.rack_env
   end
   
-  def test_to_rack_without_http_version
+  def test_from_rack_without_http_version
     request = Webbed::Request.from_rack({
       'REQUEST_METHOD' => 'GET',
       'SCRIPT_NAME'    => '',

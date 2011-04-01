@@ -9,10 +9,13 @@ module Webbed
   autoload :Response,       'webbed/response'
   
   module Helpers
-    autoload :MethodHelper,       'webbed/helpers/method_helper'
-    autoload :RackRequestHelper,  'webbed/helpers/rack_request_helper'
-    autoload :RackResponseHelper, 'webbed/helpers/rack_response_helper'
-    autoload :RequestURIHelper,   'webbed/helpers/request_uri_helper'
-    autoload :SchemeHelper,       'webbed/helpers/scheme_helper'
+    autoload :MethodHelper,          'webbed/helpers/method_helper'
+    autoload :RackRequestHelper,     'webbed/helpers/rack_request_helper'
+    autoload :RackResponseHelper,    'webbed/helpers/rack_response_helper'
+    autoload :RequestURIHelper,      'webbed/helpers/request_uri_helper'
+    autoload :SchemeHelper,          'webbed/helpers/scheme_helper'
+    autoload :RequestHeadersHelper,  'webbed/helpers/request_headers_helper'
+    autoload :ResponseHeadersHelper, 'webbed/helpers/response_headers_helper'
+    autoload :EntityHeadersHelper,   'webbed/helpers/entity_headers_helper'
   end
 end

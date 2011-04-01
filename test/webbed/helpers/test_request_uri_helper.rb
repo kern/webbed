@@ -6,11 +6,6 @@ class TestRequestURIHelper < MiniTest::Unit::TestCase
     assert_equal request.request_uri, request.request_url
   end
   
-  def test_host
-    assert_nil Webbed::Request.new(['GET', '*', {}, '']).host
-    assert_equal 'example.com', Webbed::Request.new(['GET', '*', { 'Host' => 'example.com' }, '']).host
-  end
-  
   def test_uri_and_url
     no_host = Webbed::Request.new(['GET', '/foo', {}, ''])
     assert_instance_of Addressable::URI, no_host.uri

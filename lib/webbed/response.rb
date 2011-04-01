@@ -31,9 +31,9 @@ module Webbed
       "#{http_version} #{status_code} #{reason_phrase}\r\n"
     end
     alias :start_line :status_line
-  end
-  
-  Response.class_eval do
+    
     include Helpers::RackResponseHelper
+    include Helpers::ResponseHeadersHelper
+    include Helpers::EntityHeadersHelper
   end
 end
