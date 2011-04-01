@@ -16,8 +16,9 @@ Gem::Specification.new do |s|
   
   s.add_dependency 'addressable', '~> 2.2'
   
-  s.add_development_dependency 'rspec', '~> 2.2'
-  s.add_development_dependency 'fuubar', '~> 0.0.2'
+  s.add_development_dependency 'minitest', '~> 2.0'
+  s.add_development_dependency 'mocha', '~> 0.9'
+  s.add_development_dependency 'autotest', '~> 4.4'
   
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

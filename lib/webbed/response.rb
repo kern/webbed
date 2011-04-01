@@ -20,11 +20,7 @@ module Webbed
     end
     
     def reason_phrase
-      @reason_phrase || default_reason_phrase
-    end
-    
-    def default_reason_phrase
-      @status_code.default_reason_phrase
+      @reason_phrase || @status_code.default_reason_phrase
     end
     
     def status_code=(status_code)
