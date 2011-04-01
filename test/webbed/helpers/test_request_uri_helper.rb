@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RequestURIHelperTest < MiniTest::Unit::TestCase
+class TestRequestURIHelper < MiniTest::Unit::TestCase
   def test_request_url
     request = Webbed::Request.new(['GET', '/foo', { 'Host' => 'example.com' }, ''])
     assert_equal request.request_uri, request.request_url

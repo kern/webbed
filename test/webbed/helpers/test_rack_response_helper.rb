@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RackResponseHelperTest < MiniTest::Unit::TestCase
+class TestRackResponseHelper < MiniTest::Unit::TestCase
   def test_to_rack
     response = Webbed::Response.new([200, {}, ''])
     assert_equal [200, {}, ''], response.to_rack

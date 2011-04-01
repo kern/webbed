@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SchemeHelperTest < MiniTest::Unit::TestCase
+class TestSchemeHelper < MiniTest::Unit::TestCase
   def test_http_scheme
     request = Webbed::Request.new(['GET', '*', {}, ''], :scheme => 'http')
     

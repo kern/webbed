@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RequestTest < MiniTest::Unit::TestCase
+class TestRequest < MiniTest::Unit::TestCase
   def test_initialize_without_options
     request = Webbed::Request.new([
       'POST',

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StatusCodeTest < MiniTest::Unit::TestCase
+class TestStatusCode < MiniTest::Unit::TestCase
   def test_initialize_with_string
     status_code = Webbed::StatusCode.new('200')
     assert_equal 200, status_code.to_i

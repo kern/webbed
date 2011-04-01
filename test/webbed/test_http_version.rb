@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class HTTPVersionTest < MiniTest::Unit::TestCase
+class TestHTTPVersion < MiniTest::Unit::TestCase
   def test_initialize_with_string
     version = Webbed::HTTPVersion.new('HTTP/1.1')
     assert_equal 1, version.major

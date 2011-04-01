@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MediaTypeTest < MiniTest::Unit::TestCase
+class TestMediaType < MiniTest::Unit::TestCase
   def test_initialize_with_only_mime_type
     media_type = Webbed::MediaType.new('text/html')
     

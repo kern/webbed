@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MethodTest < MiniTest::Unit::TestCase
+class TestMethod < MiniTest::Unit::TestCase
   def test_initialize_without_options
     fake = Webbed::Method.new('FAKE')
     

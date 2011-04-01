@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GenericMessageTest < MiniTest::Unit::TestCase
+class TestGenericMessage < MiniTest::Unit::TestCase
   def setup
     @klass = Class.new
     @klass.instance_eval { include Webbed::GenericMessage }

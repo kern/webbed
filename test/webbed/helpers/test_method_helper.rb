@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MethodHelperTest < MiniTest::Unit::TestCase
+class TestMethodHelper < MiniTest::Unit::TestCase
   def test_options
     request = Webbed::Request.new(['OPTIONS', '*', {}, ''])
     

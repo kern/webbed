@@ -4,7 +4,7 @@ require 'test_helper'
 # sure that it works correctly. Still, as a matter of principle, it should have
 # all the necessary tests to make sure it works correctly when it changes. But
 # yeah, very low priority at the moment.
-class HeadersTest < MiniTest::Unit::TestCase
+class TestHeaders < MiniTest::Unit::TestCase
   def test_initialize_without_headers
     headers = Webbed::Headers.new
     assert headers.empty?

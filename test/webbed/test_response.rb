@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ResponseTest < MiniTest::Unit::TestCase
+class TestResponse < MiniTest::Unit::TestCase
   def test_initialize_without_options
     response = Webbed::Response.new([
       404,
