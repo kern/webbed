@@ -42,6 +42,10 @@ module Webbed
       end
     end
     
+    def ==(other_media_type)
+      to_s == other_media_type.to_s
+    end
+    
     def interpretable_as
       if suffix
         [mime_type, "#{type}/#{suffix}"]

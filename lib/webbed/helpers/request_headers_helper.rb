@@ -24,6 +24,14 @@ module Webbed
       def max_forwards=(max_forwards)
         headers['Max-Forwards'] = max_forwards.to_s
       end
+      
+      def referer
+        headers['Referer'] ? Addressable::URI.parse(headers['Referer']) : nil
+      end
+      
+      def referer=(referer)
+        headers['Referer'] = referer.to_s
+      end
     end
   end
 end

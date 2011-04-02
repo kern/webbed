@@ -37,4 +37,17 @@ class TestRequestHeadersHelper < MiniTest::Unit::TestCase
     assert_equal 1234, @request.max_forwards
     assert_equal '1234', @request.headers['Max-Forwards']
   end
+  
+  def test_referer
+    assert_nil @request.referer
+    
+    @request.headers['Referer'] = 'http://foo.com'
+    assert_instance_of Addressable::URI, @request.referer
+    assert_equal Addressable::URI.parse('http://foo.com'), @request.referer
+    
+    @request.referer = 'http://example.com'
+    assert_instance_of Addressable::URI, @request.referer
+    assert_equal Addressable::URI.parse('http://example.com'), @request.referer
+    assert_equal 'http://example.com', @request.headers['Referer']
+  end
 end

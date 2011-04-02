@@ -84,4 +84,11 @@ class TestMediaType < MiniTest::Unit::TestCase
     assert_nil not_suffixed.suffix
     assert_includes not_suffixed.interpretable_as, 'text/html'
   end
+  
+  def test_equal
+    json = Webbed::MediaType.new('application/json')
+    
+    assert_equal Webbed::MediaType.new('application/json'), json
+    refute_equal Webbed::MediaType.new('text/html'), json
+  end
 end

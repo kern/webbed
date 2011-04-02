@@ -60,7 +60,10 @@ class TestMethod < MiniTest::Unit::TestCase
   end
   
   def test_equal
-    refute_equal Webbed::Method::GET, Webbed::Method::POST
+    fake = Webbed::Method.new('FAKE')
+    
+    assert_equal Webbed::Method.new('FAKE'), fake
+    refute_equal Webbed::Method::POST, fake
   end
   
   def test_cached_options

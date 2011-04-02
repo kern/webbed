@@ -33,4 +33,32 @@ class TestEntityHeadersHelper < MiniTest::Unit::TestCase
       assert_equal 'http://example.com/testing', message.headers['Content-Location']
     end
   end
+  
+  def test_content_md5
+    [@request, @response].each do |message|
+      assert_nil message.content_md5
+      
+      message.headers['Content-MD5'] = 'asdfasdf'
+      assert_equal 'asdfasdf', message.content_md5
+      
+      message.content_md5 = ';lkj;lkj'
+      assert_equal ';lkj;lkj', message.content_md5
+      assert_equal ';lkj;lkj', message.headers['Content-MD5']
+    end
+  end
+  
+  def test_content_type
+    [@request, @response].each do |message|
+      assert_nil message.content_type
+      
+      message.headers['Content-Type'] = 'text/html'
+      assert_instance_of Webbed::MediaType, message.content_type
+      assert_equal Webbed::MediaType.new('text/html'), message.content_type
+      
+      message.content_type = 'application/json'
+      assert_instance_of Webbed::MediaType, message.content_type
+      assert_equal Webbed::MediaType.new('application/json'), message.content_type
+      assert_equal 'application/json', message.headers['Content-Type']
+    end
+  end
 end
