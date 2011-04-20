@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'addressable', '~> 2.2'
   
   s.add_development_dependency 'minitest', '~> 2.0'
+  s.add_development_dependency 'turn', '~> 0.8'
   s.add_development_dependency 'mocha', '~> 0.9'
   s.add_development_dependency 'autotest', '~> 4.4'
   s.add_development_dependency 'maruku', '~> 0.6'
