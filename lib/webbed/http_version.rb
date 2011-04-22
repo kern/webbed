@@ -1,5 +1,5 @@
 module Webbed
-  # {Webbed} supports both primary versions of HTTP, HTTP/1.0 and HTTP/1.1.
+  # Webbed supports both primary versions of HTTP, HTTP/1.0 and HTTP/1.1.
   # Although the use of HTTP/1.1 has been strongly encouraged since its creation
   # in 1999, it remains relatively common for older command line tools (such as
   # wget) and some search engines. Webbed can also be extended in the future to
@@ -10,7 +10,7 @@ module Webbed
   # 
   #     HTTP-Version = "HTTP" "/" 1*DIGIT "." 1*DIGIT
   # 
-  # While this is perhaps the simplest of all the abstractions in {Webbed}, it
+  # While this is perhaps the simplest of all the abstractions in Webbed, it
   # does offer some nice helper methods for treating the version string more
   # Ruby-like.
   # 
@@ -19,7 +19,10 @@ module Webbed
   # {ONE_POINT_OH} and {ONE_POINT_ONE} when creating messages.
   class HTTPVersion
     include Comparable
-    REGEX = /^HTTP\/(\d+\.\d+)$/
+    
+    # Regular expression for retrieving the major and minor version numbers from
+    # an HTTP-Version.
+    REGEX = /^HTTP\/(\d+)\.(\d+)$/
     
     # Creates a new {HTTPVersion}.
     # 
@@ -34,9 +37,9 @@ module Webbed
     # @return [HTTPVersion] the new {HTTPVersion}
     def initialize(http_version)
       if REGEX =~ http_version.to_s
-        @http_version = $1.to_f
+        @http_version = http_version.to_s
       else
-        @http_version = http_version.to_f
+        @http_version = "HTTP/#{http_version}"
       end
     end
     
@@ -48,7 +51,7 @@ module Webbed
     # 
     # @return [String] the string {HTTPVersion}
     def to_s
-      "HTTP/#{to_f}"
+      @http_version
     end
     
     # Converts to a float.
@@ -59,7 +62,8 @@ module Webbed
     # 
     # @return [Float] the float {HTTPVersion}
     def to_f
-      @http_version
+      REGEX =~ @http_version
+      "#{$1}.#{$2}".to_f
     end
     
     # Compares to another {HTTPVersion}.
@@ -77,33 +81,28 @@ module Webbed
       to_f <=> other.to_f
     end
     
-    # Returns the major HTTP-Version number as an integer.
+    # Returns the major version number.
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/6.9')
     #   version.major # => 6
     # 
-    # @return [Fixnum] major HTTP-Version number
+    # @return [Fixnum] major version number
     def major
-      to_f.floor
+      REGEX =~ @http_version
+      $1.to_i
     end
     
-    # Return the minor HTTP-Version number as an integer.
-    # 
-    # Right now this is a pretty big hack since the HTTP-Version is internally
-    # stored as a float. Ruby does not natively offer a way to get the string of
-    # numbers after a decimal, so a workaround had to be created.
-    # 
-    # If anyone knows of a better way to do this, please oh please contact me on
-    # GitHub.
+    # Return the minor version number.
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/4.2')
     #   version.minor # => 2
     # 
-    # @return [Fixnum] minor HTTP-Version number
+    # @return [Fixnum] minor version number
     def minor
-      to_f.to_s.split('.')[1].to_i
+      REGEX =~ @http_version
+      $2.to_i
     end
     
     # HTTP/1.1
