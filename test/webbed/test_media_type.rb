@@ -66,7 +66,11 @@ class TestMediaType < MiniTest::Unit::TestCase
   
   def test_to_s
     assert_equal 'text/html', Webbed::MediaType.new('text/html').to_s
-    assert_equal 'text/html; foo=bar; lol=rofl', Webbed::MediaType.new('text/html; foo=bar; lol=rofl').to_s
+    
+    media_type_string = Webbed::MediaType.new('text/html; foo=bar; lol=rofl').to_s
+    assert media_type_string.include?('; lol=rofl')
+    assert media_type_string.include?('; foo=bar')
+    assert media_type_string.include?('text/html')
   end
   
   def test_vendor_specific

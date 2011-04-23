@@ -9,7 +9,6 @@ GEM
   specs:
     ZenTest (4.5.0)
     addressable (2.2.5)
-    ansi (1.2.3)
     autotest (4.4.6)
       ZenTest (>= 4.4.1)
     maruku (0.6.0)
@@ -17,8 +16,6 @@ GEM
     minitest (2.0.2)
     mocha (0.9.12)
     syntax (1.0.0)
-    turn (0.8.2)
-      ansi (>= 1.2.2)
 
 PLATFORMS
   ruby
@@ -28,5 +25,4 @@ DEPENDENCIES
   maruku (~> 0.6)
   minitest (~> 2.0)
   mocha (~> 0.9)
-  turn (~> 0.8)
   webbed!

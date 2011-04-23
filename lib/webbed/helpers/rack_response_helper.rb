@@ -11,9 +11,9 @@ module Webbed
       #   array.
       def to_rack
         if entity_body.respond_to?(:each)
-          [status_code, headers, entity_body]
+          [status_code.to_i, headers, entity_body]
         else
-          [status_code, headers, [entity_body]]
+          [status_code.to_i, headers, [entity_body]]
         end
       end
       
