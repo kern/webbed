@@ -31,7 +31,7 @@ module Webbed
     #     media_type = Webbed::MediaType.new('text/html; q=1.0')
     #     media_type.parameters # => { 'q' => '1.0' }
     # 
-    # @return [Hash<String => String>]
+    # @return [Hash{String => String}]
     attr_accessor :parameters
     
     # Regular expression for parsing the type and subtype of a MIME type
