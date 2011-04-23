@@ -21,10 +21,10 @@ module Webbed
     include Comparable
     
     # Regular expression for retrieving the major and minor version numbers from
-    # an HTTP-Version.
+    # an HTTP-Version
     REGEX = /^HTTP\/(\d+)\.(\d+)$/
     
-    # Creates a new {HTTPVersion}.
+    # Creates a new HTTP-Version
     # 
     # Only HTTP/1.0 and HTTP/1.1 versions are cached. All other versions will be
     # created at runtime each time this method is called.
@@ -33,8 +33,7 @@ module Webbed
     #   Webbed::HTTPVersion.new(1.1)
     #   Webbed::HTTPVersion.new('HTTP/1.1')
     # 
-    # @param http_version [#match, #to_f] the {HTTPVersion} to create
-    # @return [HTTPVersion] the new {HTTPVersion}
+    # @param http_version [#to_s] the HTTP-Version to create
     def initialize(http_version)
       if REGEX =~ http_version.to_s
         @http_version = http_version.to_s
@@ -43,30 +42,30 @@ module Webbed
       end
     end
     
-    # Converts to a string according to RFC 2616.
+    # Converts the HTTP-Version to a string according to RFC 2616
     # 
     # @example
     #   version = Webbed::HTTPVersion.new(1.1)
     #   version.to_s # => 'HTTP/1.1'
     # 
-    # @return [String] the string {HTTPVersion}
+    # @return [String]
     def to_s
       @http_version
     end
     
-    # Converts to a float.
+    # Converts the HTTP-Version to a float
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/1.1')
     #   version.to_f # => 1.1
     # 
-    # @return [Float] the float {HTTPVersion}
+    # @return [Float]
     def to_f
       REGEX =~ @http_version
       "#{$1}.#{$2}".to_f
     end
     
-    # Compares to another {HTTPVersion}.
+    # Compares the HTTP-Version to another HTTP-Version
     # 
     # @example
     #   version_1_1 = Webbed::HTTPVersion.new(1.1)
@@ -75,31 +74,31 @@ module Webbed
     #   version_5_0 < version_5_0 # => false
     #   version_5_0 > version_1_1 # => true
     # 
-    # @param other [#to_f] the other {HTTPVersion} to compare against
-    # @return [Integer] the sign of the comparison (either `1`, `0`, or `-1`)
-    def <=>(other)
-      to_f <=> other.to_f
+    # @param other_http_version [#to_f] the other HTTP-Version
+    # @return [Fixnum] the sign of the comparison (either `1`, `0`, or `-1`)
+    def <=>(other_http_version)
+      to_f <=> other_http_version.to_f
     end
     
-    # Returns the major version number.
+    # The major HTTP-Version number
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/6.9')
     #   version.major # => 6
     # 
-    # @return [Fixnum] major version number
+    # @return [Fixnum]
     def major
       REGEX =~ @http_version
       $1.to_i
     end
     
-    # Return the minor version number.
+    # The minor HTTP-Version number
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/4.2')
     #   version.minor # => 2
     # 
-    # @return [Fixnum] minor version number
+    # @return [Fixnum]
     def minor
       REGEX =~ @http_version
       $2.to_i

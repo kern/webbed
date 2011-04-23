@@ -1,33 +1,40 @@
 module Webbed
-  # Generic methods used for both {Request}'s and {Response}'s.
-  # @abstract
+  # Generic methods used for both {Request}'s and {Response}'s
+  # 
+  # @abstract Include and implement `#status_line`.
   module GenericMessage
-    # Returns the HTTP Version of the message.
+    # The HTTP-Version of the message
     # 
-    # Automatically converts the HTTP Version to an instance of {HTTPVersion} if
-    # it is not already one.
+    # The method automatically converts the new value to an instance of
+    # {HTTPVersion} if it is not already one.
+    # 
+    # @return [HTTPVersion]
     attr_reader :http_version
     
-    # Returns the headers of the message.
+    def http_version=(new_http_version)
+      @http_version = Webbed::HTTPVersion.new(new_http_version)
+    end
+    
+    # The Headers of the message
     # 
-    # Automatically converts the headers to an instance of {Headers} if it
-    # is not already one.
+    # The method automatically converts the new value to an instance of
+    # {Headers} if it is not already one.
+    # 
+    # @return [Headers]
     attr_reader :headers
     
-    # Returns the entity body of the message.
+    def headers=(new_headers)
+      @headers = Webbed::Headers.new(new_headers)
+    end
+    
+    # The Entity Body of the message
+    # 
+    # @return [#to_s]
     attr_accessor :entity_body
     
-    def headers=(headers)
-      @headers = Webbed::Headers.new(headers)
-    end
-    
-    def http_version=(http_version)
-      @http_version = Webbed::HTTPVersion.new(http_version)
-    end
-    
-    # Convert the message into an HTTP message as per RFC 2616.
+    # Converts the message into an HTTP Message as per RFC 2616.
     # 
-    # @return [String] the HTTP message
+    # @return [String]
     def to_s
       "#{start_line}#{headers.to_s}\r\n#{entity_body}"
     end
