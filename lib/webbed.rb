@@ -1,3 +1,13 @@
+# Webbed provides two important abstraction on the HTTP specification (RFC
+# 2616), {Request} and {Response}. Although the core classes have the
+# bare-minimum of functionality for interacting with the two classes, they have
+# been extended with a variety of helper modules, adding a significant amount of
+# semantic meaning to the instances of each class.
+# 
+# Webbed can be used with or without Rack, but it includes Rack helpers for
+# convenience.
+# 
+# @todo Add exmaples of webbed in action.
 module Webbed
   autoload :Headers,        'webbed/headers'
   autoload :HTTPVersion,    'webbed/http_version'

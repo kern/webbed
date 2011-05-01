@@ -1,6 +1,5 @@
 require 'bundler/setup'
 require 'minitest/autorun'
-require 'turn'
 require 'mocha'
 require 'webbed'
 
