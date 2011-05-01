@@ -11,7 +11,7 @@ module Webbed
       
       # Sets the ETag of the Response (as defined in the ETag Header)
       # 
-      # @param new_etag [String]
+      # @param [String] new_etag
       def etag=(new_etag)
         headers['ETag'] = new_etag
       end
@@ -25,7 +25,7 @@ module Webbed
       
       # Sets the Age of the Response (as defined in the Age Header)
       # 
-      # @param new_age [#to_s]
+      # @param [#to_s] new_age
       def age=(new_age)
         headers['Age'] = new_age.to_s
       end
@@ -39,7 +39,7 @@ module Webbed
       
       # Sets the Location of the Response (as defined in the Location Header)
       # 
-      # @param new_location [#to_s]
+      # @param [#to_s] new_location
       def location=(new_location)
         headers['Location'] = new_location.to_s
       end

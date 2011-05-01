@@ -33,7 +33,7 @@ module Webbed
     #   Webbed::HTTPVersion.new(1.1)
     #   Webbed::HTTPVersion.new('HTTP/1.1')
     # 
-    # @param http_version [#to_s] the HTTP-Version to create
+    # @param [#to_s] http_version the HTTP-Version to create
     def initialize(http_version)
       if REGEX =~ http_version.to_s
         @http_version = http_version.to_s
@@ -74,7 +74,7 @@ module Webbed
     #   version_5_0 < version_5_0 # => false
     #   version_5_0 > version_1_1 # => true
     # 
-    # @param other_http_version [#to_f] the other HTTP-Version
+    # @param [#to_f] other_http_version the other HTTP-Version
     # @return [Fixnum] the sign of the comparison (either `1`, `0`, or `-1`)
     def <=>(other_http_version)
       to_f <=> other_http_version.to_f

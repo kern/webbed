@@ -52,7 +52,7 @@ module Webbed
     #     media_type.mime_type # => 'text/html'
     #     media_type.parameters # => { 'q' => '1.0' }
     # 
-    # @param media_type [String] the Media Type to create as defined in RFC 2616
+    # @param [String] media_type the Media Type to create as defined in RFC 2616
     def initialize(media_type)
       self.mime_type, *parameters = media_type.split(PARAMETERS_REGEX)
       self.parameters = Hash[*parameters] || {}
@@ -67,7 +67,7 @@ module Webbed
     
     # Sets the MIME type of the Media Type
     # 
-    # @param new_mime_type [String]
+    # @param [String] new_mime_type
     def mime_type=(new_mime_type)
       MIME_TYPE_REGEX =~ new_mime_type
       self.type = $1
@@ -130,7 +130,7 @@ module Webbed
     # 
     # Two Media Types are equal if their `#mime_type`'s are equal.
     # 
-    # @param other_media_type [#mime_type] the other Media Type
+    # @param [#mime_type] other_media_type the other Media Type
     # @return [Boolean]
     def ==(other_media_type)
       mime_type == other_media_type.mime_type

@@ -68,7 +68,7 @@ module Webbed
     
     # Creates a new Status Code
     # 
-    # @param status_code [Fixnum]
+    # @param [Fixnum] status_code
     def initialize(status_code)
       @status_code = status_code
       @default_reason_phrase = REASON_PHRASES[@status_code] || UNKNOWN_REASON_PHRASE
@@ -76,7 +76,7 @@ module Webbed
     
     # Comparse the Status Code to another Status Code
     # 
-    # @param other_status_code [#to_i] the other Status Code
+    # @param [#to_i] other_status_code the other Status Code
     # @return [Fixnum] the sign of the comparison (either `1`, `0`, or `-1`)
     def <=>(other_status_code)
       @status_code <=> other_status_code.to_i

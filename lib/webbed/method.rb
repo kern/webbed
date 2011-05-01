@@ -34,12 +34,12 @@ module Webbed
     
     # Creates a new Method
     # 
-    # @param name [String] the name of the Method to create
-    # @param options [Hash] the options to create the Method with
-    # @option options :safe [Boolean] (false) whether or not the Method is safe
-    # @option options :idempotent [Boolean] (false) whether or not the Method is
+    # @param [String] name the name of the Method to create
+    # @param [Hash] options the options to create the Method with
+    # @option options [Boolean] :safe (false) whether or not the Method is safe
+    # @option options [Boolean] :idempotent (false) whether or not the Method is
     #   idempotent
-    # @option options :allowable_entities [Array<:request, :response>]
+    # @option options [Array<:request, :response>] :allowable_entities
     #   ([:request, :response]) the allowable entites of a message
     def initialize(name, options = {})
       options = DEFAULTS.merge(options)
@@ -74,7 +74,7 @@ module Webbed
     # 
     # Two Methods are equal if they have the same name.
     # 
-    # @param other_method [#to_s] the other Method
+    # @param [#to_s] other_method the other Method
     # @return [Boolean]
     def ==(other_method)
       to_s == other_method.to_s

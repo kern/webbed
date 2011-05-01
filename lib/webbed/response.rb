@@ -48,9 +48,9 @@ module Webbed
     #     Webbed::Response.new([200, {}, ''])
     #     Webbed::Response.new(['404 Missing File', {}, ''])
     # 
-    # @param response_array [Array]
-    # @param options [Array] the options to create the Response with
-    # @option options :http_version [#to_s] (1.1) the HTTP-Version of the
+    # @param [Array] response_array
+    # @param [Array] options the options to create the Response with
+    # @option options [#to_s] :http_version (1.1) the HTTP-Version of the
     #   Response
     def initialize(response_array, options = {})
       self.http_version = options.delete(:http_version) || 1.1

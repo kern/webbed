@@ -10,7 +10,7 @@ module Webbed
         # Request using that data. The Rack environment can be accessed through
         # `#rack_env`.
         # 
-        # @param rack_env [Hash{String => String}]
+        # @param [Hash{String => String}] rack_env
         # @return [Request]
         # @note The Rack environment will never be modified.
         def from_rack(rack_env)

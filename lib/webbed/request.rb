@@ -41,11 +41,11 @@ module Webbed
     # @example
     #     Webbed::Request.new(['GET', 'http://example.com', {}, ''])
     # 
-    # @param request_array [Array]
-    # @param options [Array] the options to create the Request with
-    # @option options :http_version [#to_s] (1.1) the HTTP-Version of the
+    # @param [Array] request_array
+    # @param [Array] options the options to create the Request with
+    # @option options [#to_s] :http_version (1.1) the HTTP-Version of the
     #   Request
-    # @option options :scheme ['http', 'https'] ('http') the scheme of the
+    # @option options ['http', 'https'] :scheme ('http') the scheme of the
     #   Request
     def initialize(request_array, options = {})
       self.method       = request_array[0]
@@ -66,7 +66,7 @@ module Webbed
     
     # Sets the {Method} of the Request
     # 
-    # @param new_method [Method]
+    # @param [Method] new_method
     def method=(new_method)
       @method = Webbed::Method.new(new_method)
     end

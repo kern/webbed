@@ -11,7 +11,7 @@ module Webbed
       
       # Sets the Content-Length of the Entity (as defined in the Content-Length Header).
       # 
-      # @param new_content_length [#to_s]
+      # @param [#to_s] new_content_length
       def content_length=(new_content_length)
         headers['Content-Length'] = new_content_length.to_s
       end
@@ -25,7 +25,7 @@ module Webbed
       
       # Sets the Content-Location of the Entity (as defined in the Content-Location Header).
       # 
-      # @param new_content_location [#to_s]
+      # @param [#to_s] new_content_location
       def content_location=(new_content_location)
         headers['Content-Location'] = new_content_location.to_s
       end
@@ -39,7 +39,7 @@ module Webbed
       
       # Sets the Content-MD5 of the Entity (as defined in the Content-MD5 Header).
       # 
-      # @param new_content_md5 [String]
+      # @param [String] new_content_md5
       def content_md5=(new_content_md5)
         headers['Content-MD5'] = new_content_md5
       end
@@ -53,7 +53,7 @@ module Webbed
       
       # Sets the Content-Type of the Entity (as defined in the Content-Type Header).
       # 
-      # @param new_content_type [#to_s]
+      # @param [#to_s] new_content_type
       def content_type=(new_content_type)
         headers['Content-Type'] = new_content_type.to_s
       end
