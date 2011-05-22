@@ -1,5 +1,5 @@
 module Webbed
-  # Representation of HTTP Status Codes
+  # Representation of an HTTP Status Code.
   class StatusCode
     include Comparable
     
@@ -49,12 +49,12 @@ module Webbed
     
     @@cached = {}
     
-    # The default Reason Phrase of the Status Code
+    # The default Reason Phrase of the Status Code.
     # 
     # @return [String]
     attr_reader :default_reason_phrase
     
-    # Retrieves a Status Code from the cache or creates a new one
+    # Retrieves a Status Code from the cache or creates a new one.
     # 
     # All created Status Codes are cached forever.
     # 
@@ -66,7 +66,7 @@ module Webbed
       @@cached[status_code] ||= super(status_code)
     end
     
-    # Creates a new Status Code
+    # Creates a new Status Code.
     # 
     # @param [Fixnum] status_code
     def initialize(status_code)
@@ -74,7 +74,7 @@ module Webbed
       @default_reason_phrase = REASON_PHRASES[@status_code] || UNKNOWN_REASON_PHRASE
     end
     
-    # Comparse the Status Code to another Status Code
+    # Comparse the Status Code to another Status Code.
     # 
     # @param [#to_i] other_status_code the other Status Code
     # @return [Fixnum] the sign of the comparison (either `1`, `0`, or `-1`)
@@ -82,21 +82,21 @@ module Webbed
       @status_code <=> other_status_code.to_i
     end
     
-    # Converts the Status Code to an integer
+    # Converts the Status Code to an integer.
     # 
     # @return [Fixnum]
     def to_i
       @status_code
     end
     
-    # Converts the Status Code to a string
+    # Converts the Status Code to a string.
     # 
     # @return [String]
     def to_s
       @status_code.to_s
     end
     
-    # Whether or not the Status Code is informational
+    # Whether or not the Status Code is informational.
     # 
     # According to RFC 2616, informational status codes are in the range of 100
     # to 199, inclusive.
@@ -106,7 +106,7 @@ module Webbed
       (100...200).include?(@status_code)
     end
     
-    # Whether or not the Status Code is successful
+    # Whether or not the Status Code is successful.
     # 
     # According to RFC 2616, successful status codes are in the range of 200 to
     # 299, inclusive.
@@ -116,7 +116,7 @@ module Webbed
       (200...300).include?(@status_code)
     end
     
-    # Whether or not the Status Code is a redirection
+    # Whether or not the Status Code is a redirection.
     # 
     # According to RFC 2616, redirection status codes are in the range of 300 to
     # 399, inclusive.
@@ -126,7 +126,7 @@ module Webbed
       (300...400).include?(@status_code)
     end
     
-    # Whether or not the Status Code is a client error
+    # Whether or not the Status Code is a client error.
     # 
     # According to RFC 2616, client error status codes are in the range of 400
     # to 499, inclusive.
@@ -136,7 +136,7 @@ module Webbed
       (400...500).include?(@status_code)
     end
     
-    # Whether or not the Status Code is a server error
+    # Whether or not the Status Code is a server error.
     # 
     # According to RFC 2616, server error status codes are in the range of 500
     # to 599, inclusive.
@@ -146,7 +146,7 @@ module Webbed
       (500...600).include?(@status_code)
     end
     
-    # Whether or not the Status Code is unknown
+    # Whether or not the Status Code is unknown.
     # 
     # According to RFC 2616, the only defined Status Code ranges are from 100 to
     # 599, inclusive. Anything outside that range is an unknown Status Code.
@@ -156,7 +156,7 @@ module Webbed
       !(100...600).include?(@status_code)
     end
     
-    # Whether or not the Status Code is an error
+    # Whether or not the Status Code is an error.
     # 
     # According to RFC 2616, Status Codes that signify errors are in the range
     # of 400 to 599, inclusive.

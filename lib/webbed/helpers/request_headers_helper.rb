@@ -11,9 +11,9 @@ module Webbed
       
       # Sets the Host of the Request (as defined in the Host Header)
       # 
-      # @param [String] new_host
-      def host=(new_host)
-        headers['Host'] = new_host
+      # @param [String] host
+      def host=(host)
+        headers['Host'] = host
       end
       
       # The From email of the Request (as defined in the From Header)
@@ -25,9 +25,9 @@ module Webbed
       
       # Sets the From email of the Request (as defined in the From Header)
       # 
-      # @param [String] new_from
-      def from=(new_from)
-        headers['From'] = new_from
+      # @param [String] from
+      def from=(from)
+        headers['From'] = from
       end
       
       # The Max-Forwards of the Request (as defined in the Max-Forwards Header)
@@ -39,9 +39,9 @@ module Webbed
       
       # Sets the Max-Forwards of the Request (as defined in the Max-Forwards Header)
       # 
-      # @param [#to_s] new_max_forwards
-      def max_forwards=(new_max_forwards)
-        headers['Max-Forwards'] = new_max_forwards.to_s
+      # @param [#to_s] max_forwards
+      def max_forwards=(max_forwards)
+        headers['Max-Forwards'] = max_forwards.to_s
       end
       
       # The Referer of the Request (as defined in the Referer Header)
@@ -53,9 +53,9 @@ module Webbed
       
       # Sets the Referer of the Request (as defined in the Referer Header)
       # 
-      # @param [#to_s] new_referer
-      def referer=(new_referer)
-        headers['Referer'] = new_referer.to_s
+      # @param [#to_s] referer
+      def referer=(referer)
+        headers['Referer'] = referer.to_s
       end
     end
   end

@@ -19,8 +19,10 @@ module Webbed
       
       # Converts the Response to an array
       # 
-      # The array has the same format as the one that you use in order to create
-      # a Response.
+      # The array has a similar format to the format defined in the Rack specification with some modifications:
+      # 
+      # 1. The Reason Phrase is included with the Status Code.
+      # 2. The Entity Body does not need to respond to `#each`.
       # 
       # @return [Array]
       # @note This will *not* return a Rack-compatible response array.

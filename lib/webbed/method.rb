@@ -1,4 +1,5 @@
 module Webbed
+  # Representation of an HTTP Method.
   class Method
     DEFAULTS = {
       :safe => false,
@@ -6,14 +7,14 @@ module Webbed
       :allowable_entities => [:request, :response]
     }
     
-    # The allowable entities of a message
+    # The allowable entities of a message.
     # 
     # It can contain any combination of `:request` and `:response`.
     # 
     # @return [Array<:request, :response>]
     attr_reader :allowable_entities
     
-    # Checks for a cached Method or creates a new one
+    # Checks for a cached Method or creates a new one.
     # 
     # It caches the standard HTTP Methods that are in RFC 2616 as well as the
     # new method `PATCH`. If the Method cannot be found, it calls `#initialize`.
@@ -32,7 +33,7 @@ module Webbed
       end
     end
     
-    # Creates a new Method
+    # Creates a new Method.
     # 
     # @param [String] name the name of the Method to create
     # @param [Hash] options the options to create the Method with
@@ -49,28 +50,28 @@ module Webbed
       @allowable_entities = options[:allowable_entities]
     end
     
-    # Whether or not the Method is safe
+    # Whether or not the Method is safe.
     # 
     # @return [Boolean]
     def safe?
       @safe
     end
     
-    # Whether or not the Method is idempotent
+    # Whether or not the Method is idempotent.
     # 
     # @return [Boolean]
     def idempotent?
       @idempotent
     end
     
-    # Converts the Method to a string
+    # Converts the Method to a string.
     # 
     # @return [String]
     def to_s
       @name
     end
     
-    # Compares the Method to another Method
+    # Compares the Method to another Method.
     # 
     # Two Methods are equal if they have the same name.
     # 

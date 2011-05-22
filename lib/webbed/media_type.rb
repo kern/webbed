@@ -1,6 +1,10 @@
 module Webbed
+  # Representation of an HTTP Media Type.
   class MediaType
-    # The type of the MIME type
+    MIME_TYPE_REGEX = /^([-\w.+]+)\/([-\w.+]*)$/
+    PARAMETERS_REGEX = /=|\s*;\s*/
+    
+    # The type of the MIME type.
     # 
     # According to RFC 2616, this is the part *before* the slash.
     # 
@@ -11,7 +15,7 @@ module Webbed
     # @return [String]
     attr_accessor :type
     
-    # The subtype of the MIME type
+    # The subtype of the MIME type.
     # 
     # According to RFC 2616, this is the *after* before the slash.
     # 
@@ -22,7 +26,7 @@ module Webbed
     # @return [String]
     attr_accessor :subtype
     
-    # The parameters of the Media Type
+    # The parameters of the Media Type.
     # 
     # According to RFC 2616, parameters are separated from the MIME type and
     # each other using a semicolon.
@@ -34,13 +38,7 @@ module Webbed
     # @return [Hash{String => String}]
     attr_accessor :parameters
     
-    # Regular expression for parsing the type and subtype of a MIME type
-    MIME_TYPE_REGEX = /^([-\w.+]+)\/([-\w.+]*)$/
-    
-    # Regular expression for parsing the parameters of a Media Type
-    PARAMETERS_REGEX = /=|\s*;\s*/
-    
-    # Creates a new Media Type
+    # Creates a new Media Type.
     # 
     # @example Create a MediaType without parameters
     #     media_type = Webbed::MediaType.new('text/html')
@@ -58,23 +56,23 @@ module Webbed
       self.parameters = Hash[*parameters] || {}
     end
     
-    # The MIME type of the Media Type
+    # The MIME type of the Media Type.
     # 
     # @return [String]
     def mime_type
       "#{type}/#{subtype}"
     end
     
-    # Sets the MIME type of the Media Type
+    # Sets the MIME type of the Media Type.
     # 
-    # @param [String] new_mime_type
-    def mime_type=(new_mime_type)
-      MIME_TYPE_REGEX =~ new_mime_type
+    # @param [String] mime_type
+    def mime_type=(mime_type)
+      MIME_TYPE_REGEX =~ mime_type
       self.type = $1
       self.subtype = $2
     end
     
-    # Converts the Media Type to a string
+    # Converts the Media Type to a string.
     # 
     # @return [String]
     def to_s
@@ -86,7 +84,7 @@ module Webbed
       end
     end
     
-    # Whether or not the Media Type is vendor-specific
+    # Whether or not the Media Type is vendor-specific.
     # 
     # The method uses the `vnd.` prefix convention to determine whether or not
     # it was created for a specific vendor.
@@ -103,7 +101,7 @@ module Webbed
       subtype[0..3] == 'vnd.'
     end
     
-    # The suffix of the MIME type
+    # The suffix of the MIME type.
     # 
     # Suffixes follow the convention set forth by the Atom specification:
     # separated from the rest of the MIME Type by a `+`.
@@ -126,7 +124,7 @@ module Webbed
       end
     end
     
-    # Compares the Media Type to another Media Type
+    # Compares the Media Type to another Media Type.
     # 
     # Two Media Types are equal if their `#mime_type`'s are equal.
     # 
@@ -136,7 +134,7 @@ module Webbed
       mime_type == other_media_type.mime_type
     end
     
-    # The MIME types that the Media Type can be interpreted as
+    # The MIME types that the Media Type can be interpreted as.
     # 
     # This uses the suffix to generate a list of MIME types that can be used to
     # interpret the Media Type. It's useful if you need to be able to parse XML

@@ -29,7 +29,7 @@ module Webbed
           headers['Content-Type']   = env.delete('CONTENT_TYPE')
           headers['Content-Length'] = env.delete('CONTENT_LENGTH')
           
-          request = new([method, request_uri, headers, entity_body], {
+          request = new(method, request_uri, headers, entity_body, {
             :http_version => http_version,
             :scheme       => scheme
           })

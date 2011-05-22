@@ -1,4 +1,6 @@
 module Webbed
+  # Representation of HTTP headers.
+  # 
   # This class is stolen directly from Rack.
   class Headers < Hash
     def self.new(hash={})

@@ -14,12 +14,16 @@ Gem::Specification.new do |s|
   
   s.rubyforge_project = 'webbed'
   
-  s.add_dependency 'addressable', '~> 2.2'
+  s.add_dependency 'addressable'
   
   s.add_development_dependency 'minitest', '~> 2.0'
-  s.add_development_dependency 'mocha', '~> 0.9'
-  s.add_development_dependency 'autotest', '~> 4.4'
-  s.add_development_dependency 'maruku', '~> 0.6'
+  s.add_development_dependency 'mocha'
+  # s.add_development_dependency 'guard-minitest'
+  s.add_development_dependency 'ansi'
+  s.add_development_dependency 'growl'
+  s.add_development_dependency 'ruby-progressbar'
+  s.add_development_dependency 'maruku'
+  s.add_development_dependency 'test_declarative'
   
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

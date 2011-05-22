@@ -1,14 +1,14 @@
 require 'addressable/uri'
 
 module Webbed
-  # Representation of an HTTP Request
+  # Representation of an HTTP Request.
   # 
   # This class contains the absolute minimum for accessing the different parts
   # of an HTTP Request. Helper modules provide far more functionality.
   class Request
     include GenericMessage
     
-    # The Request-URI of the Request
+    # The Request-URI of the Request.
     #
     # The method automatically converts the new value to an instance of
     # `Addressable::URI` if it is not already one.
@@ -17,46 +17,41 @@ module Webbed
     # @note {Helpers::RequestURIHelper} aliases this method to `#request_url`.
     attr_reader :request_uri
     
-    def request_uri=(new_request_uri)
-      @request_uri = Addressable::URI.parse(new_request_uri)
+    def request_uri=(request_uri)
+      @request_uri = Addressable::URI.parse(request_uri)
     end
     
-    # The scheme of the Request
+    # The scheme of the Request.
     # 
     # @return ['http', 'https']
     attr_accessor :scheme
     
-    # Creates a new Request
-    # 
-    # The attributes of the Request are passed in as an array. In order, they
-    # go:
-    # 
-    # 1. Method
-    # 2. Request-URI
-    # 3. Headers
-    # 4. Entity Body
+    # Creates a new Request.
     # 
     # The method converts the values passed in to their proper types.
     # 
     # @example
-    #     Webbed::Request.new(['GET', 'http://example.com', {}, ''])
+    #     Webbed::Request.new('GET', 'http://example.com', {}, '')
     # 
-    # @param [Array] request_array
+    # @param [Method, String] method
+    # @param [Addressable::URI, String] request_uri
+    # @param [Headers, Hash] headers
+    # @param [#to_s] entity_body
     # @param [Array] options the options to create the Request with
     # @option options [#to_s] :http_version (1.1) the HTTP-Version of the
     #   Request
     # @option options ['http', 'https'] :scheme ('http') the scheme of the
     #   Request
-    def initialize(request_array, options = {})
-      self.method       = request_array[0]
-      self.request_uri  = request_array[1]
-      self.headers      = request_array[2]
-      self.entity_body  = request_array[3]
-      self.http_version = options.delete(:http_version) || 1.1
-      self.scheme       = options.delete(:scheme) || 'http'
+    def initialize(method, request_uri, headers, entity_body, options = {})
+      self.method       = method
+      self.request_uri  = request_uri
+      self.headers      = headers
+      self.entity_body  = entity_body
+      self.http_version = options[:http_version] || 1.1
+      self.scheme       = options[:scheme] || 'http'
     end
     
-    # The {Method} of the Request
+    # The Method of the Request.
     # 
     # @return [Method]
     def method(*args)
@@ -64,14 +59,14 @@ module Webbed
       @method
     end
     
-    # Sets the {Method} of the Request
+    # Sets the Method of the Request.
     # 
-    # @param [Method] new_method
-    def method=(new_method)
-      @method = Webbed::Method.new(new_method)
+    # @param [Method] method
+    def method=(method)
+      @method = Webbed::Method.new(method)
     end
     
-    # The Request-Line of the Request as defined in RFC 2616
+    # The Request-Line of the Request as defined in RFC 2616.
     # 
     # @example
     #     request = Webbed::Request.new(['GET', 'http://example.com', {}, ''])

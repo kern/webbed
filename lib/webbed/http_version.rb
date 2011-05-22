@@ -1,4 +1,6 @@
 module Webbed
+  # Representation of an HTTP HTTP Version.
+  # 
   # Webbed supports both primary versions of HTTP, HTTP/1.0 and HTTP/1.1.
   # Although the use of HTTP/1.1 has been strongly encouraged since its creation
   # in 1999, it remains relatively common for older command line tools (such as
@@ -20,11 +22,9 @@ module Webbed
   class HTTPVersion
     include Comparable
     
-    # Regular expression for retrieving the major and minor version numbers from
-    # an HTTP-Version
     REGEX = /^HTTP\/(\d+)\.(\d+)$/
     
-    # Creates a new HTTP-Version
+    # Creates a new HTTP-Version.
     # 
     # Only HTTP/1.0 and HTTP/1.1 versions are cached. All other versions will be
     # created at runtime each time this method is called.
@@ -42,7 +42,7 @@ module Webbed
       end
     end
     
-    # Converts the HTTP-Version to a string according to RFC 2616
+    # Converts the HTTP-Version to a string according to RFC 2616.
     # 
     # @example
     #   version = Webbed::HTTPVersion.new(1.1)
@@ -53,7 +53,7 @@ module Webbed
       @http_version
     end
     
-    # Converts the HTTP-Version to a float
+    # Converts the HTTP-Version to a float.
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/1.1')
@@ -65,7 +65,7 @@ module Webbed
       "#{$1}.#{$2}".to_f
     end
     
-    # Compares the HTTP-Version to another HTTP-Version
+    # Compares the HTTP-Version to another HTTP-Version.
     # 
     # @example
     #   version_1_1 = Webbed::HTTPVersion.new(1.1)
@@ -80,7 +80,7 @@ module Webbed
       to_f <=> other_http_version.to_f
     end
     
-    # The major HTTP-Version number
+    # The major HTTP-Version number.
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/6.9')
@@ -92,7 +92,7 @@ module Webbed
       $1.to_i
     end
     
-    # The minor HTTP-Version number
+    # The minor HTTP-Version number.
     # 
     # @example
     #   version = Webbed::HTTPVersion.new('HTTP/4.2')
@@ -104,10 +104,7 @@ module Webbed
       $2.to_i
     end
     
-    # HTTP/1.1
     ONE_POINT_ONE = HTTPVersion.new(1.1)
-    
-    # HTTP/1.0
     ONE_POINT_OH = HTTPVersion.new(1.0)
   end
 end
