@@ -22,7 +22,7 @@ module Webbed
           entity_body  = env.delete('rack.input')
           
           headers = env.inject({}) do |memo, h|
-            memo[$1] = h[1] if h[0] =~ /^HTTP_(.*)/
+            memo[$1.gsub('_', '-')] = h[1] if h[0] =~ /^HTTP_(.*)/
             memo
           end
           
@@ -45,6 +45,34 @@ module Webbed
         # 
         # @return [Hash{String => String}]
         attr_accessor :rack_env
+        
+        # Generate the Rack enivronment equivalent of the Request.
+        # 
+        # If the Request was created with an environment, the generated
+        # environment will be merged with the original environment. The original
+        # will not be modified.
+        # 
+        # @return [Hash{String => String}]
+        def to_rack
+          env = rack_env ? rack_env.dup : {}
+          env['REQUEST_METHOD'] = method.to_s
+          env['PATH_INFO'] = request_uri.path
+          env['QUERY_STRING'] = request_uri.query
+          env['HTTP_VERSION'] = http_version.to_s
+          env['rack.url_scheme'] = scheme
+          env['rack.input'] = entity_body
+          
+          rack_headers = headers.dup
+          env['CONTENT_TYPE'] = rack_headers.delete('Content-Type')
+          env['CONTENT_LENGTH'] = rack_headers.delete('Content-Length')
+          
+          rack_headers.each do |header, value|
+            header = header.upcase.gsub('-', '_')
+            env["HTTP_#{header}"] = value
+          end
+          
+          env
+        end
       end
       
       # @see ClassMethods

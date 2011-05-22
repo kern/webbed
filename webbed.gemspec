@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha'
   # s.add_development_dependency 'guard-minitest'
   s.add_development_dependency 'ansi'
-  s.add_development_dependency 'growl'
   s.add_development_dependency 'ruby-progressbar'
   s.add_development_dependency 'maruku'
   s.add_development_dependency 'test_declarative'
