@@ -12,6 +12,7 @@ module Webbed
   autoload :Headers,        'webbed/headers'
   autoload :HTTPVersion,    'webbed/http_version'
   autoload :GenericMessage, 'webbed/generic_message'
+  autoload :MediaRange,     'webbed/media_range'
   autoload :MediaType,      'webbed/media_type'
   autoload :Method,         'webbed/method'
   autoload :StatusCode,     'webbed/status_code'

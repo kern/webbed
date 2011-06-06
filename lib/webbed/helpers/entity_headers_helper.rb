@@ -46,7 +46,7 @@ module Webbed
       
       # The Content-Type of the Entity (as defined in the Content-Type Header).
       # 
-      # @return [MediaType, nil]
+      # @return [Webbed::MediaType, nil]
       def content_type
         headers['Content-Type'] ? Webbed::MediaType.new(headers['Content-Type']) : nil
       end
@@ -56,6 +56,26 @@ module Webbed
       # @param [#to_s] content_type
       def content_type=(content_type)
         headers['Content-Type'] = content_type.to_s
+      end
+      
+      # The allowed Methods of the Entity (as defined in the Allow Header).
+      # 
+      # @return [<Webbed::Method>, nil]
+      def allowed_methods
+        if headers['Allow']
+          headers['Allow'].split(/\s*,\s*/).map do |method|
+            Webbed::Method.new(method)
+          end
+        else
+          nil
+        end
+      end
+      
+      # Sets the allowed Methods of the Entity (as defined in the Allow Header).
+      # 
+      # @param [<#to_s>]
+      def allowed_methods=(allowed_methods)
+        headers['Allow'] = allowed_methods.join(', ')
       end
     end
   end

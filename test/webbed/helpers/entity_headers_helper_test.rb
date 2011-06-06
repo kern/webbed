@@ -63,6 +63,29 @@ module WebbedTest
           assert_equal 'application/json', message.headers['Content-Type']
         end
       end
+      
+      test '#allowed_methods' do
+        [@request, @response].each do |message|
+          assert_nil message.allowed_methods
+          
+          message.headers['Allow'] = 'GET, POST,PUT'
+          allowed_methods = message.allowed_methods
+          ['GET', 'POST', 'PUT'].each.with_index do |method, index|
+            allowed_method = allowed_methods[index]
+            assert_instance_of Webbed::Method, allowed_method
+            assert_equal method, allowed_method.to_s
+          end
+          
+          message.allowed_methods = ['DELETE', Webbed::Method::OPTIONS]
+          assert_equal 'DELETE, OPTIONS', message.headers['Allow']
+          allowed_methods = message.allowed_methods
+          ['DELETE', 'OPTIONS'].each.with_index do |method, index|
+            allowed_method = allowed_methods[index]
+            assert_instance_of Webbed::Method, allowed_method
+            assert_equal method, allowed_method.to_s
+          end
+        end
+      end
     end
   end
 end

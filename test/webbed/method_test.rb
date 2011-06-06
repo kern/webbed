@@ -67,6 +67,14 @@ module WebbedTest
       refute_equal Webbed::Method::POST, fake
     end
     
+    test 'caching' do
+      uncached = Webbed::Method.new('UNCACHED')
+      cached = Webbed::Method.new('CACHED', :cache => true)
+      
+      refute_same Webbed::Method.new('UNCACHED'), uncached
+      assert_same Webbed::Method.new('CACHED'), cached
+    end
+    
     test 'OPTIONS' do
       method = Webbed::Method::OPTIONS
       
@@ -155,6 +163,10 @@ module WebbedTest
       refute method.idempotent?
       assert_includes method.allowable_entities, :request
       assert_includes method.allowable_entities, :response
+    end
+    
+    def teardown
+      Webbed::Method.cached.delete('FAKE')
     end
   end
 end

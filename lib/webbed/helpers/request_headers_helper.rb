@@ -57,6 +57,26 @@ module Webbed
       def referer=(referer)
         headers['Referer'] = referer.to_s
       end
+      
+      # The accepted Media Ranges of the Request (as defined in the Allow Header).
+      # 
+      # @return [<Webbed::MediaRange>, nil]
+      def accepted_media_ranges
+        if headers['Accept']
+          headers['Accept'].split(/\s*,\s*/).map do |media_type|
+            Webbed::MediaRange.new(media_type)
+          end
+        else
+          nil
+        end
+      end
+      
+      # Sets the accepted Media Ranges of the Request (as defined in the Allow Header).
+      # 
+      # @param [<#to_s>] accepted_media_ranges
+      def accepted_media_ranges=(accepted_media_ranges)
+        headers['Accept'] = accepted_media_ranges.join(', ')
+      end
     end
   end
 end
