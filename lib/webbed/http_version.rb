@@ -1,5 +1,5 @@
 module Webbed
-  # Representation of an HTTP HTTP Version.
+  # Representation of an HTTP Version.
   # 
   # Webbed supports both primary versions of HTTP, HTTP/1.0 and HTTP/1.1.
   # Although the use of HTTP/1.1 has been strongly encouraged since its creation
@@ -16,7 +16,7 @@ module Webbed
   # does offer some nice helper methods for treating the version string more
   # Ruby-like.
   # 
-  # HTTP/1.0 and HTTP/1.1 {HTTPVersion}s are cached. In every case I can think
+  # HTTP/1.0 and HTTP/1.1 {HTTPVersion}'s are cached. In every case I can think
   # of, you will not have to create a new {HTTPVersion}, just use the constants
   # {ONE_POINT_OH} and {ONE_POINT_ONE} when creating messages.
   class HTTPVersion
@@ -104,7 +104,7 @@ module Webbed
       $2.to_i
     end
     
-    ONE_POINT_ONE = HTTPVersion.new(1.1)
-    ONE_POINT_OH = HTTPVersion.new(1.0)
+    ONE_POINT_ONE = new(1.1)
+    ONE_POINT_OH = new(1.0)
   end
 end

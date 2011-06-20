@@ -64,7 +64,7 @@ module Webbed
       def allowed_methods
         if headers['Allow']
           headers['Allow'].split(/\s*,\s*/).map do |method|
-            Webbed::Method.new(method)
+            Webbed::Method.lookup(method)
           end
         else
           nil

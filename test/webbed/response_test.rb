@@ -22,9 +22,7 @@ module WebbedTest
       )
       
       assert_equal 'LOLOL', response.reason_phrase
-      
-      assert_instance_of Webbed::StatusCode, response.status_code
-      assert_equal 200, response.status_code
+      assert_equal Webbed::StatusCode.lookup(200), response.status_code
     end
     
     test '#initialize without a Reason Phrase' do

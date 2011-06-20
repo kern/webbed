@@ -16,14 +16,20 @@ module WebbedTest
       assert_equal 'OK', status_code.default_reason_phrase
     end
     
-    test 'caching' do
-      status_code_1 = Webbed::StatusCode.new(200)
-      status_code_2 = Webbed::StatusCode.new(200)
-      assert_same status_code_2, status_code_1
+    test 'registeration' do
+      begin
+        status_code_1 = Webbed::StatusCode.register(999, 'blau')
+        status_code_2 = Webbed::StatusCode.lookup(999)
+        
+        assert_equal 'blau', status_code_1.default_reason_phrase
+        assert_same status_code_1, status_code_2
+      ensure
+        Webbed::StatusCode.registered.delete(999)
+      end
     end
     
     test '#informational?' do
-      status_code = Webbed::StatusCode.new(100)
+      status_code = Webbed::StatusCode.lookup(100)
       
       assert status_code.informational?
       refute status_code.successful?
@@ -35,7 +41,7 @@ module WebbedTest
     end
     
     test '#successful?' do
-      status_code = Webbed::StatusCode.new(200)
+      status_code = Webbed::StatusCode.lookup(200)
       
       refute status_code.informational?
       assert status_code.successful?
@@ -47,7 +53,7 @@ module WebbedTest
     end
     
     test '#redirection?' do
-      status_code = Webbed::StatusCode.new(300)
+      status_code = Webbed::StatusCode.lookup(300)
       
       refute status_code.informational?
       refute status_code.successful?
@@ -59,7 +65,7 @@ module WebbedTest
     end
     
     test '#client_error?' do
-      status_code = Webbed::StatusCode.new(400)
+      status_code = Webbed::StatusCode.lookup(400)
       
       refute status_code.informational?
       refute status_code.successful?
@@ -71,7 +77,7 @@ module WebbedTest
     end
     
     test '#server_error?' do
-      status_code = Webbed::StatusCode.new(500)
+      status_code = Webbed::StatusCode.lookup(500)
       
       refute status_code.informational?
       refute status_code.successful?
@@ -83,7 +89,7 @@ module WebbedTest
     end
     
     test '#unknown?' do
-      status_code = Webbed::StatusCode.new(600)
+      status_code = Webbed::StatusCode.lookup(600)
       
       refute status_code.informational?
       refute status_code.successful?
@@ -95,8 +101,8 @@ module WebbedTest
     end
     
     test 'comparisons' do
-      ok = Webbed::StatusCode.new(200)
-      found = Webbed::StatusCode.new(302)
+      ok = Webbed::StatusCode.lookup(200)
+      found = Webbed::StatusCode.lookup(302)
       
       assert_equal 200, ok
       assert_comparable ok, found

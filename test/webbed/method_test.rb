@@ -48,16 +48,16 @@ module WebbedTest
       assert_includes fake.allowable_entities, :response
     end
     
-    test 'cached Methods' do
-      assert_same Webbed::Method::OPTIONS, Webbed::Method.new('OPTIONS')
-      assert_same Webbed::Method::GET, Webbed::Method.new('GET')
-      assert_same Webbed::Method::HEAD, Webbed::Method.new('HEAD')
-      assert_same Webbed::Method::POST, Webbed::Method.new('POST')
-      assert_same Webbed::Method::PUT, Webbed::Method.new('PUT')
-      assert_same Webbed::Method::DELETE, Webbed::Method.new('DELETE')
-      assert_same Webbed::Method::TRACE, Webbed::Method.new('TRACE')
-      assert_same Webbed::Method::CONNECT, Webbed::Method.new('CONNECT')
-      assert_same Webbed::Method::PATCH, Webbed::Method.new('PATCH')
+    test 'registered Methods' do
+      assert_same Webbed::Method::OPTIONS, Webbed::Method.lookup('OPTIONS')
+      assert_same Webbed::Method::GET, Webbed::Method.lookup('GET')
+      assert_same Webbed::Method::HEAD, Webbed::Method.lookup('HEAD')
+      assert_same Webbed::Method::POST, Webbed::Method.lookup('POST')
+      assert_same Webbed::Method::PUT, Webbed::Method.lookup('PUT')
+      assert_same Webbed::Method::DELETE, Webbed::Method.lookup('DELETE')
+      assert_same Webbed::Method::TRACE, Webbed::Method.lookup('TRACE')
+      assert_same Webbed::Method::CONNECT, Webbed::Method.lookup('CONNECT')
+      assert_same Webbed::Method::PATCH, Webbed::Method.lookup('PATCH')
     end
     
     test 'equality' do
@@ -67,12 +67,16 @@ module WebbedTest
       refute_equal Webbed::Method::POST, fake
     end
     
-    test 'caching' do
-      uncached = Webbed::Method.new('UNCACHED')
-      cached = Webbed::Method.new('CACHED', :cache => true)
-      
-      refute_same Webbed::Method.new('UNCACHED'), uncached
-      assert_same Webbed::Method.new('CACHED'), cached
+    test 'registeration' do
+      begin
+        unregistered = Webbed::Method.new('UNREGISTERED')
+        registered = Webbed::Method.register('REGISTERED')
+        
+        refute_same Webbed::Method.lookup('UNREGISTERED'), unregistered
+        assert_same Webbed::Method.lookup('REGISTERED'), registered
+      ensure
+        Webbed::Method.registered.delete('REGISTERED')
+      end
     end
     
     test 'OPTIONS' do
@@ -163,10 +167,6 @@ module WebbedTest
       refute method.idempotent?
       assert_includes method.allowable_entities, :request
       assert_includes method.allowable_entities, :response
-    end
-    
-    def teardown
-      Webbed::Method.cached.delete('FAKE')
     end
   end
 end

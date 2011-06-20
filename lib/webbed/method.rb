@@ -15,32 +15,31 @@ module Webbed
     attr_reader :allowable_entities
     
     class << self
-      attr_writer :cached
-      
-      # The cached Methods.
+      # The registered Methods.
       # 
       # @return [{String => Method}]
-      def cached
-        @cached ||= {}
+      def registered
+        @registered ||= {}
       end
       
-      # Checks for a cached Method or creates a new one.
-      # 
-      # Whenever a new Method is created, it is automatically cached. If the
-      # Method cannot be found, this method calls `#initialize`.
+      # Registers a new Method.
       # 
       # @example
-      #   Webbed::Method.new('GET') # => Webbed::Method::GET
+      #   Webbed::Method.register('GET') # => Webbed::Method::GET
       # 
       # @param (see #initialize)
-      # @return [Method] the new or cached Method
+      # @return [Method] the registered Method
       # @see #initialize
-      def new(value, options = {})
-        if options.delete(:cache)
-          cached[value] ||= super
-        else
-          cached[value] || super
-        end
+      def register(*args)
+        registered[args[0]] = new(*args)
+      end
+      
+      # Looks up the registered Method or returns a temporary one.
+      # 
+      # @param [String] name the name of the Method
+      # @return [Method] the registered or temporary Method
+      def lookup(name)
+        registered[name] || new(name)
       end
     end
     
@@ -49,10 +48,8 @@ module Webbed
     # @param [String] name the name of the Method to create
     # @param [Hash] options the options to create the Method with
     # @option options [Boolean] :safe (false) whether or not the Method is safe
-    # @option options [Boolean] :idempotent (false) whether or not the Method is
-    #   idempotent
-    # @option options [Array<:request, :response>] :allowable_entities
-    #   ([:request, :response]) the allowable entites of a message
+    # @option options [Boolean] :idempotent (false) whether or not the Method is idempotent
+    # @option options [Array<:request, :response>] :allowable_entities ([:request, :response]) the allowable entites of a message
     def initialize(name, options = {})
       options = DEFAULTS.merge(options)
       @name = name
@@ -92,14 +89,14 @@ module Webbed
       to_s == other_method.to_s
     end
     
-    OPTIONS = new('OPTIONS', :safe => true,  :idempotent => true,  :allowable_entities => [:response],           :cache => true)
-    GET     = new('GET',     :safe => true,  :idempotent => true,  :allowable_entities => [:response],           :cache => true)
-    HEAD    = new('HEAD',    :safe => true,  :idempotent => true,  :allowable_entities => [],                    :cache => true)
-    POST    = new('POST',    :safe => false, :idempotent => false, :allowable_entities => [:request, :response], :cache => true)
-    PUT     = new('PUT',     :safe => false, :idempotent => true,  :allowable_entities => [:request, :response], :cache => true)
-    DELETE  = new('DELETE',  :safe => false, :idempotent => true,  :allowable_entities => [:response],           :cache => true)
-    TRACE   = new('TRACE',   :safe => true,  :idempotent => true,  :allowable_entities => [:response],           :cache => true)
-    CONNECT = new('CONNECT', :safe => false, :idempotent => false, :allowable_entities => [:request, :response], :cache => true)
-    PATCH   = new('PATCH',   :safe => false, :idempotent => false, :allowable_entities => [:request, :response], :cache => true)
+    OPTIONS = register('OPTIONS', :safe => true,  :idempotent => true,  :allowable_entities => [:response])
+    GET     = register('GET',     :safe => true,  :idempotent => true,  :allowable_entities => [:response])
+    HEAD    = register('HEAD',    :safe => true,  :idempotent => true,  :allowable_entities => [])
+    POST    = register('POST',    :safe => false, :idempotent => false, :allowable_entities => [:request, :response])
+    PUT     = register('PUT',     :safe => false, :idempotent => true,  :allowable_entities => [:request, :response])
+    DELETE  = register('DELETE',  :safe => false, :idempotent => true,  :allowable_entities => [:response])
+    TRACE   = register('TRACE',   :safe => true,  :idempotent => true,  :allowable_entities => [:response])
+    CONNECT = register('CONNECT', :safe => false, :idempotent => false, :allowable_entities => [:request, :response])
+    PATCH   = register('PATCH',   :safe => false, :idempotent => false, :allowable_entities => [:request, :response])
   end
 end

@@ -38,10 +38,8 @@ module Webbed
     # @param [Headers, Hash] headers
     # @param [#to_s] entity_body
     # @param [Hash] options the options to create the Request with
-    # @option options [#to_s] :http_version (1.1) the HTTP-Version of the
-    #   Request
-    # @option options ['http', 'https'] :scheme ('http') the scheme of the
-    #   Request
+    # @option options [#to_s] :http_version (1.1) the HTTP-Version of the Request
+    # @option options ['http', 'https'] :scheme ('http') the scheme of the Request
     def initialize(method, request_uri, headers, entity_body, options = {})
       self.method       = method
       self.request_uri  = request_uri
@@ -61,9 +59,9 @@ module Webbed
     
     # Sets the Method of the Request.
     # 
-    # @param [Method] method
+    # @param [Method, String] method
     def method=(method)
-      @method = Webbed::Method.new(method)
+      @method = Webbed::Method.lookup(method)
     end
     
     # The Request-Line of the Request as defined in RFC 2616.

@@ -4,77 +4,55 @@ module Webbed
     include Comparable
     
     UNKNOWN_REASON_PHRASE = 'Unknown Status Code'
-    REASON_PHRASES = {
-      100 => 'Continue',
-      101 => 'Switching Protocols',
-      200 => 'OK',
-      201 => 'Created',
-      202 => 'Accepted',
-      203 => 'Non-Authoritative Information',
-      204 => 'No Content',
-      205 => 'Reset Content',
-      206 => 'Partial Content',
-      300 => 'Multiple Choices',
-      301 => 'Moved Permanently',
-      302 => 'Found',
-      303 => 'See Other',
-      304 => 'Not Modified',
-      305 => 'Use Proxy',
-      307 => 'Temporary Redirect',
-      400 => 'Bad Request',
-      401 => 'Unauthorized',
-      402 => 'Payment Required',
-      403 => 'Forbidden',
-      404 => 'Not Found',
-      405 => 'Method Not Allowed',
-      406 => 'Not Acceptable',
-      407 => 'Proxy Authentication Required',
-      408 => 'Request Time-out',
-      409 => 'Conflict',
-      410 => 'Gone',
-      411 => 'Length Required',
-      412 => 'Precondition Failed',
-      413 => 'Request Entity Too Large',
-      414 => 'Request-URI Too Large',
-      415 => 'Unsupported Media Type',
-      416 => 'Requested range not satisfiable',
-      417 => 'Expectation Failed',
-      500 => 'Internal Server Error',
-      501 => 'Not Implemented',
-      502 => 'Bad Gateway',
-      503 => 'Service Unavailable',
-      504 => 'Gateway Time-out',
-      505 => 'HTTP Version not supported'
-    }
-    
-    @@cached = {}
+        
+    class << self
+      # The registered Status Codes.
+      # 
+      # @return [{Fixnum => Webbed::StatusCode}]
+      def registered
+        @registered ||= {}
+      end
+      
+      # The default Reason Phrases for Status Codes.
+      # 
+      # @return [{Fixnum => String}]
+      def default_reason_phrases
+        @default_reason_phrases ||= {}
+      end
+      
+      # Registers a Status Code and its default Reason Phrase.
+      # 
+      # @param [#to_i] status_code the Status Code
+      # @param [String] default_reason_phrase the default Reason Phrase
+      # @return [Webbed::StatusCode]
+      def register(status_code, default_reason_phrase)
+        default_reason_phrases[status_code.to_i] = default_reason_phrase
+        registered[status_code.to_i] = new(status_code)
+      end
+      
+      # Looks up the registered Status Code or returns a temporary one.
+      # 
+      # @param [#to_i] status_code the Status Code
+      # @return [Webbed::StatusCode]
+      def lookup(status_code)
+        registered[status_code.to_i] || new(status_code)
+      end
+    end
     
     # The default Reason Phrase of the Status Code.
     # 
     # @return [String]
     attr_reader :default_reason_phrase
-    
-    # Retrieves a Status Code from the cache or creates a new one.
-    # 
-    # All created Status Codes are cached forever.
-    # 
-    # @param (see #initialize)
-    # @return [StatusCode] the new or cached StatusCode
-    # @see #initialize
-    def self.new(status_code)
-      status_code = status_code.to_i
-      @@cached[status_code] ||= super(status_code)
-    end
-    
+        
     # Creates a new Status Code.
     # 
-    # @param [Fixnum] status_code
+    # @param [#to_i] status_code
     def initialize(status_code)
-      @status_code = status_code
-      @default_reason_phrase = REASON_PHRASES[@status_code] || UNKNOWN_REASON_PHRASE
+      @status_code = status_code.to_i
+      @default_reason_phrase = self.class.default_reason_phrases[@status_code] || UNKNOWN_REASON_PHRASE
     end
     
-    # Comparse the Status Code to another Status Code.
+    # Compares the Status Code to another Status Code.
     # 
     # @param [#to_i] other_status_code the other Status Code
     # @return [Fixnum] the sign of the comparison (either `1`, `0`, or `-1`)
@@ -165,5 +143,46 @@ module Webbed
     def error?
       (400...600).include?(@status_code)
     end
+    
+    register(100, 'Continue')
+    register(101, 'Switching Protocols')
+    register(200, 'OK')
+    register(201, 'Created')
+    register(202, 'Accepted')
+    register(203, 'Non-Authoritative Information')
+    register(204, 'No Content')
+    register(205, 'Reset Content')
+    register(206, 'Partial Content')
+    register(300, 'Multiple Choices')
+    register(301, 'Moved Permanently')
+    register(302, 'Found')
+    register(303, 'See Other')
+    register(304, 'Not Modified')
+    register(305, 'Use Proxy')
+    register(307, 'Temporary Redirect')
+    register(400, 'Bad Request')
+    register(401, 'Unauthorized')
+    register(402, 'Payment Required')
+    register(403, 'Forbidden')
+    register(404, 'Not Found')
+    register(405, 'Method Not Allowed')
+    register(406, 'Not Acceptable')
+    register(407, 'Proxy Authentication Required')
+    register(408, 'Request Time-out')
+    register(409, 'Conflict')
+    register(410, 'Gone')
+    register(411, 'Length Required')
+    register(412, 'Precondition Failed')
+    register(413, 'Request Entity Too Large')
+    register(414, 'Request-URI Too Large')
+    register(415, 'Unsupported Media Type')
+    register(416, 'Requested range not satisfiable')
+    register(417, 'Expectation Failed')
+    register(500, 'Internal Server Error')
+    register(501, 'Not Implemented')
+    register(502, 'Bad Gateway')
+    register(503, 'Service Unavailable')
+    register(504, 'Gateway Time-out')
+    register(505, 'HTTP Version not supported')
   end
 end

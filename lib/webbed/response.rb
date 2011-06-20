@@ -17,7 +17,7 @@ module Webbed
     attr_reader :status_code
     
     def status_code=(status_code)
-      @status_code = Webbed::StatusCode.new(status_code)
+      @status_code = Webbed::StatusCode.lookup(status_code)
     end
     
     # The Reason Phrase of the Response.
