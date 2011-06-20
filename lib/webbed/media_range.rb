@@ -68,10 +68,7 @@ module Webbed
     # @param [Webbed::MediaRange] other_media_range
     # @see #specificity
     def <=>(other_media_range)
-      result = quality <=> other_media_range.quality
-      result = other_media_range.order <=> order if result == 0
-      
-      result
+      [quality, other_media_range.order] <=> [other_media_range.quality, order]
     end
     
     # The specificity of the Media Range.

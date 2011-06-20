@@ -7,7 +7,7 @@
 # Webbed can be used with or without Rack, but it includes Rack helpers for
 # convenience.
 # 
-# @todo Add exmaples of webbed in action.
+# @todo Add examples of webbed in action.
 module Webbed
   autoload :Headers,        'webbed/headers'
   autoload :HTTPVersion,    'webbed/http_version'
