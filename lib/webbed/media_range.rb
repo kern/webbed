@@ -13,7 +13,7 @@ module Webbed
     # @param [String] media_range the Media Range to create as defined in RFC 2616
     # @param [Hash] options the options to create the Media Range with
     # @option options [Fixnum] :order (0) the order of the Media Range
-    # @see MediaType#initialize
+    # @see Webbed::MediaType#initialize
     def initialize(media_range, options = {})
       self.order = options.delete(:order) || 0
       super(media_range)
@@ -66,7 +66,6 @@ module Webbed
     # It sorts Media Ranges by quality and order, in that order.
     # 
     # @param [Webbed::MediaRange] other_media_range
-    # @see #specificity
     def <=>(other_media_range)
       [quality, other_media_range.order] <=> [other_media_range.quality, order]
     end
@@ -86,7 +85,7 @@ module Webbed
       return 2 + accept_extensions.length
     end
     
-    # (see MediaType#to_s)
+    # (see Webbed::MediaType#to_s)
     def to_s
       result = parameters['q'] ? "#{mime_type}; q=#{parameters['q']}" : mime_type
       

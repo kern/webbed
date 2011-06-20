@@ -1,14 +1,14 @@
 module Webbed
-  # Generic methods used for both {Request}s and {Response}s.
+  # Generic methods used for both {Webbed::Request}s and {Webbed::Response}s.
   # 
   # @abstract Include and implement `#status_line`.
   module GenericMessage
-    # The HTTP-Version of the message.
+    # The HTTP Version of the message.
     # 
     # The method automatically converts the new value to an instance of
-    # {HTTPVersion} if it is not already one.
+    # {Webbed::HTTPVersion} if it is not already one.
     # 
-    # @return [HTTPVersion]
+    # @return [Webbed::HTTPVersion]
     attr_reader :http_version
     
     def http_version=(http_version)
@@ -18,9 +18,9 @@ module Webbed
     # The Headers of the message.
     # 
     # The method automatically converts the new value to an instance of
-    # {Headers} if it is not already one.
+    # {Webbed::Headers} if it is not already one.
     # 
-    # @return [Headers]
+    # @return [Webbed::Headers]
     attr_reader :headers
     
     def headers=(headers)

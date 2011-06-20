@@ -5,13 +5,13 @@ module Webbed
       module ClassMethods
         # Create a new Request from a Rack environment
         # 
-        # This method will take the HTTP-Version, Method, Request-URI, Headers,
+        # This method will take the HTTP Version, Method, Request-URI, Headers,
         # Entity Body, and scheme from the Rack environment and create a new
         # Request using that data. The Rack environment can be accessed through
         # `#rack_env`.
         # 
-        # @param [Hash{String => String}] rack_env
-        # @return [Request]
+        # @param [{String => String}] rack_env
+        # @return [Webbed::Request]
         # @note The Rack environment will never be modified.
         def from_rack(rack_env)
           env          = rack_env.dup
@@ -43,7 +43,7 @@ module Webbed
       module InstanceMethods
         # The Rack environment of the Request
         # 
-        # @return [Hash{String => String}]
+        # @return [{String => String}]
         attr_accessor :rack_env
         
         # Generate the Rack enivronment equivalent of the Request.
@@ -52,7 +52,7 @@ module Webbed
         # environment will be merged with the original environment. The original
         # will not be modified.
         # 
-        # @return [Hash{String => String}]
+        # @return [{String => String}]
         def to_rack
           env = rack_env ? rack_env.dup : {}
           env['REQUEST_METHOD'] = method.to_s

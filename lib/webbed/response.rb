@@ -11,7 +11,7 @@ module Webbed
     # The Status Code of the Response.
     # 
     # The method automatically converts the new value to an instance of
-    # {StatusCode} if it is not already one.
+    # {Webbed::StatusCode} if it is not already one.
     # 
     # @return [#to_i]
     attr_reader :status_code
@@ -45,11 +45,10 @@ module Webbed
     #     Webbed::Response.new('404 Missing File', {}, '')
     # 
     # @param [Fixnum, String] status_code
-    # @param [Headers, Hash] headers
+    # @param [Webbed::Headers, Hash] headers
     # @param [#to_s] entity_body
     # @param [Array] options the options to create the Response with @option
-    # @options options [#to_s] :http_version (1.1) the HTTP-Version of the
-    #   Response
+    # @options options [#to_s] :http_version (1.1) the HTTP Version of the Response
     def initialize(status_code, headers, entity_body, options = {})
       if STATUS_CODE_REGEX =~ status_code.to_s
         self.status_code = $1

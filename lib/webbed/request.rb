@@ -14,7 +14,7 @@ module Webbed
     # `Addressable::URI` if it is not already one.
     # 
     # @return [Addressable::URI]
-    # @note {Helpers::RequestURIHelper} aliases this method to `#request_url`.
+    # @note {Webbed::Helpers::RequestURIHelper} aliases this method to `#request_url`.
     attr_reader :request_uri
     
     def request_uri=(request_uri)
@@ -33,12 +33,12 @@ module Webbed
     # @example
     #     Webbed::Request.new('GET', 'http://example.com', {}, '')
     # 
-    # @param [Method, String] method
+    # @param [Webbed::Method, String] method
     # @param [Addressable::URI, String] request_uri
-    # @param [Headers, Hash] headers
+    # @param [Webbed::Headers, Hash] headers
     # @param [#to_s] entity_body
     # @param [Hash] options the options to create the Request with
-    # @option options [#to_s] :http_version (1.1) the HTTP-Version of the Request
+    # @option options [#to_s] :http_version (1.1) the HTTP Version of the Request
     # @option options ['http', 'https'] :scheme ('http') the scheme of the Request
     def initialize(method, request_uri, headers, entity_body, options = {})
       self.method       = method
@@ -51,7 +51,7 @@ module Webbed
     
     # The Method of the Request.
     # 
-    # @return [Method]
+    # @return [Webbed::Method]
     def method(*args)
       return super(*args) unless args.empty?
       @method
@@ -59,7 +59,7 @@ module Webbed
     
     # Sets the Method of the Request.
     # 
-    # @param [Method, String] method
+    # @param [Webbed::Method, String] method
     def method=(method)
       @method = Webbed::Method.lookup(method)
     end

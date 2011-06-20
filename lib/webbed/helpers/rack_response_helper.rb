@@ -8,7 +8,7 @@ module Webbed
         # The array has the same format as that defined in the Rack specification.
         # 
         # @param [Array] rack_array
-        # @return [Response]
+        # @return [Webbed::Response]
         def from_rack(rack_array)
           Response.new(*rack_array)
         end

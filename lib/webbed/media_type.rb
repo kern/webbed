@@ -35,7 +35,7 @@ module Webbed
     #     media_type = Webbed::MediaType.new('text/html; q=1.0')
     #     media_type.parameters # => { 'q' => '1.0' }
     # 
-    # @return [Hash{String => String}]
+    # @return [{String => String}]
     attr_accessor :parameters
     
     # Creates a new Media Type.
@@ -149,7 +149,7 @@ module Webbed
     #     media_type = Webbed::MediaType.new('application/atom+xml')
     #     media_type.interpretable_as # => ['application/atom+xml', 'application/xml']
     # 
-    # @return [Array<String>]
+    # @return [<String>]
     def interpretable_as
       if suffix
         [mime_type, "#{type}/#{suffix}"]

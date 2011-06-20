@@ -2,7 +2,7 @@ module Webbed
   module Helpers
     # Request helper for the Request-URI
     module RequestURIHelper
-      # Aliases the {Request#request_uri} method to `#request_url`.
+      # Aliases the {Webbed::Request#request_uri} method to `#request_url`.
       def self.included(base)
         base.class_eval do
           alias :request_url :request_uri
