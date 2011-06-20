@@ -37,7 +37,7 @@ module Webbed
     # @param [Addressable::URI, String] request_uri
     # @param [Headers, Hash] headers
     # @param [#to_s] entity_body
-    # @param [Array] options the options to create the Request with
+    # @param [Hash] options the options to create the Request with
     # @option options [#to_s] :http_version (1.1) the HTTP-Version of the
     #   Request
     # @option options ['http', 'https'] :scheme ('http') the scheme of the

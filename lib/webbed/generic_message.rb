@@ -1,5 +1,5 @@
 module Webbed
-  # Generic methods used for both {Request}'s and {Response}'s.
+  # Generic methods used for both {Request}s and {Response}s.
   # 
   # @abstract Include and implement `#status_line`.
   module GenericMessage

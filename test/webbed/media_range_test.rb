@@ -56,5 +56,55 @@ module WebbedTest
       media_range = Webbed::MediaRange.new('text/html; q=0.5; level=1')
       assert_equal({ 'level' => '1' }, media_range.accept_extensions)
     end
+    
+    test '#<=>' do
+      media_range_high_quality = Webbed::MediaRange.new('application/xml')
+      media_range_low_quality = Webbed::MediaRange.new('application/json;q=0.2')
+      media_range_ordered_0 = Webbed::MediaRange.new('text/html;q=0.5', :order => 0)
+      media_range_ordered_1 = Webbed::MediaRange.new('text/html;q=0.5', :order => 1)
+      media_range_ordered_2 = Webbed::MediaRange.new('text/html;q=0.5', :order => 2)
+      
+      shuffled_media_ranges = [
+        media_range_high_quality,
+        media_range_low_quality,
+        media_range_ordered_0,
+        media_range_ordered_1,
+        media_range_ordered_2
+      ].shuffle
+      
+      assert_equal([
+        media_range_low_quality,
+        media_range_ordered_2,
+        media_range_ordered_1,
+        media_range_ordered_0,
+        media_range_high_quality
+      ], shuffled_media_ranges.sort)
+    end
+    
+    test '#specificity' do
+      media_range_global_group = Webbed::MediaRange.new('*/*')
+      media_range_type_group = Webbed::MediaRange.new('text/*')
+      media_range_suffixed_zero_extensions = Webbed::MediaRange.new('application/atom+xml')
+      media_range_suffixed_one_extension = Webbed::MediaRange.new('application/atom+xml;level=1')
+      media_range_zero_extensions = Webbed::MediaRange.new('text/html')
+      media_range_one_extension = Webbed::MediaRange.new('text/html;level=1')
+      
+      assert_equal 0, media_range_global_group.specificity
+      assert_equal 1, media_range_type_group.specificity
+      assert_equal 1000, media_range_suffixed_zero_extensions.specificity
+      assert_equal 1001, media_range_suffixed_one_extension.specificity
+      assert_equal 2, media_range_zero_extensions.specificity
+      assert_equal 3, media_range_one_extension.specificity
+    end
+    
+    test '#to_s' do
+      media_range_without_quality = Webbed::MediaRange.new('text/html; level=1')
+      media_range_with_quality_1 = Webbed::MediaRange.new('text/html; q=1; level=1')
+      media_range_with_quality_2 = Webbed::MediaRange.new('text/html; level=1; q=1')
+      
+      assert_equal 'text/html; level=1', media_range_without_quality.to_s
+      assert_equal 'text/html; q=1; level=1', media_range_with_quality_1.to_s
+      assert_equal 'text/html; q=1; level=1', media_range_with_quality_2.to_s
+    end
   end
 end

@@ -126,11 +126,12 @@ module Webbed
     
     # Compares the Media Type to another Media Type.
     # 
-    # Two Media Types are equal if their `#mime_type`'s are equal.
+    # Two Media Types are equal if their `#mime_type`s are equal.
     # 
     # @param [#mime_type] other_media_type the other Media Type
     # @return [Boolean]
     def ==(other_media_type)
+      return false unless other_media_type.respond_to?(:mime_type)
       mime_type == other_media_type.mime_type
     end
     

@@ -16,7 +16,7 @@ module Webbed
   # does offer some nice helper methods for treating the version string more
   # Ruby-like.
   # 
-  # HTTP/1.0 and HTTP/1.1 {HTTPVersion}'s are cached. In every case I can think
+  # HTTP/1.0 and HTTP/1.1 {HTTPVersion}s are cached. In every case I can think
   # of, you will not have to create a new {HTTPVersion}, just use the constants
   # {ONE_POINT_OH} and {ONE_POINT_ONE} when creating messages.
   class HTTPVersion
