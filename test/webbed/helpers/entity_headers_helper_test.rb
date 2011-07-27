@@ -70,7 +70,7 @@ module WebbedTest
           
           message.headers['Allow'] = 'GET, POST,PUT'
           allowed_methods = message.allowed_methods
-          ['GET', 'POST', 'PUT'].each.with_index do |method, index|
+          ['GET', 'POST', 'PUT'].each_with_index do |method, index|
             allowed_method = allowed_methods[index]
             assert_instance_of Webbed::Method, allowed_method
             assert_equal method, allowed_method.to_s
@@ -79,7 +79,7 @@ module WebbedTest
           message.allowed_methods = ['DELETE', Webbed::Method::OPTIONS]
           assert_equal 'DELETE, OPTIONS', message.headers['Allow']
           allowed_methods = message.allowed_methods
-          ['DELETE', 'OPTIONS'].each.with_index do |method, index|
+          ['DELETE', 'OPTIONS'].each_with_index do |method, index|
             allowed_method = allowed_methods[index]
             assert_instance_of Webbed::Method, allowed_method
             assert_equal method, allowed_method.to_s

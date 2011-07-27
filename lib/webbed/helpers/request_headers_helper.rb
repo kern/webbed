@@ -63,7 +63,7 @@ module Webbed
       # @return [<Webbed::MediaRange>, nil]
       def accepted_media_ranges
         if headers['Accept']
-          headers['Accept'].split(/\s*,\s*/).map.with_index do |media_type, index|
+          headers['Accept'].split(/\s*,\s*/).each_with_index.map do |media_type, index|
             Webbed::MediaRange.new(media_type, :order => index)
           end
         else
