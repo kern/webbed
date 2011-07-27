@@ -29,7 +29,7 @@ module WebbedTest
       assert_equal '*', star.to_s
       
       other = Webbed::LanguageRange.new('en-gb;q=0.99')
-      assert_equal 'en-gb;q=0.99', other.to_s
+      assert_equal 'en-gb; q=0.99', other.to_s
     end
     
     test '#primary_tag' do
@@ -42,7 +42,7 @@ module WebbedTest
     
     test '#subtags' do
       star = Webbed::LanguageRange.new('*')
-      assert_nil star.subtags
+      assert_equal [], star.subtags
       
       other = Webbed::LanguageRange.new('en-gb')
       assert_equal ['gb'], other.subtags
@@ -53,28 +53,24 @@ module WebbedTest
       assert star.include?(Webbed::LanguageTag.new('en'))
       assert star.include?(Webbed::LanguageTag.new('en-gb'))
       assert star.include?(Webbed::LanguageTag.new('x-pig-latin'))
-      assert star.include?(Webbed::LanguageTag.new('en-gb;q=0.99'))
       
       en = Webbed::LanguageRange.new('en')
       assert en.include?(Webbed::LanguageTag.new('en'))
       assert en.include?(Webbed::LanguageTag.new('en-us'))
       assert en.include?(Webbed::LanguageTag.new('en-gb'))
       refute en.include?(Webbed::LanguageTag.new('x-pig-latin'))
-      assert en.include?(Webbed::LanguageTag.new('en-gb;q=0.99'))
       
-      en_gb = Webbed::LanguageRange.new('en-gb')
+      en_gb = Webbed::LanguageRange.new('en-gb; q=0.5')
       refute en_gb.include?(Webbed::LanguageTag.new('en'))
       refute en_gb.include?(Webbed::LanguageTag.new('en-us'))
       assert en_gb.include?(Webbed::LanguageTag.new('en-gb'))
       refute en_gb.include?(Webbed::LanguageTag.new('x-pig-latin'))
-      assert en_gb.include?(Webbed::LanguageTag.new('en-gb;q=0.99'))
       
       x_pig_latin = Webbed::LanguageRange.new('x-pig-latin')
       refute x_pig_latin.include?(Webbed::LanguageTag.new('en'))
       refute x_pig_latin.include?(Webbed::LanguageTag.new('en-us'))
       refute x_pig_latin.include?(Webbed::LanguageTag.new('en-gb'))
       assert x_pig_latin.include?(Webbed::LanguageTag.new('x-pig-latin'))
-      refute x_pig_latin.include?(Webbed::LanguageTag.new('en-gb;q=0.99'))
     end
     
     test '#specificity' do
@@ -92,13 +88,17 @@ module WebbedTest
       star = Webbed::LanguageRange.new('*')
       assert_equal 1, star.quality
       
-      star_with_q = Webbed::LanguageRange.new('*;q=0.5')
+      star.quality = 0.3
+      assert_equal 0.3, star.quality
+      assert_equal '*; q=0.3', star.to_s
+      
+      star_with_q = Webbed::LanguageRange.new('*; q=0.5')
       assert_equal 0.5, star_with_q.quality
       
       other = Webbed::LanguageRange.new('en-gb')
       assert_equal 1, other.quality
       
-      other_with_q = Webbed::LanguageRange.new('en-gb;q=0.99')
+      other_with_q = Webbed::LanguageRange.new('en-gb; q=0.99')
       assert_equal 0.99, other_with_q.quality
     end
   end

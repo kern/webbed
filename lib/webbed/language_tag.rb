@@ -1,21 +1,23 @@
 module Webbed
   # Representation of an HTTP language tag.
   class LanguageTag
-    TAG_REGEX = /[A-Za-z]{1,8}/
-    REGEX = /(#{TAG_REGEX})((?:-#{TAG_REGEX})*)/
+    # The tags of the language tag.
+    # 
+    # @return [<String>]
+    attr_accessor :tags
     
     # Creates a new language tag.
     # 
     # @param [String] tag
     def initialize(tag)
-      @tag = tag
+      self.tags = tag.split('-')
     end
     
     # Converts the language tag to a String.
     # 
     # @return [String]
     def to_s
-      @tag
+      tags.join('-')
     end
     
     # The primary-tag of the language tag.
@@ -25,8 +27,14 @@ module Webbed
     # 
     # @return [String]
     def primary_tag
-      @tag =~ REGEX
-      $1
+      tags[0]
+    end
+    
+    # Set the primary-tag of the language tag.
+    # 
+    # @param [String] primary_tag
+    def primary_tag=(primary_tag)
+      tags[0] = primary_tag
     end
     
     # The subtags of the language tag.
@@ -36,8 +44,14 @@ module Webbed
     # 
     # @return [<String>]
     def subtags
-      @tag =~ REGEX
-      $2.split('-').reject { |t| t.empty? }
+      tags[1, tags.size - 1]
+    end
+    
+    # The subtags of the language tag.
+    # 
+    # @param [<String>] subtags
+    def subtags=(subtags)
+      tags[1, tags.size - 1] = subtags
     end
   end
 end

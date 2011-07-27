@@ -8,45 +8,49 @@ module Webbed
     
     Q_REGEX = /(?:\s*;\s*q\s*=\s*(.*))?/
     STAR_REGEX = /(\*)#{Q_REGEX}/
+    TAG_REGEX = /[a-zA-Z]{0,8}/
     LANGUAGE_TAG_REGEX = /(#{TAG_REGEX}(?:-#{TAG_REGEX})*)#{Q_REGEX}/
     
     # (see Webbed::LanguageTag#initialize)
     def initialize(string)
       STAR_REGEX =~ string || LANGUAGE_TAG_REGEX =~ string
-      @string = string
-      @tag = $1
-      @quality = $2 ? $2.to_f : 1
+      super($1)
+      @quality = $2
     end
     
     # Whether or not the language range is a catch-all.
     # 
     # @return [Boolean]
     def star?
-      @tag == '*'
+      primary_tag == '*'
+    end
+    
+    # The quality of the language range.
+    # 
+    # @return [Float]
+    def quality
+      @quality ? @quality.to_f : 1.0
+    end
+    
+    # Sets the quality of the language range.
+    # 
+    # @param [#to_s] quality
+    def quality=(quality)
+      @quality = quality.to_s
     end
     
     # Converts the language range to a String.
     # 
     # @return [String]
     def to_s
-      @string
+      @quality ? "#{super}; q=#{@quality}" : super
     end
     
     # The range of the language range.
     # 
     # @return [String]
     def range
-      @tag
-    end
-    
-    # (see Webbed::LanguageTag#primary_tag)
-    def primary_tag
-      star? ? '*' : super
-    end
-    
-    # (see Webbed::LanguageTag#subtags)
-    def subtags
-      star? ? nil : super
+      tags.join('-')
     end
     
     # Whether or not the language tag is in the language range.
@@ -54,7 +58,7 @@ module Webbed
     # @param [Webbed::LanguageTag] language_tag
     # @return [Boolean]
     def include?(language_tag)
-      star? || (primary_tag == language_tag.primary_tag && subtags == language_tag.subtags[0, subtags.size])
+      star? || tags == language_tag.tags[0, tags.size]
     end
     
     # The level of specificity of the language range.
@@ -62,6 +66,15 @@ module Webbed
     # @return [Fixnum]
     def specificity
       star? ? 0 : range.size
+    end
+    
+    # Compares the Language Range to another Language Range.
+    # 
+    # It sorts Language Ranges by quality and order, in that order.
+    # 
+    # @param [Webbed::LanguageRange] other
+    def <=>(other)
+      [quality, other.order] <=> [other.quality, order]
     end
   end
 end

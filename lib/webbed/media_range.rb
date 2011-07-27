@@ -65,9 +65,9 @@ module Webbed
     # 
     # It sorts Media Ranges by quality and order, in that order.
     # 
-    # @param [Webbed::MediaRange] other_media_range
-    def <=>(other_media_range)
-      [quality, other_media_range.order] <=> [other_media_range.quality, order]
+    # @param [Webbed::MediaRange] other
+    def <=>(other)
+      [quality, other.order] <=> [other.quality, order]
     end
     
     # The specificity of the Media Range.
