@@ -138,6 +138,45 @@ module WebbedTest
         assert_equal text_html, @request.negotiate_media_type([text_html])
         assert_equal application_json, @request.negotiate_media_type([text_html, application_json])
       end
+      
+      test '#accepted_language_ranges' do
+        assert_equal '*/*', @request.accepted_media_ranges[0].mime_type
+        assert_equal 1, @request.accepted_media_ranges[0].quality
+        assert_equal 0, @request.accepted_media_ranges[0].order
+        
+        @request.headers['Accept'] = 'text/plain; q=0.5, text/html, text/x-dvi; q=0.8, text/x-c, */*'
+        assert_equal 'text/plain', @request.accepted_media_ranges[0].mime_type
+        assert_equal 0.5, @request.accepted_media_ranges[0].quality
+        assert_equal 0, @request.accepted_media_ranges[0].order
+        assert_equal 'text/html', @request.accepted_media_ranges[1].mime_type
+        assert_equal 1.0, @request.accepted_media_ranges[1].quality
+        assert_equal 1, @request.accepted_media_ranges[1].order
+        assert_equal 'text/x-dvi', @request.accepted_media_ranges[2].mime_type
+        assert_equal 0.8, @request.accepted_media_ranges[2].quality
+        assert_equal 2, @request.accepted_media_ranges[2].order
+        assert_equal 'text/x-c', @request.accepted_media_ranges[3].mime_type
+        assert_equal 1.0, @request.accepted_media_ranges[3].quality
+        assert_equal 3, @request.accepted_media_ranges[3].order
+        assert_equal '*/*', @request.accepted_media_ranges[4].mime_type
+        assert_equal 1.0, @request.accepted_media_ranges[4].quality
+        assert_equal 4, @request.accepted_media_ranges[4].order
+        
+        @request.accepted_media_ranges = ['text/*', Webbed::MediaType.new('text/html'), 'text/html;level=1', '*/*']
+        assert_equal 'text/*, text/html, text/html;level=1, */*', @request.headers['Accept']
+        assert_equal 'text/*', @request.accepted_media_ranges[0].mime_type
+        assert_equal 1.0, @request.accepted_media_ranges[0].quality
+        assert_equal 0, @request.accepted_media_ranges[0].order
+        assert_equal 'text/html', @request.accepted_media_ranges[1].mime_type
+        assert_equal 1.0, @request.accepted_media_ranges[1].quality
+        assert_equal 1, @request.accepted_media_ranges[1].order
+        assert_equal 'text/html', @request.accepted_media_ranges[2].mime_type
+        assert_equal 1.0, @request.accepted_media_ranges[2].quality
+        assert_equal '1', @request.accepted_media_ranges[2].parameters['level']
+        assert_equal 2, @request.accepted_media_ranges[2].order
+        assert_equal '*/*', @request.accepted_media_ranges[3].mime_type
+        assert_equal 1.0, @request.accepted_media_ranges[3].quality
+        assert_equal 3, @request.accepted_media_ranges[3].order
+      end
     end
   end
 end

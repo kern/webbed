@@ -8,14 +8,14 @@ module Webbed
     
     Q_REGEX = /(?:\s*;\s*q\s*=\s*(.*))?/
     STAR_REGEX = /(\*)#{Q_REGEX}/
-    LANGUAGE_TAG_REGEX = /((#{TAG_REGEX})((?:-#{TAG_REGEX})*))#{Q_REGEX}/
+    LANGUAGE_TAG_REGEX = /(#{TAG_REGEX}(?:-#{TAG_REGEX})*)#{Q_REGEX}/
     
     # (see Webbed::LanguageTag#initialize)
     def initialize(string)
       STAR_REGEX =~ string || LANGUAGE_TAG_REGEX =~ string
       @string = string
       @tag = $1
-      @quality = $2
+      @quality = $2 ? $2.to_f : 1
     end
     
     # Whether or not the language range is a catch-all.
@@ -55,6 +55,13 @@ module Webbed
     # @return [Boolean]
     def include?(language_tag)
       star? || (primary_tag == language_tag.primary_tag && subtags == language_tag.subtags[0, subtags.size])
+    end
+    
+    # The level of specificity of the language range.
+    # 
+    # @return [Fixnum]
+    def specificity
+      star? ? 0 : range.size
     end
   end
 end

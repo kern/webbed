@@ -6,13 +6,13 @@ module WebbedTest
       star = Webbed::LanguageRange.new('*')
       assert_equal '*', star.range
       
-      star_with_q = Webbed::LanguageRange.new('*;q=5')
+      star_with_q = Webbed::LanguageRange.new('*;q=0.5')
       assert_equal '*', star_with_q.range
       
       other = Webbed::LanguageRange.new('en-gb')
       assert_equal 'en-gb', other.range
       
-      other_with_q = Webbed::LanguageRange.new('en-gb;q=99')
+      other_with_q = Webbed::LanguageRange.new('en-gb;q=0.99')
       assert_equal 'en-gb', other_with_q.range
     end
     
@@ -28,8 +28,8 @@ module WebbedTest
       star = Webbed::LanguageRange.new('*')
       assert_equal '*', star.to_s
       
-      other = Webbed::LanguageRange.new('en-gb;q=99')
-      assert_equal 'en-gb;q=99', other.to_s
+      other = Webbed::LanguageRange.new('en-gb;q=0.99')
+      assert_equal 'en-gb;q=0.99', other.to_s
     end
     
     test '#primary_tag' do
@@ -53,28 +53,53 @@ module WebbedTest
       assert star.include?(Webbed::LanguageTag.new('en'))
       assert star.include?(Webbed::LanguageTag.new('en-gb'))
       assert star.include?(Webbed::LanguageTag.new('x-pig-latin'))
-      assert star.include?(Webbed::LanguageTag.new('en-gb;q=99'))
+      assert star.include?(Webbed::LanguageTag.new('en-gb;q=0.99'))
       
       en = Webbed::LanguageRange.new('en')
       assert en.include?(Webbed::LanguageTag.new('en'))
       assert en.include?(Webbed::LanguageTag.new('en-us'))
       assert en.include?(Webbed::LanguageTag.new('en-gb'))
       refute en.include?(Webbed::LanguageTag.new('x-pig-latin'))
-      assert en.include?(Webbed::LanguageTag.new('en-gb;q=99'))
+      assert en.include?(Webbed::LanguageTag.new('en-gb;q=0.99'))
       
       en_gb = Webbed::LanguageRange.new('en-gb')
       refute en_gb.include?(Webbed::LanguageTag.new('en'))
       refute en_gb.include?(Webbed::LanguageTag.new('en-us'))
       assert en_gb.include?(Webbed::LanguageTag.new('en-gb'))
       refute en_gb.include?(Webbed::LanguageTag.new('x-pig-latin'))
-      assert en_gb.include?(Webbed::LanguageTag.new('en-gb;q=99'))
+      assert en_gb.include?(Webbed::LanguageTag.new('en-gb;q=0.99'))
       
       x_pig_latin = Webbed::LanguageRange.new('x-pig-latin')
       refute x_pig_latin.include?(Webbed::LanguageTag.new('en'))
       refute x_pig_latin.include?(Webbed::LanguageTag.new('en-us'))
       refute x_pig_latin.include?(Webbed::LanguageTag.new('en-gb'))
       assert x_pig_latin.include?(Webbed::LanguageTag.new('x-pig-latin'))
-      refute x_pig_latin.include?(Webbed::LanguageTag.new('en-gb;q=99'))
+      refute x_pig_latin.include?(Webbed::LanguageTag.new('en-gb;q=0.99'))
+    end
+    
+    test '#specificity' do
+      star = Webbed::LanguageRange.new('*')
+      assert_equal 0, star.specificity
+      
+      en = Webbed::LanguageRange.new('en')
+      assert_equal 2, en.specificity
+      
+      en_gb = Webbed::LanguageRange.new('en-gb')
+      assert_equal 5, en_gb.specificity
+    end
+    
+    test '#quality' do
+      star = Webbed::LanguageRange.new('*')
+      assert_equal 1, star.quality
+      
+      star_with_q = Webbed::LanguageRange.new('*;q=0.5')
+      assert_equal 0.5, star_with_q.quality
+      
+      other = Webbed::LanguageRange.new('en-gb')
+      assert_equal 1, other.quality
+      
+      other_with_q = Webbed::LanguageRange.new('en-gb;q=0.99')
+      assert_equal 0.99, other_with_q.quality
     end
   end
 end
