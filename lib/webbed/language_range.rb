@@ -48,5 +48,13 @@ module Webbed
     def subtags
       star? ? nil : super
     end
+    
+    # Whether or not the language tag is in the language range.
+    # 
+    # @param [Webbed::LanguageTag] language_tag
+    # @return [Boolean]
+    def include?(language_tag)
+      star? || (primary_tag == language_tag.primary_tag && subtags == language_tag.subtags[0, subtags.size])
+    end
   end
 end
