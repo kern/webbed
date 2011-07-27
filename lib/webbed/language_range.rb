@@ -1,26 +1,20 @@
 module Webbed
   # Representation of an HTTP language range.
-  class LanguageRange
+  class LanguageRange < LanguageTag
     # The quality of the language range.
     # 
     # @return [Fixnum]
     attr_reader :quality
     
-    # The range of the language range.
-    # 
-    # @return [String]
-    attr_reader :range
-    
     Q_REGEX = /(?:\s*;\s*q\s*=\s*(.*))?/
     STAR_REGEX = /(\*)#{Q_REGEX}/
-    TAG_REGEX = /[A-Za-z]{1,8}/
     LANGUAGE_TAG_REGEX = /((#{TAG_REGEX})((?:-#{TAG_REGEX})*))#{Q_REGEX}/
     
     # (see Webbed::LanguageTag#initialize)
     def initialize(string)
       STAR_REGEX =~ string || LANGUAGE_TAG_REGEX =~ string
       @string = string
-      @range = $1
+      @tag = $1
       @quality = $2
     end
     
@@ -28,7 +22,7 @@ module Webbed
     # 
     # @return [Boolean]
     def star?
-      @range == '*'
+      @tag == '*'
     end
     
     # Converts the language range to a String.
@@ -38,24 +32,21 @@ module Webbed
       @string
     end
     
+    # The range of the language range.
+    # 
+    # @return [String]
+    def range
+      @tag
+    end
+    
     # (see Webbed::LanguageTag#primary_tag)
     def primary_tag
-      if star?
-        '*'
-      else
-        @range =~ LANGUAGE_TAG_REGEX
-        $2
-      end
+      star? ? '*' : super
     end
     
     # (see Webbed::LanguageTag#subtags)
     def subtags
-      if star?
-        nil
-      else
-        @range =~ LANGUAGE_TAG_REGEX
-        $3.split('-').reject { |t| t.empty? }
-      end
+      star? ? nil : super
     end
   end
 end

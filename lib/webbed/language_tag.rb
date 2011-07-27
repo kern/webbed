@@ -6,16 +6,16 @@ module Webbed
     
     # Creates a new language tag.
     # 
-    # @param [String] string
-    def initialize(string)
-      @string = string
+    # @param [String] tag
+    def initialize(tag)
+      @tag = tag
     end
     
     # Converts the language tag to a String.
     # 
     # @return [String]
     def to_s
-      @string
+      @tag
     end
     
     # The primary-tag of the language tag.
@@ -25,7 +25,7 @@ module Webbed
     # 
     # @return [String]
     def primary_tag
-      @string =~ REGEX
+      @tag =~ REGEX
       $1
     end
     
@@ -36,7 +36,7 @@ module Webbed
     # 
     # @return [<String>]
     def subtags
-      @string =~ REGEX
+      @tag =~ REGEX
       $2.split('-').reject { |t| t.empty? }
     end
   end
