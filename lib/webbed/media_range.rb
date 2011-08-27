@@ -6,6 +6,9 @@ module Webbed
     GLOBAL_GROUP_REGEX = /^(\*)\/(\*)$/
     TYPE_GROUP_REGEX = /^([-\w.+]+)\/(\*)$/
     
+    # The order of the Media Range.
+    # 
+    # @return [Fixnum]
     attr_accessor :order
     
     # Creates a new Media Range.
@@ -15,7 +18,7 @@ module Webbed
     # @option options [Fixnum] :order (0) the order of the Media Range
     # @see Webbed::MediaType#initialize
     def initialize(media_range, options = {})
-      self.order = options.delete(:order) || 0
+      self.order = options.fetch(:order, 0)
       super(media_range)
     end
     

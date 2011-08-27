@@ -6,16 +6,26 @@ module Webbed
     # @return [Fixnum]
     attr_reader :quality
     
+    # The order of the language range.
+    # 
+    # @return [Fixnum]
+    attr_accessor :order
+    
     Q_REGEX = /(?:\s*;\s*q\s*=\s*(.*))?/
     STAR_REGEX = /(\*)#{Q_REGEX}/
     TAG_REGEX = /[a-zA-Z]{0,8}/
     LANGUAGE_TAG_REGEX = /(#{TAG_REGEX}(?:-#{TAG_REGEX})*)#{Q_REGEX}/
     
-    # (see Webbed::LanguageTag#initialize)
-    def initialize(string)
+    # Creates a new language range.
+    # 
+    # @param [String] tag
+    # @param [Hash] options the options to create the language range with
+    # @option options [Fixnum] :order (0) the order of the language range
+    def initialize(string, options = {})
       STAR_REGEX =~ string || LANGUAGE_TAG_REGEX =~ string
       super($1)
       @quality = $2
+      @order = options.fetch(:order, 0)
     end
     
     # Whether or not the language range is a catch-all.

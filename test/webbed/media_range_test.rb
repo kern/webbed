@@ -64,21 +64,15 @@ module WebbedTest
       media_range_ordered_1 = Webbed::MediaRange.new('text/html;q=0.5', :order => 1)
       media_range_ordered_2 = Webbed::MediaRange.new('text/html;q=0.5', :order => 2)
       
-      shuffled_media_ranges = [
-        media_range_high_quality,
-        media_range_low_quality,
-        media_range_ordered_0,
-        media_range_ordered_1,
-        media_range_ordered_2
-      ].shuffle
-      
-      assert_equal([
+      media_ranges = [
         media_range_low_quality,
         media_range_ordered_2,
         media_range_ordered_1,
         media_range_ordered_0,
         media_range_high_quality
-      ], shuffled_media_ranges.sort)
+      ]
+      
+      assert_equal(media_ranges, media_ranges.shuffle.sort)
     end
     
     test '#specificity' do

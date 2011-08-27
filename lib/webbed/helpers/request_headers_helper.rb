@@ -58,7 +58,7 @@ module Webbed
         headers['Referer'] = referer.to_s
       end
       
-      # The accepted Media Ranges of the Request (as defined in the Allow Header).
+      # The accepted Media Ranges of the Request (as defined in the Accept Header).
       #  
       # @return [<Webbed::MediaRange>, nil]
       def accepted_media_ranges
@@ -71,7 +71,7 @@ module Webbed
         end
       end
       
-      # Sets the accepted Media Ranges of the Request (as defined in the Allow Header).
+      # Sets the accepted Media Ranges of the Request (as defined in the Accept Header).
       # 
       # @param [<#to_s>] accepted_media_ranges
       def accepted_media_ranges=(accepted_media_ranges)
@@ -87,7 +87,7 @@ module Webbed
       def preferred_media_ranges
         accepted_media_ranges = self.accepted_media_ranges
         
-        # Fix the broken `text/html` Media Range.
+        # Fix the broken `text/xml` Media Range.
         text_xml = accepted_media_ranges.find { |media_type| media_type.mime_type == 'text/xml' }
         application_xml = accepted_media_ranges.find { |media_type| media_type.mime_type == 'application/xml' }
         if text_xml && application_xml
@@ -120,6 +120,59 @@ module Webbed
           
           if media_type_match && media_type_match.quality != 0
             matches.push([media_type, media_type_match])
+          end
+        end
+        
+        matches.sort! { |a, b| b[1] <=> a[1] }
+        matches[0] ? matches[0][0] : nil
+      end
+      
+      # The accepted language ranges of the Request (as defined in the Accept-Language Header).
+      #  
+      # @return [<Webbed::LanguageRange>, nil]
+      def accepted_language_ranges
+        if headers['Accept-Language']
+          headers['Accept-Language'].split(/\s*,\s*/).each_with_index.map do |language_tag, index|
+            Webbed::LanguageRange.new(language_tag, :order => index)
+          end
+        else
+          [Webbed::LanguageRange.new('*')]
+        end
+      end
+      
+      # Sets the accepted language ranges of the Request (as defined in the Accept-Language Header).
+      # 
+      # @param [<#to_s>] accepted_language_ranges
+      def accepted_language_ranges=(accepted_language_ranges)
+        headers['Accept-Language'] = accepted_language_ranges.join(', ')
+      end
+      
+      # Sorts the accepted language ranges of the Request in order of preference.
+      # 
+      # @return [<Webbed::LanguageRange>]
+      def preferred_language_ranges
+        accepted_language_ranges.sort.reverse
+      end
+      
+      # Negotiates which language tag to use based on the accepted language ranges.
+      # 
+      # @param [<Webbed::LanguageTag>] language_tags
+      # @return [Webbed::LanguageTag, nil]
+      def negotiate_language_tag(language_tags)
+        preferred_language_ranges = self.preferred_language_ranges
+        matches = []
+        
+        language_tags.each do |language_tag|
+          language_tag_match = nil
+          
+          preferred_language_ranges.each do |language_range|
+            if language_range.include?(language_tag) && (!language_tag_match || language_tag_match.specificity < language_range.specificity)
+              language_tag_match = language_range
+            end
+          end
+          
+          if language_tag_match && language_tag_match.quality != 0
+            matches.push([language_tag, language_tag_match])
           end
         end
         

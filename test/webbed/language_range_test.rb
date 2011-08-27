@@ -101,5 +101,23 @@ module WebbedTest
       other_with_q = Webbed::LanguageRange.new('en-gb; q=0.99')
       assert_equal 0.99, other_with_q.quality
     end
+    
+    test '#<=>' do
+      language_range_high_quality = Webbed::LanguageRange.new('en-gb')
+      language_range_low_quality = Webbed::LanguageRange.new('x-pig-latin;q=0.2')
+      language_range_ordered_0 = Webbed::LanguageRange.new('en-gb;q=0.5', :order => 0)
+      language_range_ordered_1 = Webbed::LanguageRange.new('en-gb;q=0.5', :order => 1)
+      language_range_ordered_2 = Webbed::LanguageRange.new('en-gb;q=0.5', :order => 2)
+      
+      language_ranges = [
+        language_range_low_quality,
+        language_range_ordered_2,
+        language_range_ordered_1,
+        language_range_ordered_0,
+        language_range_high_quality
+      ]
+      
+      assert_equal(language_ranges, language_ranges.shuffle.sort)
+    end
   end
 end

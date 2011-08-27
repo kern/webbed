@@ -140,42 +140,81 @@ module WebbedTest
       end
       
       test '#accepted_language_ranges' do
-        assert_equal '*/*', @request.accepted_media_ranges[0].mime_type
-        assert_equal 1, @request.accepted_media_ranges[0].quality
-        assert_equal 0, @request.accepted_media_ranges[0].order
+        assert_equal '*', @request.accepted_language_ranges[0].range
+        assert_equal 1, @request.accepted_language_ranges[0].quality
+        assert_equal 0, @request.accepted_language_ranges[0].order
         
-        @request.headers['Accept'] = 'text/plain; q=0.5, text/html, text/x-dvi; q=0.8, text/x-c, */*'
-        assert_equal 'text/plain', @request.accepted_media_ranges[0].mime_type
-        assert_equal 0.5, @request.accepted_media_ranges[0].quality
-        assert_equal 0, @request.accepted_media_ranges[0].order
-        assert_equal 'text/html', @request.accepted_media_ranges[1].mime_type
-        assert_equal 1.0, @request.accepted_media_ranges[1].quality
-        assert_equal 1, @request.accepted_media_ranges[1].order
-        assert_equal 'text/x-dvi', @request.accepted_media_ranges[2].mime_type
-        assert_equal 0.8, @request.accepted_media_ranges[2].quality
-        assert_equal 2, @request.accepted_media_ranges[2].order
-        assert_equal 'text/x-c', @request.accepted_media_ranges[3].mime_type
-        assert_equal 1.0, @request.accepted_media_ranges[3].quality
-        assert_equal 3, @request.accepted_media_ranges[3].order
-        assert_equal '*/*', @request.accepted_media_ranges[4].mime_type
-        assert_equal 1.0, @request.accepted_media_ranges[4].quality
-        assert_equal 4, @request.accepted_media_ranges[4].order
+        @request.headers['Accept-Language'] = 'en-gb; q=0.5, en-us, x-pig-latin; q=0.8, i-cherokee, *'
+        assert_equal 'en-gb', @request.accepted_language_ranges[0].range
+        assert_equal 0.5, @request.accepted_language_ranges[0].quality
+        assert_equal 0, @request.accepted_language_ranges[0].order
+        assert_equal 'en-us', @request.accepted_language_ranges[1].range
+        assert_equal 1.0, @request.accepted_language_ranges[1].quality
+        assert_equal 1, @request.accepted_language_ranges[1].order
+        assert_equal 'x-pig-latin', @request.accepted_language_ranges[2].range
+        assert_equal 0.8, @request.accepted_language_ranges[2].quality
+        assert_equal 2, @request.accepted_language_ranges[2].order
+        assert_equal 'i-cherokee', @request.accepted_language_ranges[3].range
+        assert_equal 1.0, @request.accepted_language_ranges[3].quality
+        assert_equal 3, @request.accepted_language_ranges[3].order
+        assert_equal '*', @request.accepted_language_ranges[4].range
+        assert_equal 1.0, @request.accepted_language_ranges[4].quality
+        assert_equal 4, @request.accepted_language_ranges[4].order
         
-        @request.accepted_media_ranges = ['text/*', Webbed::MediaType.new('text/html'), 'text/html;level=1', '*/*']
-        assert_equal 'text/*, text/html, text/html;level=1, */*', @request.headers['Accept']
-        assert_equal 'text/*', @request.accepted_media_ranges[0].mime_type
-        assert_equal 1.0, @request.accepted_media_ranges[0].quality
-        assert_equal 0, @request.accepted_media_ranges[0].order
-        assert_equal 'text/html', @request.accepted_media_ranges[1].mime_type
-        assert_equal 1.0, @request.accepted_media_ranges[1].quality
-        assert_equal 1, @request.accepted_media_ranges[1].order
-        assert_equal 'text/html', @request.accepted_media_ranges[2].mime_type
-        assert_equal 1.0, @request.accepted_media_ranges[2].quality
-        assert_equal '1', @request.accepted_media_ranges[2].parameters['level']
-        assert_equal 2, @request.accepted_media_ranges[2].order
-        assert_equal '*/*', @request.accepted_media_ranges[3].mime_type
-        assert_equal 1.0, @request.accepted_media_ranges[3].quality
-        assert_equal 3, @request.accepted_media_ranges[3].order
+        @request.accepted_language_ranges = ['en', Webbed::LanguageRange.new('en-gb'), 'en-gb-foo', '*']
+        assert_equal 'en, en-gb, en-gb-foo, *', @request.headers['Accept-Language']
+        assert_equal 'en', @request.accepted_language_ranges[0].range
+        assert_equal 1.0, @request.accepted_language_ranges[0].quality
+        assert_equal 0, @request.accepted_language_ranges[0].order
+        assert_equal 'en-gb', @request.accepted_language_ranges[1].range
+        assert_equal 1.0, @request.accepted_language_ranges[1].quality
+        assert_equal 1, @request.accepted_language_ranges[1].order
+        assert_equal 'en-gb-foo', @request.accepted_language_ranges[2].range
+        assert_equal 1.0, @request.accepted_language_ranges[2].quality
+        assert_equal 2, @request.accepted_language_ranges[2].order
+        assert_equal '*', @request.accepted_language_ranges[3].range
+        assert_equal 1.0, @request.accepted_language_ranges[3].quality
+        assert_equal 3, @request.accepted_language_ranges[3].order
+      end
+      
+      test '#preferred_language_ranges' do
+        assert_equal '*', @request.preferred_language_ranges[0].to_s
+        
+        @request.headers['Accept-Language'] = 'en;q=0.3, en-gb;q=0.7, en-gb-foo, en-gb-bar, en-gb-bar;q=0.4, *;q=0.5'
+        assert_equal 'en-gb-foo', @request.preferred_language_ranges[0].to_s
+        assert_equal 'en-gb-bar', @request.preferred_language_ranges[1].to_s
+        assert_equal 'en-gb; q=0.7', @request.preferred_language_ranges[2].to_s
+        assert_equal '*; q=0.5', @request.preferred_language_ranges[3].to_s
+        assert_equal 'en-gb-bar; q=0.4', @request.preferred_language_ranges[4].to_s
+        assert_equal 'en; q=0.3', @request.preferred_language_ranges[5].to_s
+      end
+      
+      test '#negotiate_language_tag' do
+        en_gb = Webbed::LanguageTag.new('en-gb')
+        i_cherokee = Webbed::LanguageTag.new('i-cherokee')
+        
+        assert_equal en_gb, @request.negotiate_language_tag([en_gb])
+        assert_equal en_gb, @request.negotiate_language_tag([en_gb, i_cherokee])
+        
+        @request.headers['Accept-Language'] = 'i'
+        assert_nil @request.negotiate_language_tag([en_gb])
+        assert_equal i_cherokee, @request.negotiate_language_tag([en_gb, i_cherokee])
+        
+        @request.headers['Accept-Language'] = 'i, en'
+        assert_equal en_gb, @request.negotiate_language_tag([en_gb])
+        assert_equal i_cherokee, @request.negotiate_language_tag([en_gb, i_cherokee])
+        
+        @request.headers['Accept-Language'] = 'en, i'
+        assert_equal en_gb, @request.negotiate_language_tag([en_gb])
+        assert_equal en_gb, @request.negotiate_language_tag([en_gb, i_cherokee])
+        
+        @request.headers['Accept-Language'] = 'en;q=0, i'
+        assert_nil @request.negotiate_language_tag([en_gb])
+        assert_equal i_cherokee, @request.negotiate_language_tag([en_gb, i_cherokee])
+        
+        @request.headers['Accept-Language'] = 'en, en-gb;q=0.2, i;q=0.5'
+        assert_equal en_gb, @request.negotiate_language_tag([en_gb])
+        assert_equal i_cherokee, @request.negotiate_language_tag([en_gb, i_cherokee])
       end
     end
   end
