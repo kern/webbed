@@ -60,7 +60,7 @@ module Webbed
       self.headers = headers
       self.entity_body = entity_body
       
-      self.http_version = options.delete(:http_version) || 1.1
+      self.http_version = options.fetch(:http_version, 1.1)
     end
     
     # The Status-Line of the Response.
@@ -73,7 +73,7 @@ module Webbed
     def status_line
       "#{http_version} #{status_code} #{reason_phrase}\r\n"
     end
-    alias :start_line :status_line
+    alias_method :start_line, :status_line
     
     include Helpers::RackResponseHelper
     include Helpers::ResponseHeadersHelper

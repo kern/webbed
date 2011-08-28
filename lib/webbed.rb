@@ -9,17 +9,19 @@
 # 
 # @todo Add examples of webbed in action.
 module Webbed
-  autoload :Headers,        'webbed/headers'
-  autoload :HTTPVersion,    'webbed/http_version'
-  autoload :GenericMessage, 'webbed/generic_message'
-  autoload :LanguageTag,    'webbed/language_tag'
-  autoload :LanguageRange,  'webbed/language_range'
-  autoload :MediaRange,     'webbed/media_range'
-  autoload :MediaType,      'webbed/media_type'
-  autoload :Method,         'webbed/method'
-  autoload :StatusCode,     'webbed/status_code'
-  autoload :Request,        'webbed/request'
-  autoload :Response,       'webbed/response'
+  autoload :Headers,           'webbed/headers'
+  autoload :HTTPVersion,       'webbed/http_version'
+  autoload :GenericMessage,    'webbed/generic_message'
+  autoload :LanguageTag,       'webbed/language_tag'
+  autoload :LanguageRange,     'webbed/language_range'
+  autoload :MediaRange,        'webbed/media_range'
+  autoload :MediaType,         'webbed/media_type'
+  autoload :Method,            'webbed/method'
+  autoload :StatusCode,        'webbed/status_code'
+  autoload :Request,           'webbed/request'
+  autoload :Response,          'webbed/response'
+  autoload :ContentNegotiator, 'webbed/content_negotiator'
+  autoload :Negotiable,        'webbed/negotiable'
   
   module Helpers
     autoload :MethodHelper,          'webbed/helpers/method_helper'

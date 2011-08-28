@@ -59,13 +59,17 @@ module Webbed
       end
       
       # The accepted Media Ranges of the Request (as defined in the Accept Header).
-      #  
+      # 
+      # @param [Boolean] fix_text_xml_range if the broken `text/xml` range should be fixed
       # @return [<Webbed::MediaRange>, nil]
-      def accepted_media_ranges
+      def accepted_media_ranges(fix_text_xml_range = false)
         if headers['Accept']
-          headers['Accept'].split(/\s*,\s*/).each_with_index.map do |media_type, index|
+          ranges = headers['Accept'].split(/\s*,\s*/).each_with_index.map do |media_type, index|
             Webbed::MediaRange.new(media_type, :order => index)
           end
+          
+          fix_text_html(ranges) if fix_text_xml_range
+          ranges
         else
           [Webbed::MediaRange.new('*/*')]
         end
@@ -78,53 +82,15 @@ module Webbed
         headers['Accept'] = accepted_media_ranges.join(', ')
       end
       
-      # Sorts the accepted Media Ranges of the Request in order of preference.
-      # 
-      # This code is based off part of ActionDispatch.
-      # 
-      # @return [<Webbed::MediaRange>]
-      # @see https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/http/mime_type.rb ActionDispatch MIME type handler
-      def preferred_media_ranges
-        accepted_media_ranges = self.accepted_media_ranges
-        
-        # Fix the broken `text/xml` Media Range.
-        text_xml = accepted_media_ranges.find { |media_type| media_type.mime_type == 'text/xml' }
-        application_xml = accepted_media_ranges.find { |media_type| media_type.mime_type == 'application/xml' }
-        if text_xml && application_xml
-          application_xml.order = [text_xml.order, application_xml.order].max
-          application_xml.quality = [text_xml.quality, application_xml.quality].max
-          accepted_media_ranges.delete(text_xml)
-        elsif text_xml
-          text_xml.mime_type = 'application/xml'
-        end
-        
-        accepted_media_ranges.sort.reverse
-      end
-      
       # Negotiates which Media Type to use based on the accepted Media Ranges.
       # 
       # @param [<Webbed::MediaType>] media_types
+      # @param [Boolean] fix_text_xml_range if the broken `text/xml` range should be fixed
       # @return [Webbed::MediaType, nil]
-      def negotiate_media_type(media_types)
-        preferred_media_ranges = self.preferred_media_ranges
-        matches = []
-        
-        media_types.each do |media_type|
-          media_type_match = nil
-          
-          preferred_media_ranges.each do |media_range|
-            if media_range.include?(media_type) && (!media_type_match || media_type_match.specificity < media_range.specificity)
-              media_type_match = media_range
-            end
-          end
-          
-          if media_type_match && media_type_match.quality != 0
-            matches.push([media_type, media_type_match])
-          end
-        end
-        
-        matches.sort! { |a, b| b[1] <=> a[1] }
-        matches[0] ? matches[0][0] : nil
+      def negotiate_media_type(media_types, fix_text_xml_range = false)
+        ranges = accepted_media_ranges(fix_text_xml_range)
+        negotiator = Webbed::ContentNegotiator.new(ranges)
+        negotiator.negotiate(media_types)
       end
       
       # The accepted language ranges of the Request (as defined in the Accept-Language Header).
@@ -147,37 +113,33 @@ module Webbed
         headers['Accept-Language'] = accepted_language_ranges.join(', ')
       end
       
-      # Sorts the accepted language ranges of the Request in order of preference.
-      # 
-      # @return [<Webbed::LanguageRange>]
-      def preferred_language_ranges
-        accepted_language_ranges.sort.reverse
-      end
-      
       # Negotiates which language tag to use based on the accepted language ranges.
       # 
       # @param [<Webbed::LanguageTag>] language_tags
       # @return [Webbed::LanguageTag, nil]
       def negotiate_language_tag(language_tags)
-        preferred_language_ranges = self.preferred_language_ranges
-        matches = []
-        
-        language_tags.each do |language_tag|
-          language_tag_match = nil
-          
-          preferred_language_ranges.each do |language_range|
-            if language_range.include?(language_tag) && (!language_tag_match || language_tag_match.specificity < language_range.specificity)
-              language_tag_match = language_range
-            end
-          end
-          
-          if language_tag_match && language_tag_match.quality != 0
-            matches.push([language_tag, language_tag_match])
-          end
+        negotiator = Webbed::ContentNegotiator.new(accepted_language_ranges)
+        negotiator.negotiate(language_tags)
+      end
+      
+      private
+      
+      # Fixes the broken `text/html` in a list of Media Ranges.
+      # 
+      # This code is based off part of ActionDispatch.
+      # 
+      # @return [<Webbed::MediaRange>]
+      # @see https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/http/mime_type.rb ActionDispatch MIME type handler
+      def fix_text_html(ranges)
+        text_xml = ranges.find { |media_type| media_type.mime_type == 'text/xml' }
+        application_xml = ranges.find { |media_type| media_type.mime_type == 'application/xml' }
+        if text_xml && application_xml
+          application_xml.order = [text_xml.order, application_xml.order].min
+          application_xml.quality = [text_xml.quality, application_xml.quality].max
+          ranges.delete(text_xml)
+        elsif text_xml
+          text_xml.mime_type = 'application/xml'
         end
-        
-        matches.sort! { |a, b| b[1] <=> a[1] }
-        matches[0] ? matches[0][0] : nil
       end
     end
   end

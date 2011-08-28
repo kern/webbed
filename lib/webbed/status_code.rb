@@ -4,7 +4,7 @@ module Webbed
     include Comparable
     
     UNKNOWN_REASON_PHRASE = 'Unknown Status Code'
-        
+    
     class << self
       # The registered Status Codes.
       # 

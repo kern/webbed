@@ -5,7 +5,7 @@ module Webbed
       # Aliases the {Webbed::Request#request_uri} method to `#request_url`.
       def self.included(base)
         base.class_eval do
-          alias :request_url :request_uri
+          alias_method :request_url, :request_uri
         end
       end
       
@@ -28,7 +28,7 @@ module Webbed
           request_uri
         end
       end
-      alias :url :uri
+      alias_method :url, :uri
     end
   end
 end

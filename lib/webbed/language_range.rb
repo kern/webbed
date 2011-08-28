@@ -1,6 +1,8 @@
 module Webbed
   # Representation of an HTTP language range.
   class LanguageRange < LanguageTag
+    include Webbed::Negotiable
+    
     # The quality of the language range.
     # 
     # @return [Fixnum]
@@ -71,20 +73,11 @@ module Webbed
       star? || tags == language_tag.tags[0, tags.size]
     end
     
-    # The level of specificity of the language range.
+    # The precedence of the language range.
     # 
     # @return [Fixnum]
-    def specificity
+    def precedence
       star? ? 0 : range.size
-    end
-    
-    # Compares the Language Range to another Language Range.
-    # 
-    # It sorts Language Ranges by quality and order, in that order.
-    # 
-    # @param [Webbed::LanguageRange] other
-    def <=>(other)
-      [quality, other.order] <=> [other.quality, order]
     end
   end
 end

@@ -1,7 +1,7 @@
 module Webbed
   # Representation of an HTTP Media Range.
   class MediaRange < MediaType
-    include Comparable
+    include Webbed::Negotiable
     
     GLOBAL_GROUP_REGEX = /^(\*)\/(\*)$/
     TYPE_GROUP_REGEX = /^([-\w.+]+)\/(\*)$/
@@ -64,28 +64,19 @@ module Webbed
       parameters['q'] = quality.to_s
     end
     
-    # Compares the Media Range to another Media Range.
+    # The precedence of the Media Range.
     # 
-    # It sorts Media Ranges by quality and order, in that order.
+    # This is not well defined in RFC 2616 but it helps for sorting.
     # 
-    # @param [Webbed::MediaRange] other
-    def <=>(other)
-      [quality, other.order] <=> [other.quality, order]
-    end
-    
-    # The specificity of the Media Range.
-    # 
-    # This is not explicitly defined in RFC 2616 but it helps for sorting.
-    # 
-    # * Global group: 0
-    # * Type group: 1
-    # * Suffixed Media Type: 1000 + the number of accept-extensions
-    # * Media Type: 2 + the number of accept-extensions
-    def specificity
-      return 0 if type == '*'
-      return 1 if subtype == '*'
-      return 1000 + accept_extensions.length if suffix
-      return 2 + accept_extensions.length
+    # * Global group: [0, 0]
+    # * Type group: [1, 0]
+    # * Media Type: [2, the number of accept-extensions]
+    # * Suffixed Media Type: [3, the number of accept-extensions]
+    def precedence
+      return [0, 0] if type == '*'
+      return [1, 0] if subtype == '*'
+      return [2, accept_extensions.length] unless suffix
+      return [3, accept_extensions.length]
     end
     
     # (see Webbed::MediaType#to_s)

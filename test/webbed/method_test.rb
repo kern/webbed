@@ -67,7 +67,7 @@ module WebbedTest
       refute_equal Webbed::Method::POST, fake
     end
     
-    test 'registeration' do
+    test 'registration' do
       begin
         unregistered = Webbed::Method.new('UNREGISTERED')
         registered = Webbed::Method.register('REGISTERED')

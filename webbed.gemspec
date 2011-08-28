@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'addressable'
   
   s.add_development_dependency 'minitest', '~> 2.0'
-  s.add_development_dependency 'journo'
   s.add_development_dependency 'mocha'
+  s.add_development_dependency 'minitest-reporters'
   s.add_development_dependency 'maruku'
   s.add_development_dependency 'test_declarative'
   

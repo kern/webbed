@@ -1,12 +1,6 @@
 module Webbed
   # Representation of an HTTP Method.
   class Method
-    DEFAULTS = {
-      :safe => false,
-      :idempotent => false,
-      :allowable_entities => [:request, :response]
-    }
-    
     # The allowable entities of a message.
     # 
     # It can contain any combination of `:request` and `:response`.
@@ -51,11 +45,10 @@ module Webbed
     # @option options [Boolean] :idempotent (false) whether or not the Method is idempotent
     # @option options [Array<:request, :response>] :allowable_entities ([:request, :response]) the allowable entites of a message
     def initialize(name, options = {})
-      options = DEFAULTS.merge(options)
       @name = name
-      @safe = options[:safe]
-      @idempotent = options[:safe] || options[:idempotent]
-      @allowable_entities = options[:allowable_entities]
+      @safe = options.fetch(:safe, false)
+      @idempotent = @safe || options.fetch(:idempotent, false)
+      @allowable_entities = options.fetch(:allowable_entities, [:request, :response])
     end
     
     # Whether or not the Method is safe.

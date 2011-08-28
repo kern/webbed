@@ -57,38 +57,20 @@ module WebbedTest
       assert_equal({ 'level' => '1' }, media_range.accept_extensions)
     end
     
-    test '#<=>' do
-      media_range_high_quality = Webbed::MediaRange.new('application/xml')
-      media_range_low_quality = Webbed::MediaRange.new('application/json;q=0.2')
-      media_range_ordered_0 = Webbed::MediaRange.new('text/html;q=0.5', :order => 0)
-      media_range_ordered_1 = Webbed::MediaRange.new('text/html;q=0.5', :order => 1)
-      media_range_ordered_2 = Webbed::MediaRange.new('text/html;q=0.5', :order => 2)
-      
-      media_ranges = [
-        media_range_low_quality,
-        media_range_ordered_2,
-        media_range_ordered_1,
-        media_range_ordered_0,
-        media_range_high_quality
-      ]
-      
-      assert_equal(media_ranges, media_ranges.shuffle.sort)
-    end
-    
-    test '#specificity' do
+    test '#precedence' do
       media_range_global_group = Webbed::MediaRange.new('*/*')
       media_range_type_group = Webbed::MediaRange.new('text/*')
-      media_range_suffixed_zero_extensions = Webbed::MediaRange.new('application/atom+xml')
-      media_range_suffixed_one_extension = Webbed::MediaRange.new('application/atom+xml;level=1')
       media_range_zero_extensions = Webbed::MediaRange.new('text/html')
       media_range_one_extension = Webbed::MediaRange.new('text/html;level=1')
+      media_range_suffixed_zero_extensions = Webbed::MediaRange.new('application/atom+xml')
+      media_range_suffixed_one_extension = Webbed::MediaRange.new('application/atom+xml;level=1')
       
-      assert_equal 0, media_range_global_group.specificity
-      assert_equal 1, media_range_type_group.specificity
-      assert_equal 1000, media_range_suffixed_zero_extensions.specificity
-      assert_equal 1001, media_range_suffixed_one_extension.specificity
-      assert_equal 2, media_range_zero_extensions.specificity
-      assert_equal 3, media_range_one_extension.specificity
+      assert_equal [0, 0], media_range_global_group.precedence
+      assert_equal [1, 0], media_range_type_group.precedence
+      assert_equal [2, 0], media_range_zero_extensions.precedence
+      assert_equal [2, 1], media_range_one_extension.precedence
+      assert_equal [3, 0], media_range_suffixed_zero_extensions.precedence
+      assert_equal [3, 1], media_range_suffixed_one_extension.precedence
     end
     
     test '#to_s' do

@@ -45,8 +45,8 @@ module Webbed
       self.request_uri  = request_uri
       self.headers      = headers
       self.entity_body  = entity_body
-      self.http_version = options[:http_version] || 1.1
-      self.scheme       = options[:scheme] || 'http'
+      self.http_version = options.fetch(:http_version, 1.1)
+      self.scheme       = options.fetch(:scheme, 'http')
     end
     
     # The Method of the Request.
@@ -74,7 +74,7 @@ module Webbed
     def request_line
       "#{method} #{request_uri} #{http_version}\r\n"
     end
-    alias :start_line :request_line
+    alias_method :start_line, :request_line
     
     include Helpers::MethodHelper
     include Helpers::RequestURIHelper
