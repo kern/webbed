@@ -166,6 +166,38 @@ module WebbedTest
         assert_equal en_gb, @request.negotiate_language_tag([en_gb])
         assert_equal i_cherokee, @request.negotiate_language_tag([en_gb, i_cherokee])
       end
+      
+      test '#accepted_charsets' do
+        assert_equal '*', @request.accepted_charsets[0].to_s
+        
+        @request.headers['Accept-Charset'] = 'macedonian'
+        assert_equal 'macedonian', @request.accepted_charsets[0].to_s
+        assert_equal 0, @request.accepted_charsets[0].order
+        assert_equal 'ISO-8859-1', @request.accepted_charsets[1].to_s
+        assert_equal 1, @request.accepted_charsets[1].order
+        
+        @request.accepted_charsets = [Webbed::CharsetRange.new('*'), 'macedonian']
+        assert_equal '*, macedonian', @request.headers['Accept-Charset']
+        assert_equal '*', @request.accepted_charsets[0].to_s
+        assert_equal 0, @request.accepted_charsets[0].order
+        assert_equal 'macedonian', @request.accepted_charsets[1].to_s
+        assert_equal 1, @request.accepted_charsets[1].order
+        
+        @request.headers['Accept-Charset'] = 'ISO-8859-1'
+        assert_equal 'ISO-8859-1', @request.accepted_charsets[0].to_s
+      end
+      
+      test '#negotiate_charset' do
+        macedonian = Webbed::Charset.new('macedonian')
+        iso_8859_1 = Webbed::Charset.new('ISO-8859-1')
+        
+        assert_equal macedonian, @request.negotiate_charset([macedonian])
+        assert_equal macedonian, @request.negotiate_charset([macedonian, iso_8859_1])
+        
+        @request.headers['Accept-Charset'] = ''
+        assert_nil @request.negotiate_charset([macedonian])
+        assert_equal iso_8859_1, @request.negotiate_charset([macedonian, iso_8859_1])
+      end
     end
   end
 end

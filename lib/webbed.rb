@@ -22,6 +22,8 @@ module Webbed
   autoload :Response,          'webbed/response'
   autoload :ContentNegotiator, 'webbed/content_negotiator'
   autoload :Negotiable,        'webbed/negotiable'
+  autoload :Charset,           'webbed/charset'
+  autoload :CharsetRange,      'webbed/charset_range'
   
   module Helpers
     autoload :MethodHelper,          'webbed/helpers/method_helper'

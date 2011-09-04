@@ -122,6 +122,32 @@ module Webbed
         negotiator.negotiate(language_tags)
       end
       
+      # TODO: Document these methods.
+      def accepted_charsets
+        if headers['Accept-Charset']
+          charsets = headers['Accept-Charset'].split(/\s*,\s*/).each_with_index.map do |charset, index|
+            Webbed::CharsetRange.new(charset, :order => index)
+          end
+          
+          if charsets.none? { |charset| charset.star? }
+            charsets.push(Webbed::CharsetRange.new('ISO-8859-1', :order => charsets.length))
+          end
+          
+          charsets
+        else
+          [Webbed::CharsetRange.new('*')]
+        end
+      end
+      
+      def accepted_charsets=(accepted_charsets)
+        headers['Accept-Charset'] = accepted_charsets.join(', ')
+      end
+      
+      def negotiate_charset(charsets)
+        negotiator = Webbed::ContentNegotiator.new(accepted_charsets)
+        negotiator.negotiate(charsets)
+      end
+      
       private
       
       # Fixes the broken `text/html` in a list of Media Ranges.
