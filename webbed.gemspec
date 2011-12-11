@@ -22,5 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency "treetop", "~> 1.4"
 
   s.add_development_dependency "rspec", "~> 2.7"
+  s.add_development_dependency "fuubar", "0.0.6"
   s.add_development_dependency "capybara", "~> 1.1"
 end
