@@ -8,16 +8,8 @@ module Webbed
       0
     end
     
-    def order
-      0
-    end
-    
-    def precedence_sort_array
-      [precedence, quality, -order]
-    end
-    
-    def quality_sort_array
-      [quality, -order]
+    def acceptable?
+      quality != 0
     end
   end
 end

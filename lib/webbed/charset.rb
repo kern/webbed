@@ -1,5 +1,10 @@
 module Webbed
   class Charset
+    def self.parse(string)
+      parser = Webbed::Grammars::CharsetParser.new
+      parser.parse(string).value
+    end
+    
     # Creates a new charset.
     # 
     # @param [String] string the string that the charset represents
@@ -22,37 +27,5 @@ module Webbed
     def ==(other)
       @string.downcase == other.to_s.downcase
     end
-    
-    # Returns the default quality of the charset.
-    # 
-    # For ISO-8859-1, this value is 1. For everything else, it's 0.
-    # 
-    # @return [0, 1]
-    def default_quality
-      iso_8859_1? ? 1 : 0
-    end
-    
-    # Determines if the charset is a representation of ISO-8859-1.
-    # 
-    # @return [Boolean]
-    def iso_8859_1?
-      ISO_8859_1_ALIASES.include?(self)
-    end
-    
-    # The canonical representation of the ISO-8859-1 charset.
-    ISO_8859_1 = Webbed::Charset.new('ISO-8859-1')
-    
-    # All representations of the ISO-8859-1 charset.
-    ISO_8859_1_ALIASES = [
-      ISO_8859_1,
-      Webbed::Charset.new('ISO_8859-1:1987'),
-      Webbed::Charset.new('iso-ir-100'),
-      Webbed::Charset.new('ISO_8859-1'),
-      Webbed::Charset.new('latin1'),
-      Webbed::Charset.new('l1'),
-      Webbed::Charset.new('IBM819'),
-      Webbed::Charset.new('CP819'),
-      Webbed::Charset.new('csISOLatin1')
-    ]
   end
 end

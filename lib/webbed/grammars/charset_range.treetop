@@ -1,0 +1,12 @@
+module Webbed
+  module Grammars
+    grammar CharsetRange
+      include Charset
+      include Qvalue
+      
+      rule charset_range
+        range:("*" / charset) LWS* qparam:qparam? <CharsetRangeNode>
+      end
+    end
+  end
+end

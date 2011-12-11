@@ -1,12 +1,14 @@
+require "treetop"
+
 # Webbed provides two important abstraction on the HTTP specification (RFC
 # 2616), {Webbed::Request} and {Webbed::Response}. Although the core classes
 # have the bare-minimum of functionality for interacting with the two classes,
 # they have been extended with a variety of helper modules, adding a significant
 # amount of semantic meaning to the instances of each class.
-# 
+#
 # Webbed can be used with or without Rack, but it includes Rack helpers for
 # convenience.
-# 
+#
 # @todo Add examples of webbed in action.
 module Webbed
   autoload :Headers,           'webbed/headers'
@@ -24,7 +26,7 @@ module Webbed
   autoload :Negotiable,        'webbed/negotiable'
   autoload :Charset,           'webbed/charset'
   autoload :CharsetRange,      'webbed/charset_range'
-  
+
   module Helpers
     autoload :MethodHelper,          'webbed/helpers/method_helper'
     autoload :RackRequestHelper,     'webbed/helpers/rack_request_helper'
@@ -34,5 +36,21 @@ module Webbed
     autoload :RequestHeadersHelper,  'webbed/helpers/request_headers_helper'
     autoload :ResponseHeadersHelper, 'webbed/helpers/response_headers_helper'
     autoload :EntityHeadersHelper,   'webbed/helpers/entity_headers_helper'
+  end
+
+  module Grammars
+    def self.require_treetop(relative_path)
+      Treetop.load File.expand_path('../' + relative_path, __FILE__)
+    end
+
+    require_treetop 'webbed/grammars/basic_rules'
+    require_treetop 'webbed/grammars/qvalue'
+    require_treetop 'webbed/grammars/charset'
+    require_treetop 'webbed/grammars/charset_range'
+
+    require 'webbed/grammars/charset_node'
+    require 'webbed/grammars/charset_range_node'
+    require 'webbed/grammars/qvalue_node'
+    require 'webbed/grammars/qparam_node'
   end
 end

@@ -2,25 +2,21 @@ module Webbed
   # TODO: Document this class.
   class CharsetRange
     include Webbed::Negotiable
+    attr_accessor :range
+    attr_writer :quality
     
-    Q_REGEX = /(?:\s*;\s*q\s*=\s*(.*))?/
-    CHARSET_RANGE_REGEX = /(\*|[-\w.+]+)#{Q_REGEX}/
+    def self.parse(string)
+      parser = Webbed::Grammars::CharsetRangeParser.new
+      parser.parse(string).value
+    end
     
-    attr_accessor :order
-    
-    def initialize(string, options = {})
-      string =~ CHARSET_RANGE_REGEX
-      @charset = $1
-      @quality = $2
-      @order = options.fetch(:order, 0)
+    def initialize(range, options = {})
+      @range = range
+      @quality = options[:quality]
     end
     
     def star?
-      @charset == '*'
-    end
-    
-    def quality=(quality)
-      @quality = quality.to_s
+      @range == '*'
     end
     
     def quality
@@ -28,7 +24,7 @@ module Webbed
     end
     
     def to_s
-      @quality ? "#{@charset}; q=#{@quality}" : @charset
+      @quality ? "#{@range}; q=#{@quality}" : @range
     end
     
     def precedence
@@ -36,7 +32,7 @@ module Webbed
     end
     
     def include?(charset)
-      star? || @charset == charset.to_s
+      star? || @range == charset.to_s
     end
   end
 end

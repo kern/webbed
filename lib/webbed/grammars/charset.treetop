@@ -1,0 +1,11 @@
+module Webbed
+  module Grammars
+    grammar Charset
+      include BasicRules
+      
+      rule charset
+        token <CharsetNode>
+      end
+    end
+  end
+end

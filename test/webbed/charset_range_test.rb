@@ -2,6 +2,12 @@ require 'test_helper'
 
 module WebbedTest
   class CharsetRangeTest < TestCase
+    test 'parse' do
+      macedonian = Webbed::CharsetRange.parse('macedonian; q=0.5')
+      assert_equal 'macedonian', macedonian.range
+      assert_equal 0.5, macedonian.quality
+    end
+    
     test 'star' do
       star = Webbed::CharsetRange.new('*')
       macedonian = Webbed::CharsetRange.new('macedonian')
@@ -12,7 +18,7 @@ module WebbedTest
     
     test 'quality' do
       macedonian0 = Webbed::CharsetRange.new('macedonian')
-      macedonian1 = Webbed::CharsetRange.new('macedonian; q=0.2')
+      macedonian1 = Webbed::CharsetRange.new('macedonian', :quality => 0.2)
       
       assert_equal 1, macedonian0.quality
       assert_equal 0.2, macedonian1.quality
@@ -20,14 +26,6 @@ module WebbedTest
       macedonian0.quality = 0.5
       assert_equal 0.5, macedonian0.quality
       assert_equal 'macedonian; q=0.5', macedonian0.to_s
-    end
-    
-    test 'order' do
-      macedonian0 = Webbed::CharsetRange.new('macedonian', :order => 5)
-      macedonian1 = Webbed::CharsetRange.new('macedonian', :order => 6)
-      
-      assert_equal 5, macedonian0.order
-      assert_equal 6, macedonian1.order
     end
     
     test 'precedence' do

@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = 'webbed'
   
   s.add_dependency 'addressable'
+  s.add_dependency 'treetop'
   
   s.add_development_dependency 'minitest', '~> 2.0'
   s.add_development_dependency 'mocha'

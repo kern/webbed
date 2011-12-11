@@ -17,7 +17,7 @@ Without bundler:
 
 With bundler:
 
-    gem 'webbed'
+    gem "webbed"
 
 ## Note on Patches/Pull Requests ##
 

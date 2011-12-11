@@ -64,8 +64,8 @@ module Webbed
       # @return [<Webbed::MediaRange>, nil]
       def accepted_media_ranges(fix_text_xml_range = false)
         if headers['Accept']
-          ranges = headers['Accept'].split(/\s*,\s*/).each_with_index.map do |media_type, index|
-            Webbed::MediaRange.new(media_type, :order => index)
+          ranges = headers['Accept'].split(/\s*,\s*/).map do |media_type|
+            Webbed::MediaRange.new(media_type)
           end
           
           fix_text_html(ranges) if fix_text_xml_range
@@ -98,8 +98,8 @@ module Webbed
       # @return [<Webbed::LanguageRange>, nil]
       def accepted_language_ranges
         if headers['Accept-Language']
-          headers['Accept-Language'].split(/\s*,\s*/).each_with_index.map do |language_tag, index|
-            Webbed::LanguageRange.new(language_tag, :order => index)
+          headers['Accept-Language'].split(/\s*,\s*/).map do |language_tag|
+            Webbed::LanguageRange.new(language_tag)
           end
         else
           [Webbed::LanguageRange.new('*')]
@@ -125,12 +125,12 @@ module Webbed
       # TODO: Document these methods.
       def accepted_charsets
         if headers['Accept-Charset']
-          charsets = headers['Accept-Charset'].split(/\s*,\s*/).each_with_index.map do |charset, index|
-            Webbed::CharsetRange.new(charset, :order => index)
+          charsets = headers['Accept-Charset'].split(/\s*,\s*/).map do |charset|
+            Webbed::CharsetRange.new(charset)
           end
           
           if charsets.none? { |charset| charset.star? }
-            charsets.push(Webbed::CharsetRange.new('ISO-8859-1', :order => charsets.length))
+            charsets.push(Webbed::CharsetRange.new('ISO-8859-1'))
           end
           
           charsets
@@ -160,6 +160,7 @@ module Webbed
         text_xml = ranges.find { |media_type| media_type.mime_type == 'text/xml' }
         application_xml = ranges.find { |media_type| media_type.mime_type == 'application/xml' }
         if text_xml && application_xml
+          # FIXME
           application_xml.order = [text_xml.order, application_xml.order].min
           application_xml.quality = [text_xml.quality, application_xml.quality].max
           ranges.delete(text_xml)
