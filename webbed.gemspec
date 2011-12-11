@@ -18,12 +18,9 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "addressable"
-  s.add_dependency "treetop"
+  s.add_dependency "addressable", "~> 2.2"
+  s.add_dependency "treetop", "~> 1.4"
 
-  s.add_development_dependency "minitest", '~> 2.0'
-  s.add_development_dependency "mocha"
-  s.add_development_dependency "minitest-reporters"
-  s.add_development_dependency "maruku"
-  s.add_development_dependency "test_declarative"
+  s.add_development_dependency "rspec", "~> 2.7"
+  s.add_development_dependency "capybara", "~> 1.1"
 end
