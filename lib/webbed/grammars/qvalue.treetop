@@ -1,10 +1,13 @@
+require "webbed/grammars/qparam_node"
+require "webbed/grammars/qvalue_node"
+
 module Webbed
   module Grammars
     grammar Qvalue
       rule qparam
         LWS* ";" LWS* "q" LWS* "=" LWS* qvalue:qvalue <QparamNode>
       end
-      
+
       rule qvalue
         (("0" ("." DIGIT ..3)?) / ("1" ("." "0" ..3)?)) <QvalueNode>
       end

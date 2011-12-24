@@ -11,34 +11,7 @@ require "treetop"
 #
 # @todo Add examples of webbed in action.
 module Webbed
-  autoload :Headers,           "webbed/headers"
-  autoload :HTTPVersion,       "webbed/http_version"
-  autoload :GenericMessage,    "webbed/generic_message"
-  autoload :LanguageTag,       "webbed/language_tag"
-  autoload :LanguageRange,     "webbed/language_range"
-  autoload :MediaRange,        "webbed/media_range"
-  autoload :MediaType,         "webbed/media_type"
-  autoload :Method,            "webbed/method"
-  autoload :StatusCode,        "webbed/status_code"
-  autoload :Request,           "webbed/request"
-  autoload :Response,          "webbed/response"
-  autoload :ContentNegotiator, "webbed/content_negotiator"
-  autoload :Negotiable,        "webbed/negotiable"
-  autoload :Charset,           "webbed/charset"
-  autoload :CharsetRange,      "webbed/charset_range"
-  require "webbed/parse_error"
-
-  module Helpers
-    autoload :MethodHelper,          "webbed/helpers/method_helper"
-    autoload :RackRequestHelper,     "webbed/helpers/rack_request_helper"
-    autoload :RackResponseHelper,    "webbed/helpers/rack_response_helper"
-    autoload :RequestURIHelper,      "webbed/helpers/request_uri_helper"
-    autoload :SchemeHelper,          "webbed/helpers/scheme_helper"
-    autoload :RequestHeadersHelper,  "webbed/helpers/request_headers_helper"
-    autoload :ResponseHeadersHelper, "webbed/helpers/response_headers_helper"
-    autoload :EntityHeadersHelper,   "webbed/helpers/entity_headers_helper"
-  end
-
+  # Namespace for all Treetop parsers and their nodes.
   module Grammars
     # Requires a Treetop grammar.
     #
@@ -46,7 +19,8 @@ module Webbed
     #   from the gem's `lib/` directory.
     # @api private
     def self.require_treetop(relative_path)
-      Treetop.load File.expand_path("../#{relative_path}", __FILE__)
+      absolute_path = File.expand_path("../#{relative_path}", __FILE__)
+      Treetop.load(absolute_path)
     end
 
     require_treetop "webbed/grammars/basic_rules"
@@ -54,13 +28,22 @@ module Webbed
     require_treetop "webbed/grammars/charset"
     require_treetop "webbed/grammars/charset_range"
     require_treetop "webbed/grammars/http_version"
-
-    require "webbed/grammars/charset_node"
-    require "webbed/grammars/charset_range_node"
-    require "webbed/grammars/qvalue_node"
-    require "webbed/grammars/qparam_node"
-    require "webbed/grammars/http_version_node"
-    require "webbed/grammars/http_major_version_node"
-    require "webbed/grammars/http_minor_version_node"
   end
+
+  require "webbed/headers"
+  require "webbed/http_version"
+  require "webbed/generic_message"
+  require "webbed/language_tag"
+  require "webbed/language_range"
+  require "webbed/media_range"
+  require "webbed/media_type"
+  require "webbed/method"
+  require "webbed/status_code"
+  require "webbed/request"
+  require "webbed/response"
+  require "webbed/content_negotiator"
+  require "webbed/negotiable"
+  require "webbed/charset"
+  require "webbed/charset_range"
+  require "webbed/parse_error"
 end

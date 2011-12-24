@@ -1,3 +1,7 @@
+require "webbed/grammars/http_version_node"
+require "webbed/grammars/http_major_version_node"
+require "webbed/grammars/http_minor_version_node"
+
 module Webbed
   module Grammars
     grammar HTTPVersion

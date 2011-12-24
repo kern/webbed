@@ -1,8 +1,10 @@
+require "webbed/grammars/charset_node"
+
 module Webbed
   module Grammars
     grammar Charset
       include BasicRules
-      
+
       rule charset
         token <CharsetNode>
       end

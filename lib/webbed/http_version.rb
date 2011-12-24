@@ -1,3 +1,5 @@
+require "webbed/parse_error"
+
 module Webbed
   # Representation of an HTTP Version.
   #
