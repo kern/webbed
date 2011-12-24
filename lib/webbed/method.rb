@@ -1,32 +1,33 @@
 module Webbed
   # Representation of an HTTP Method.
+  #
+  # TODO: Document this class.
   class Method
     class << self
-      # The registered Methods.
-      #
-      # @return [{String => Method}]
       def registered
         @registered ||= {}
       end
 
-      # Registers a new Method.
+      # Registers a method.
       #
-      # @example
-      #   Webbed::Method.register('GET') # => Webbed::Method::GET
-      #
-      # @param (see #initialize)
-      # @return [Method] the registered Method
-      # @see #initialize
-      def register(*args)
-        registered[args[0]] = new(*args)
+      # @param [Method] method
+      def register(method)
+        registered[method.name] = method
       end
 
-      # Looks up the registered Method or returns a temporary one.
+      # Unregisters a method.
       #
-      # @param [String] name the name of the Method
-      # @return [Method] the registered or temporary Method
+      # @param [Method] method
+      def unregister(method)
+        registered[method.name] = nil
+      end
+
+      # Looks up a registered method by name.
+      #
+      # @param [String] name
+      # @return [Method]
       def lookup(name)
-        registered[name] || new(name)
+        registered[name]
       end
     end
 
@@ -91,14 +92,14 @@ module Webbed
       @name == other.name
     end
 
-    OPTIONS = register("OPTIONS", :safe => true,  :idempotent => true,  :allows_request_entity => false, :allows_response_entity => true)
-    GET     = register("GET",     :safe => true,  :idempotent => true,  :allows_request_entity => false, :allows_response_entity => true)
-    HEAD    = register("HEAD",    :safe => true,  :idempotent => true,  :allows_request_entity => false, :allows_response_entity => false)
-    POST    = register("POST",    :safe => false, :idempotent => false, :allows_request_entity => true,  :allows_response_entity => true)
-    PUT     = register("PUT",     :safe => false, :idempotent => true,  :allows_request_entity => true,  :allows_response_entity => true)
-    DELETE  = register("DELETE",  :safe => false, :idempotent => true,  :allows_request_entity => false, :allows_response_entity => true)
-    TRACE   = register("TRACE",   :safe => true,  :idempotent => true,  :allows_request_entity => false, :allows_response_entity => true)
-    CONNECT = register("CONNECT", :safe => false, :idempotent => false, :allows_request_entity => true,  :allows_response_entity => true)
-    PATCH   = register("PATCH",   :safe => false, :idempotent => false, :allows_request_entity => true,  :allows_response_entity => true)
+    OPTIONS = register(new("OPTIONS", :safe => true,  :idempotent => true,  :allows_request_entity => false, :allows_response_entity => true))
+    GET     = register(new("GET",     :safe => true,  :idempotent => true,  :allows_request_entity => false, :allows_response_entity => true))
+    HEAD    = register(new("HEAD",    :safe => true,  :idempotent => true,  :allows_request_entity => false, :allows_response_entity => false))
+    POST    = register(new("POST",    :safe => false, :idempotent => false, :allows_request_entity => true,  :allows_response_entity => true))
+    PUT     = register(new("PUT",     :safe => false, :idempotent => true,  :allows_request_entity => true,  :allows_response_entity => true))
+    DELETE  = register(new("DELETE",  :safe => false, :idempotent => true,  :allows_request_entity => false, :allows_response_entity => true))
+    TRACE   = register(new("TRACE",   :safe => true,  :idempotent => true,  :allows_request_entity => false, :allows_response_entity => true))
+    CONNECT = register(new("CONNECT", :safe => false, :idempotent => false, :allows_request_entity => true,  :allows_response_entity => true))
+    PATCH   = register(new("PATCH",   :safe => false, :idempotent => false, :allows_request_entity => true,  :allows_response_entity => true))
   end
 end
