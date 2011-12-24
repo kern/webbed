@@ -1,7 +1,7 @@
 module Webbed
   # Representation of an HTTP Version.
   #
-  # TODO: Document this class.
+  # @todo Document this class better.
   class HTTPVersion
     include Comparable
 
@@ -18,6 +18,7 @@ module Webbed
     # Creates a new HTTP Version.
     #
     # @param [String] str the string representation of the HTTP Version
+    # @raise [Webbed::ParseError] if the string provided is not a valid HTTP Version
     def initialize(str)
       parser = Webbed::Grammars::HTTPVersionParser.new
       result = parser.parse(str)

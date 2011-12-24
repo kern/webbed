@@ -1,7 +1,7 @@
 module Webbed
   # Representation of an HTTP Method.
   #
-  # TODO: Document this class.
+  # @todo Document this class better.
   class Method
     class << self
       def registered

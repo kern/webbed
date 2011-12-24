@@ -40,6 +40,11 @@ module Webbed
   end
 
   module Grammars
+    # Requires a Treetop grammar.
+    #
+    # @param [String] relative_path the relative path to the treetop grammar
+    #   from the gem's `lib/` directory.
+    # @api private
     def self.require_treetop(relative_path)
       Treetop.load File.expand_path("../#{relative_path}", __FILE__)
     end
