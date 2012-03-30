@@ -45,5 +45,4 @@ module Webbed
   require "webbed/negotiable"
   require "webbed/charset"
   require "webbed/charset_range"
-  require "webbed/parse_error"
 end
