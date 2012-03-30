@@ -5,7 +5,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["alex@kernul.com"]
   gem.description   = %q{Webbed implements all of the application-level logic of HTTP. It provides abstractions for all of the entities described in the specification and an intuitive interface for the algorithms defined in RFC 2616, including Content Negotiation and Cache Control.}
   gem.summary       = %q{Take control of HTTP.}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/CapnKernul/webbed"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
