@@ -13,4 +13,10 @@ Gem::Specification.new do |gem|
   gem.name          = "webbed"
   gem.require_paths = ["lib"]
   gem.version       = Webbed::VERSION
+
+  gem.add_dependency "addressable"
+
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "bundler"
+  gem.add_development_dependency "rspec"
 end
