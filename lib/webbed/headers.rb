@@ -1,7 +1,7 @@
 module Webbed
-  # A case-insensitive hash that preserves the original case of a header.
-  #
-  # This class is essentially an exact duplicate of the HeadersHash found in Rack.
+  # `Headers` is a case-insensitive hash that preserves the original case of a
+  # header. This class is essentially an exact duplicate of the `HeadersHash`
+  # found in Rack.
   #
   # @see https://github.com/rack/rack/blob/master/lib/rack/utils.rb#L371 the Rack class that this class is based on
   # @author Alex Kern
