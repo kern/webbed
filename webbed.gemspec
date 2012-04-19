@@ -15,10 +15,13 @@ Gem::Specification.new do |gem|
   gem.version       = Webbed::VERSION
 
   gem.add_dependency "addressable"
+  gem.add_dependency "treetop"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "bundler"
   gem.add_development_dependency "rspec"
   gem.add_development_dependency "yard"
   gem.add_development_dependency "redcarpet"
+  gem.add_development_dependency "guard-rspec"
+  gem.add_development_dependency "growl"
 end

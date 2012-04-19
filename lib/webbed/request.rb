@@ -1,5 +1,6 @@
 require "addressable/uri"
 require "webbed/headers"
+require "webbed/http_version"
 
 module Webbed
   # `Request` represents a single HTTP request.

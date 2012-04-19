@@ -1,5 +1,7 @@
 require "spec_helper"
+require "addressable/uri"
 require "webbed/request"
+require "webbed/http_version"
 
 describe Webbed::Request do
   let(:headers) { { "Host" => "www.google.com" } }
@@ -26,10 +28,10 @@ describe Webbed::Request do
     end    
 
     context "when provided with an entity body" do
-      let(:request) { Webbed::Request.new("GET", "/", headers, entity_body: "foobar") }
+      let(:request) { Webbed::Request.new("GET", "/", headers, entity_body: ["foobar"]) }
 
       it "sets the entity body" do
-        subject.entity_body.should == "foobar"
+        subject.entity_body.should == ["foobar"]
       end
     end
 
@@ -75,6 +77,14 @@ describe Webbed::Request do
 
     it "is an instance of Webbed::Headers" do
       subject.should be_a(Webbed::Headers)
+    end
+  end
+
+  describe "#http_version" do
+    subject { request.http_version }
+
+    it "is an instance of Webbed::HTTPVersion" do
+      subject.should be_a(Webbed::HTTPVersion)
     end
   end
 
