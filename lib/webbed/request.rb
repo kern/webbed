@@ -19,11 +19,8 @@ module Webbed
     attr_accessor :request_uri
 
     def request_uri=(request_uri)
-      if Addressable::URI === request_uri
-        @request_uri = request_uri
-      else
-        @request_uri = Addressable::URI.parse(request_uri)
-      end
+      request_uri = Addressable::URI.parse(request_uri) unless Addressable::URI === request_uri
+      @request_uri = request_uri
     end
 
     # Returns the request's headers.
@@ -32,11 +29,8 @@ module Webbed
     attr_reader :headers
 
     def headers=(headers)
-      if Headers === headers
-        @headers = headers
-      else
-        @headers = Headers.new(headers)
-      end
+      headers = Headers.new(headers) unless Headers === headers
+      @headers = headers
     end
 
     # Returns the request's entity body.
@@ -47,7 +41,12 @@ module Webbed
     # Returns the request's HTTP version.
     #
     # @return [Webbed::HTTPVersion] the request's HTTP version
-    attr_accessor :http_version
+    attr_reader :http_version
+
+    def http_version=(http_version)
+      http_version = HTTPVersion.parse(http_version) unless HTTPVersion === http_version
+      @http_version = http_version
+    end
 
     # Returns whether the request is secure.
     #

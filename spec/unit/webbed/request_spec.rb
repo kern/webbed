@@ -37,7 +37,7 @@ describe Webbed::Request do
 
     context "when not provided with an HTTP version" do
       it "uses HTTP/1.1" do
-        subject.http_version.should == "HTTP/1.1"
+        subject.http_version.should == Webbed::HTTPVersion::ONE_POINT_ONE
       end
     end    
 
@@ -45,7 +45,7 @@ describe Webbed::Request do
       let(:request) { Webbed::Request.new("GET", "/", headers, http_version: "HTTP/1.0") }
 
       it "sets the HTTP version" do
-        subject.http_version.should == "HTTP/1.0"
+        subject.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
       end
     end
 

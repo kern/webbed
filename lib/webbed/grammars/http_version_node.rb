@@ -1,12 +1,12 @@
 module Webbed
   module Grammars
-    module HTTPVersionNode
+    class HTTPVersionNode < Treetop::Runtime::SyntaxNode
       def major
-        super.to_i
+        major_node.text_value.to_i
       end
 
       def minor
-        super.to_i
+        minor_node.text_value.to_i
       end
     end
   end

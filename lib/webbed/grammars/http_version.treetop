@@ -1,3 +1,4 @@
+require "webbed/grammars/basic_rules"
 require "webbed/grammars/http_version_node"
 
 module Webbed
@@ -6,7 +7,7 @@ module Webbed
       include BasicRules
 
       rule http_version
-        "HTTP" "/" major:version_number "." minor:version_number <HTTPVersionNode>
+        "HTTP" "/" major_node:version_number "." minor_node:version_number <HTTPVersionNode>
       end
 
       rule version_number

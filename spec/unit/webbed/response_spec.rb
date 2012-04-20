@@ -21,7 +21,7 @@ describe Webbed::Response do
 
     context "when not provided with an HTTP version" do
       it "uses HTTP/1.1" do
-        subject.http_version.should == "HTTP/1.1"
+        subject.http_version.should == Webbed::HTTPVersion::ONE_POINT_ONE
       end
     end
 
@@ -29,7 +29,7 @@ describe Webbed::Response do
       let(:response) { Webbed::Response.new(200, { "Content-Type" => "text/plain" }, [], http_version: "HTTP/1.0") }
 
       it "sets the HTTP version" do
-        subject.http_version.should == "HTTP/1.0"
+        subject.http_version.should == Webbed::HTTPVersion::ONE_POINT_OH
       end
     end
   end
