@@ -3,17 +3,20 @@ Webbed::Grammars::Loader.require("http_version")
 
 module Webbed
   # `HTTPVersion` represents the HTTP version found in all HTTP messages.
+  #
+  # @author Alex Kern
+  # @api public
   class HTTPVersion
     include Comparable
 
     # Returns the major version.
     #
-    # @return [Fixnum] the major version
+    # @return [Fixnum]
     attr_reader :major
 
     # Returns the minor version.
     #
-    # @return [Fixnum] the minor version
+    # @return [Fixnum]
     attr_reader :minor
 
     # Parses an HTTP version from its string representation.

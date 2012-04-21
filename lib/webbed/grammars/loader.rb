@@ -11,7 +11,7 @@ module Webbed
       # Requires a grammar by name.
       #
       # @param [String] name the name of the grammar
-      # @return [Boolean] whether the grammar was loaded
+      # @return [Boolean] whether or not the grammar was loaded
       # @raise [LoadError] if the grammar was not found
       def self.require(name)
         if @loaded_grammars.include?(name)

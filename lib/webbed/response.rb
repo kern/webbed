@@ -9,12 +9,12 @@ module Webbed
   class Response
     # Returns the response's status code.
     #
-    # @return [Webbed::StatusCode] the response's status code
+    # @return [Webbed::StatusCode]
     attr_accessor :status_code
 
     # Returns the response's headers.
     #
-    # @return [Webbed::Headers] the response's headers
+    # @return [Webbed::Headers]
     attr_reader :headers
 
     def headers=(headers)
@@ -24,12 +24,12 @@ module Webbed
 
     # Returns the response's entity body.
     #
-    # @return [#each] the response's entity body
+    # @return [#each]
     attr_accessor :entity_body
 
     # Returns the response's HTTP version.
     #
-    # @return [Webbed::HTTPVersion] the response's HTTP version
+    # @return [Webbed::HTTPVersion]
     attr_reader :http_version
  
     def http_version=(http_version)

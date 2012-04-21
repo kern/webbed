@@ -10,12 +10,12 @@ module Webbed
   class Request
     # Returns the request's method.
     #
-    # @return [Webbed::Method] the request's method
+    # @return [Webbed::Method]
     attr_accessor :method
     
     # Returns the request's request URI.
     #
-    # @return [Addressable::URI] the request's request URI
+    # @return [Addressable::URI]
     attr_accessor :request_uri
 
     def request_uri=(request_uri)
@@ -25,7 +25,7 @@ module Webbed
 
     # Returns the request's headers.
     #
-    # @return [Webbed::Headers] the request's headers
+    # @return [Webbed::Headers]
     attr_reader :headers
 
     def headers=(headers)
@@ -35,12 +35,12 @@ module Webbed
 
     # Returns the request's entity body.
     #
-    # @return [#each, nil] the request's entity body
+    # @return [#each, nil]
     attr_accessor :entity_body
 
     # Returns the request's HTTP version.
     #
-    # @return [Webbed::HTTPVersion] the request's HTTP version
+    # @return [Webbed::HTTPVersion]
     attr_reader :http_version
 
     def http_version=(http_version)
@@ -48,9 +48,9 @@ module Webbed
       @http_version = http_version
     end
 
-    # Returns whether the request is secure.
+    # Returns whether or not the request is secure.
     #
-    # @return [Boolean] whether the request is secure
+    # @return [Boolean]
     attr_accessor :secure
     alias_method :secure?, :secure
 
@@ -80,7 +80,7 @@ module Webbed
     # secure. If the Host header is not present, this method returns the
     # request URI untouched.
     #
-    # @return [Addressable::URI] the request's URL
+    # @return [Addressable::URI]
     def url
       result = request_uri.dup
       if !result.host && headers.has_key?("Host")
