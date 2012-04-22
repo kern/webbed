@@ -10,7 +10,7 @@ describe Webbed::Request do
   
   describe "#initialize" do
     it "sets the method" do
-      subject.method.should == "GET"
+      subject.method.should == Webbed::Method::GET
     end
 
     it "sets the request URI" do
@@ -61,6 +61,14 @@ describe Webbed::Request do
       it "sets the security" do
         subject.should be_secure
       end
+    end
+  end
+
+  describe "#method" do
+    subject { request.method }
+
+    it "is an instance of Webbed::Method" do
+      subject.should be_a(Webbed::Method)
     end
   end
 

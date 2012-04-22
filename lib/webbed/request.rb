@@ -1,4 +1,5 @@
 require "addressable/uri"
+require "webbed/method"
 require "webbed/headers"
 require "webbed/http_version"
 
@@ -11,7 +12,12 @@ module Webbed
     # Returns the request's method.
     #
     # @return [Webbed::Method]
-    attr_accessor :method
+    attr_reader :method
+
+    def method=(method)
+      method = Method.look_up(method) unless Method === method
+      @method = method
+    end
     
     # Returns the request's request URI.
     #
@@ -82,13 +88,70 @@ module Webbed
     #
     # @return [Addressable::URI]
     def url
-      result = request_uri.dup
-      if !result.host && headers.has_key?("Host")
-        result.scheme = secure? ? "https" : "http"
-        result.host = headers["Host"]
+      recreator = URLRecreator.new(self)
+      recreator.recreate
+    end
+
+    # `URLRecreator` recreates the URL of the request.
+    #
+    # @author Alex Kern
+    # @api private
+    class URLRecreator
+      # Creates a new URL recreator.
+      #
+      # @param [Webbed::Request] request the request from which to recreate the URL
+      def initialize(request)
+        @request = request
       end
 
-      result
+      # Returns the recreated URL.
+      #
+      # @return [Addressable::URI]
+      def recreate
+        request_uri.dup.tap do |r|
+          if !request_uri_has_host? && host_header
+            r.scheme = scheme
+            r.host = host_header
+          end
+        end
+      end
+
+      private
+
+      # Returns the request URI.
+      #
+      # @return [Addressable::URI]
+      def request_uri
+        @request.request_uri
+      end
+
+      # Returns the value of the Host header.
+      #
+      # @return [String, nil]
+      def host_header
+        @request.headers["Host"]
+      end
+
+      # Returns whether or not the request is secure.
+      #
+      # @return [Boolean]
+      def secure?
+        @request.secure?
+      end
+
+      # Returns the scheme of the request.
+      #
+      # @return ["http", "https"]
+      def scheme
+        secure? ? "https" : "http"
+      end
+
+      # Returns whether or not the request URI has a host.
+      #
+      # @return [Boolean]
+      def request_uri_has_host?
+        request_uri.host
+      end
     end
   end
 end

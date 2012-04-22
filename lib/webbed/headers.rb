@@ -8,7 +8,7 @@ module Webbed
   # @api public
   class Headers < Hash
     def initialize(hash = {})
-      super
+      super()
       @names = {}
       hash.each { |k, v| self[k] = v }
     end

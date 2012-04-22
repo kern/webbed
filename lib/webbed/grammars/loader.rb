@@ -2,6 +2,12 @@ require "treetop"
 
 module Webbed
   module Grammars
+    # `Loader` loads Treetop grammar files into webbed. It implements an
+    # interface similar to that of Ruby's `require` method, but rather than
+    # working with Ruby files, it works with Treetop grammars.
+    #
+    # @author Alex Kern
+    # @api public
     module Loader
       # Path to the folder containing webbed's grammars.
       LOAD_PATH = File.expand_path("../", __FILE__)
