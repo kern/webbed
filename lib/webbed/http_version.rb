@@ -21,12 +21,12 @@ module Webbed
 
     # Parses an HTTP version from its string representation.
     #
-    # @param [String] str the string representation of the HTTP version
+    # @param [String] string the string representation of the HTTP version
     # @param [Webbed::Grammars::HTTPVersionParser] parser the parser to use
     # @return [Webbed::HTTPVersion] the HTTP version parsed
     # @raise [Webbed::InvalidFormat] if the string representation was invalid
-    def self.parse(str, parser = Grammars::HTTPVersionParser.new)
-      node = parser.parse(str)
+    def self.parse(string, parser = Grammars::HTTPVersionParser.new)
+      node = parser.parse(string)
       new(node.major, node.minor)
     end
 

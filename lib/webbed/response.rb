@@ -1,3 +1,4 @@
+require "webbed/status_code"
 require "webbed/headers"
 require "webbed/http_version"
 
@@ -10,7 +11,12 @@ module Webbed
     # Returns the response's status code.
     #
     # @return [Webbed::StatusCode]
-    attr_accessor :status_code
+    attr_reader :status_code
+
+    def status_code=(status_code)
+      status_code = StatusCode.look_up(status_code) unless StatusCode === status_code
+      @status_code = status_code
+    end
 
     # Returns the response's headers.
     #
@@ -37,6 +43,15 @@ module Webbed
       @http_version = http_version
     end   
 
+    # Returns the response's reason phrase.
+    #
+    # @return [String]
+    def reason_phrase
+      @reason_phrase || status_code.default_reason_phrase
+    end
+ 
+    attr_writer :reason_phrase
+
     # Creates a new response.
     #
     # @param [Webbed::StatusCode, Fixnum] status_code the response's status code
@@ -49,6 +64,7 @@ module Webbed
       self.headers = headers
       self.entity_body = entity_body
       self.http_version = options.fetch(:http_version, Webbed::HTTPVersion::ONE_POINT_ONE)
+      self.reason_phrase = options[:reason_phrase]
     end
   end
 end

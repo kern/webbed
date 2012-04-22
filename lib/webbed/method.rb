@@ -1,3 +1,4 @@
+require "webbed/registry"
 require "webbed/unknown_method"
 
 module Webbed
@@ -6,35 +7,7 @@ module Webbed
   # @author Alex Kern
   # @api public
   class Method
-    @registered_methods = {}
-
-    # Registers a method by its string representation.
-    #
-    # The method can be retrieved by its string representation at a later date
-    # using {#lookup}.
-    #
-    # @param [Webbed::Method] method the method to register
-    def self.register(method)
-      @registered_methods[method.to_s] = method
-    end
-
-    # Unregisters a method by its string representation.
-    #
-    # @param [Webbed::Method] method the method to unregister
-    def self.unregister(method)
-      @registered_methods.delete(method)
-    end
-
-    # Looks up a method by its string representation.
-    #
-    # @param [String] string the string representation to look up
-    # @return [Webbed::Method]
-    # @raises [Webbed::UnknownMethod] if the method could not be found
-    def self.look_up(string)
-      @registered_methods.fetch(string)
-    rescue KeyError => e
-      raise UnknownMethod.new(nil, e)
-    end
+    extend Registry
 
     # Creates a new method.
     #
@@ -58,6 +31,8 @@ module Webbed
     def to_s
       @string
     end
+
+    alias_method :lookup_key, :to_s
 
     # Returns whether or not the method is safe.
     #
@@ -101,14 +76,14 @@ module Webbed
       nil
     end
 
-    OPTIONS = register(Webbed::Method.new("OPTIONS", safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
-    GET     = register(Webbed::Method.new("GET",     safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
-    HEAD    = register(Webbed::Method.new("HEAD",    safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: false))
-    POST    = register(Webbed::Method.new("POST",    safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
-    PUT     = register(Webbed::Method.new("PUT",     safe: false, idempotent: true,  allows_request_entity: true,  allows_response_entity: true))
-    DELETE  = register(Webbed::Method.new("DELETE",  safe: false, idempotent: true,  allows_request_entity: false, allows_response_entity: true))
-    TRACE   = register(Webbed::Method.new("TRACE",   safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
-    CONNECT = register(Webbed::Method.new("CONNECT", safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
-    PATCH   = register(Webbed::Method.new("PATCH",   safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
+    OPTIONS = register(new("OPTIONS", safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
+    GET     = register(new("GET",     safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
+    HEAD    = register(new("HEAD",    safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: false))
+    POST    = register(new("POST",    safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
+    PUT     = register(new("PUT",     safe: false, idempotent: true,  allows_request_entity: true,  allows_response_entity: true))
+    DELETE  = register(new("DELETE",  safe: false, idempotent: true,  allows_request_entity: false, allows_response_entity: true))
+    TRACE   = register(new("TRACE",   safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
+    CONNECT = register(new("CONNECT", safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
+    PATCH   = register(new("PATCH",   safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
   end
 end
