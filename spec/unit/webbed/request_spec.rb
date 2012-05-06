@@ -64,38 +64,6 @@ describe Webbed::Request do
     end
   end
 
-  describe "#method" do
-    subject { request.method }
-
-    it "is an instance of Webbed::Method" do
-      subject.should be_a(Webbed::Method)
-    end
-  end
-
-  describe "#request_uri" do
-    subject { request.request_uri }
-
-    it "is an instance of Addressable::URI" do
-      subject.should be_an(Addressable::URI)
-    end
-  end
-
-  describe "#headers" do
-    subject { request.headers }
-
-    it "is an instance of Webbed::Headers" do
-      subject.should be_a(Webbed::Headers)
-    end
-  end
-
-  describe "#http_version" do
-    subject { request.http_version }
-
-    it "is an instance of Webbed::HTTPVersion" do
-      subject.should be_a(Webbed::HTTPVersion)
-    end
-  end
-
   describe "#url" do
     subject { request.url }
 

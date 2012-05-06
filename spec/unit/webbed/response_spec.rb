@@ -48,28 +48,4 @@ describe Webbed::Response do
       end
     end
   end
-
-  describe "#status_code" do
-    subject { response.status_code }
-
-    it "is an instance of Webbed::StatusCode" do
-      subject.should be_a(Webbed::StatusCode)
-    end
-  end
-
-  describe "#headers" do
-    subject { response.headers }
-
-    it "is an instance of Webbed::Headers" do
-      subject.should be_a(Webbed::Headers)
-    end
-  end
-
-  describe "#http_version" do
-    subject { response.http_version }
-
-    it "is an instance of Webbed::HTTPVersion" do
-      subject.should be_a(Webbed::HTTPVersion)
-    end
-  end
 end
