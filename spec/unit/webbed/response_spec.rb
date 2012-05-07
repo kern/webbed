@@ -5,51 +5,59 @@ require "webbed/http_version"
 
 module Webbed
   describe Response do
-    let(:status_code) { 200 }
-    let(:headers) { { "Content-Type" => "text/plain" } }
-    let(:entity_body) { ["test"] }
+    let(:status_code) { double(:status_code, default_reason_phrase: "OK") }
+    let(:headers) { double(:headers) }
+    let(:entity_body) { double(:entity_body) }
     let(:options) { {} }
-    subject { Response.new(status_code, headers, entity_body, options) }
+    subject { Response.new(200, {}, entity_body, options) }
 
-    describe "#initialize" do
-      it "sets the status code" do
-        subject.status_code.should == StatusCode::OK
+    before do
+      StatusCode.stub(:look_up).with(200) { status_code }
+      Headers.stub(:new).with({}) { headers }
+    end
+
+    it "converts the status code to an instance of Webbed::StatusCode" do
+      subject.status_code.should == status_code
+    end
+
+    it "converts the headers to an instance of Webbed::Headers" do
+      subject.headers.should == headers
+    end
+
+    it "has an entity body" do
+      subject.entity_body.should == entity_body
+    end
+
+    context "when not provided with an HTTP version" do
+      it "uses HTTP/1.1" do
+        subject.http_version.should == HTTPVersion::ONE_POINT_ONE
+      end
+    end    
+
+    context "when provided with an HTTP version" do
+      let(:options) { { http_version: "HTTP/1.0" } }
+      let(:http_version) { double(:http_version) }
+
+      before do
+        HTTPVersion.stub(:parse).with("HTTP/1.0") { http_version }
       end
 
-      it "sets the headers" do
-        subject.headers.should == { "Content-Type" => "text/plain" }
+      it "uses that HTTP version" do
+        subject.http_version.should == http_version
       end
+    end
 
-      it "sets the entity body" do
-        subject.entity_body.should == ["test"]
+    context "when not provided with a reason phrase" do
+      it "uses the default reason phrase" do
+        subject.reason_phrase.should == "OK"
       end
+    end
 
-      context "when not provided with an HTTP version" do
-        it "uses HTTP/1.1" do
-          subject.http_version.should == HTTPVersion::ONE_POINT_ONE
-        end
-      end
+    context "when provided with a reason phrase" do
+      let(:options) { { reason_phrase: "LOL" } }
 
-      context "when provided with an HTTP version" do
-        let(:options) { { http_version: "HTTP/1.0" } }
-
-        it "sets the HTTP version" do
-          subject.http_version.should == HTTPVersion::ONE_POINT_OH
-        end
-      end
-
-      context "when not provided with a reason phrase" do
-        it "uses the default reason phrase" do
-          subject.reason_phrase.should == "OK"
-        end
-      end
-
-      context "when provided with a reason phrase" do
-        let(:options) { { reason_phrase: "Meh" } }
-
-        it "sets the reason phrase" do
-          subject.reason_phrase.should == "Meh"
-        end
+      it "uses that reason phrase" do
+        subject.reason_phrase.should == "LOL"
       end
     end
   end

@@ -5,102 +5,81 @@ require "webbed/http_version"
 
 module Webbed
   describe Request do
-    let(:method) { "GET" }
-    let(:request_uri) { "/search" }
-    let(:headers) { { "Host" => "www.google.com" } }
+    let(:method) { double(:method) }
+    let(:request_uri) { double(:request_uri) }
+    let(:headers) { double(:headers) }
     let(:options) { {} }
-    subject { Request.new(method, request_uri, headers, options) }
-    
-    describe "#initialize" do
-      it "sets the method" do
-        subject.method.should == Method::GET
-      end
+    subject { Request.new("GET", "/", {}, options) }
 
-      it "sets the request URI" do
-        subject.request_uri.should == Addressable::URI.parse("/search")
-      end
+    before do
+      Method.stub(:look_up).with("GET") { method }
+      Addressable::URI.stub(:parse).with("/") { request_uri }
+      Headers.stub(:new).with({}) { headers }
+    end
 
-      it "sets the headers" do
-        subject.headers.should == headers
-      end
+    it "converts the method to an instance of Webbed::Method" do
+      subject.method.should == method
+    end
 
-      context "when not provided with an entity body" do
-        it "has no entity body" do
-          subject.entity_body.should be_nil
-        end
-      end    
+    it "converts the request URI to an instance of Addressable::URI" do
+      subject.request_uri.should == request_uri
+    end
 
-      context "when provided with an entity body" do
-        let(:options) { { entity_body: ["foobar"] } }
+    it "converts the headers to an instance of Webbed::Headers" do
+      subject.headers.should == headers
+    end
 
-        it "sets the entity body" do
-          subject.entity_body.should == ["foobar"]
-        end
-      end
-
-      context "when not provided with an HTTP version" do
-        it "uses HTTP/1.1" do
-          subject.http_version.should == HTTPVersion::ONE_POINT_ONE
-        end
-      end    
-
-      context "when provided with an HTTP version" do
-        let(:options) { { http_version: "HTTP/1.0" } }
-
-        it "sets the HTTP version" do
-          subject.http_version.should == HTTPVersion::ONE_POINT_OH
-        end
-      end
-
-      context "when the request security is not specified" do
-        it "is insecure" do
-          subject.should_not be_secure
-        end
-      end    
-
-      context "when the request security is specified" do
-        let(:options) { { secure: true } }
-
-        it "sets the security" do
-          subject.should be_secure
-        end
+    context "when not provided with an entity body" do
+      it "has no entity body" do
+        subject.entity_body.should == nil
       end
     end
 
-    describe "#url" do
-      context "when the request URI has a host" do
-        let(:request_uri) { "http://www.google.com" }
-        
-        it "returns the request URI" do
-          subject.url.should == subject.request_uri
-        end
+    context "when provided with an entity body" do
+      let(:options) { { entity_body: ["test"] } }
+
+      it "has an entity body" do
+        subject.entity_body.should == ["test"]
+      end
+    end
+
+    context "when the request's security has not been specified" do
+      it "is unsafe" do
+        subject.should_not be_secure
+      end
+    end
+
+    context "when the request's security has been specified" do
+      let(:options) { { secure: true } }
+
+      it "uses that security parameter" do
+        subject.should be_secure
+      end
+    end
+    
+    context "when not provided with an HTTP version" do
+      it "uses HTTP/1.1" do
+        subject.http_version.should == HTTPVersion::ONE_POINT_ONE
+      end
+    end    
+
+    context "when provided with an HTTP version" do
+      let(:options) { { http_version: "HTTP/1.0" } }
+      let(:http_version) { double(:http_version) }
+
+      before do
+        HTTPVersion.stub(:parse).with("HTTP/1.0") { http_version }
       end
 
-      context "when the request URI does not have a host" do
-        context "when the Host header is present" do
-          context "when the request is insecure" do
-            it "returns the the HTTP scheme Host header as the host for the request URI" do
-              subject.url.should == Addressable::URI.parse("http://www.google.com/search")
-            end
-          end
-
-          context "when the request is secure" do
-            let(:options) { { secure: true } }
-            
-            it "returns the the HTTPS scheme Host header as the host for the request URI" do
-              subject.url.should == Addressable::URI.parse("https://www.google.com/search")
-            end
-          end
-        end
-
-        context "when the Host header is not present" do
-          let(:headers) { {} }
-          
-          it "returns the request URI" do
-            subject.url.should == subject.request_uri
-          end
-        end
+      it "uses that HTTP version" do
+        subject.http_version.should == http_version
       end
+    end
+
+    it "can recreate the URL of the request" do
+      recreator = double(:recreator, recreate: "http://google.com")
+      URLRecreator.stub(:new).with(subject) { recreator }
+      subject.url.should == "http://google.com"
     end
   end
 end

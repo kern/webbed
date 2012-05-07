@@ -3,7 +3,7 @@ require "webbed/error"
 
 module Webbed
   describe Error do
-    let(:cause) { stub(:cause) }
+    let(:cause) { double(:cause) }
     subject { Webbed::Error.new("test", cause) }
 
     it "has a message" do

@@ -3,30 +3,36 @@ require "webbed/http_version"
 
 module Webbed
   describe HTTPVersion do
-    subject { HTTPVersion.new(1, 1) }
+    subject { HTTPVersion.new(1, 0) }
 
-    describe ".parse" do
+    it "has a major version" do
+      subject.major.should == 1
+    end
+
+    it "has a minor version" do
+      subject.minor.should == 0
+    end
+
+    describe "parsing" do
       let(:parser) { double("parser") }
-      let(:node) { double("node") }
-      let(:parsed_version) { HTTPVersion.parse("HTTP/2.14", parser) }
+      let(:ast) { double("node", major: 2, minor: 14) }
+      subject { HTTPVersion.parse("HTTP/2.14", parser) }
 
       before do
-        parser.stub(:parse).with("HTTP/2.14").and_return(node)
-        node.stub(:major).and_return(2)
-        node.stub(:minor).and_return(14)
+        parser.stub(:parse).with("HTTP/2.14") { ast }
       end
       
       it "parses the major version" do
-        parsed_version.major.should == 2
+        subject.major.should == 2
       end
 
       it "parses the minor version" do
-        parsed_version.minor.should == 14
+        subject.minor.should == 14
       end
     end
 
     it "can be compared to other HTTP versions based on its major and minor versions" do
-      subject.should == HTTPVersion.new(1, 1)
+      subject.should == HTTPVersion.new(1, 0)
       subject.should > HTTPVersion.new(0, 9)
       subject.should < HTTPVersion.new(2, 0)
     end
