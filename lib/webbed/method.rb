@@ -1,5 +1,4 @@
 require "webbed/registry"
-require "webbed/unknown_method"
 
 module Webbed
   # `Method` represents an HTTP method (i.e. GET, HEAD, POST).

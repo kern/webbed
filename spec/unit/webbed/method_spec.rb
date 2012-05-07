@@ -1,6 +1,5 @@
 require "spec_helper"
 require "webbed/method"
-require "webbed/unknown_method"
 
 module Webbed
   describe Method do
