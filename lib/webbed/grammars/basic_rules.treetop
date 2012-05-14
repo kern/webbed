@@ -80,6 +80,10 @@ module Webbed
       rule quoted_string
         '"' (qdtext / quoted_pair) '"'
       end
+
+      rule word
+        token / quoted_string
+      end
       
       rule qdtext
         !'"' TEXT
