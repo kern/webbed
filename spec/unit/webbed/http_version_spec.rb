@@ -29,6 +29,12 @@ module Webbed
       it "parses the minor version" do
         subject.minor.should == 14
       end
+
+      it "cannot parse invalid versions" do
+        expect do
+          HTTPVersion.parse("HTTP/2")
+        end.to raise_error(InvalidFormat)
+      end
     end
 
     it "can be compared to other HTTP versions based on its major and minor versions" do

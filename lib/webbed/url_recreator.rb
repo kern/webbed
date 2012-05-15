@@ -6,7 +6,7 @@ module Webbed
   class URLRecreator
     # Creates a new URL recreator.
     #
-    # @param [Webbed::Request] request the request from which to recreate the URL
+    # @param [Request] request the request from which to recreate the URL
     def initialize(request)
       @request = request
     end

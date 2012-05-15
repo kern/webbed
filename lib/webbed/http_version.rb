@@ -1,4 +1,5 @@
 require "webbed/grammars/loader"
+require "webbed/invalid_format"
 Webbed::Grammars::Loader.require("http_version")
 
 module Webbed
@@ -22,11 +23,12 @@ module Webbed
     # Parses an HTTP version from its string representation.
     #
     # @param [String] string the string representation of the HTTP version
-    # @param [Webbed::Grammars::HTTPVersionParser] parser the parser to use
-    # @return [Webbed::HTTPVersion] the HTTP version parsed
-    # @raise [Webbed::InvalidFormat] if the string representation was invalid
+    # @param [Grammars::HTTPVersionParser] parser the parser to use
+    # @return [HTTPVersion] the HTTP version parsed
+    # @raise [InvalidFormat] if the string representation was invalid
     def self.parse(string, parser = Grammars::HTTPVersionParser.new)
       node = parser.parse(string)
+      raise InvalidFormat.new unless node
       new(node.major, node.minor)
     end
 
@@ -41,7 +43,7 @@ module Webbed
 
     # Compares two HTTP versions.
     #
-    # @param [Webbed::HTTPVersion] other
+    # @param [HTTPVersion] other
     # @return [-1, 0, 1, nil]
     def <=>(other)
       [major, minor] <=> [other.major, other.minor]

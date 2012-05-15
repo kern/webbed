@@ -5,6 +5,9 @@ module Webbed
   # @author Alex Kern
   # @api public
   class Error < StandardError
+    # Returns the exception that caused this exception.
+    #
+    # @return [Exception]
     attr_reader :cause
    
     def initialize(message = nil, cause = $!) 

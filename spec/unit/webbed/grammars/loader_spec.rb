@@ -13,9 +13,9 @@ module Webbed
       context "when requiring a grammar that doesn't exist" do
         it "raises an error" do
           Treetop.stub(:load) { raise Errno::ENOENT }
-          expect {
+          expect do
             Loader.require("foobar")
-          }.to raise_error(LoadError)
+          end.to raise_error(LoadError)
         end
       end
 

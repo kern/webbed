@@ -84,7 +84,7 @@ module Webbed
 
     # Compares two status codes.
     #
-    # @param [Webbed::StatusCode] other
+    # @param [StatusCode] other
     # @return [-1, 0, 1, nil]
     def <=>(other)
       [to_i, default_reason_phrase] <=> [other.to_i, other.default_reason_phrase]

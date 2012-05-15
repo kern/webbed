@@ -1,5 +1,4 @@
-require "webbed/status_code"
-require "webbed/headers"
+require "webbed/conversions"
 require "webbed/http_version"
 
 module Webbed
@@ -8,24 +7,24 @@ module Webbed
   # @author Alex Kern
   # @api public
   class Response
+    include Conversions
+
     # Returns the response's status code.
     #
-    # @return [Webbed::StatusCode]
+    # @return [StatusCode]
     attr_reader :status_code
 
     def status_code=(status_code)
-      status_code = StatusCode.look_up(status_code) unless StatusCode === status_code
-      @status_code = status_code
+      @status_code = StatusCode(status_code)
     end
 
     # Returns the response's headers.
     #
-    # @return [Webbed::Headers]
+    # @return [Headers]
     attr_reader :headers
 
     def headers=(headers)
-      headers = Headers.new(headers) unless Headers === headers
-      @headers = headers
+      @headers = Headers(headers)
     end
 
     # Returns the response's entity body.
@@ -35,12 +34,11 @@ module Webbed
 
     # Returns the response's HTTP version.
     #
-    # @return [Webbed::HTTPVersion]
+    # @return [HTTPVersion]
     attr_reader :http_version
  
     def http_version=(http_version)
-      http_version = HTTPVersion.parse(http_version) unless HTTPVersion === http_version
-      @http_version = http_version
+      @http_version = HTTPVersion(http_version)
     end   
 
     # Returns the response's reason phrase.
@@ -54,16 +52,16 @@ module Webbed
 
     # Creates a new response.
     #
-    # @param [Webbed::StatusCode, Fixnum] status_code the response's status code
-    # @param [Webbed::Headers, {String => String}] headers the response's headers
+    # @param [StatusCode, Fixnum] status_code the response's status code
+    # @param [Headers, {String => String}] headers the response's headers
     # @param [#each] entity_body the response's entity body
     # @param [Hash] options miscellaneous options used for some responses
-    # @option options [Webbed::HTTPVersion] :http_version (Webbed::HTTPVersion::ONE_POINT_ONE) the response's HTTP version
+    # @option options [HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the response's HTTP version
     def initialize(status_code, headers, entity_body, options = {})
       self.status_code = status_code
       self.headers = headers
       self.entity_body = entity_body
-      self.http_version = options.fetch(:http_version, Webbed::HTTPVersion::ONE_POINT_ONE)
+      self.http_version = options.fetch(:http_version, HTTPVersion::ONE_POINT_ONE)
       self.reason_phrase = options[:reason_phrase]
     end
   end

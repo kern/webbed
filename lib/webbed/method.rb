@@ -63,7 +63,7 @@ module Webbed
 
     # Returns whether or not two methods are equal.
     #
-    # @param [Webbed::Method] other the other method
+    # @param [Method] other the other method
     # @return [Boolean]
     def ==(other)
       to_s == other.to_s &&
