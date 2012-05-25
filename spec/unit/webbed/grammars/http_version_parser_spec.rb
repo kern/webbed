@@ -1,28 +1,25 @@
 require "spec_helper"
-require "webbed/grammars/loader"
-Webbed::Grammars::Loader.require("http_version")
+require "parslet/rig/rspec"
+require "webbed/grammars/http_version_parser"
 
 module Webbed
   module Grammars
     describe HTTPVersionParser do
       subject { HTTPVersionParser.new }
 
-      context "when parsing a valid string" do
-        let(:ast) { subject.parse("HTTP/2.14") }
-
-        it "extracts the major version" do
-          ast.major.should == 2
-        end
-
-        it "extracts the minor version" do
-          ast.minor.should == 14
-        end
+      it "can parse a valid string" do
+        subject.should parse("HTTP/1.0").as({
+          major_version: "1",
+          minor_version: "0"
+        })
       end
 
-      context "when parsing an invalid string" do
-        it "returns nil" do
-          subject.parse("HTTP/1").should be_nil
-        end
+      it "cannot parse an invalid string" do
+        subject.should_not parse("HTT/1.0")
+        subject.should_not parse("HTTP/1.")
+        subject.should_not parse("HTTP/1.00")
+        subject.should_not parse("HTTP1.0")
+        subject.should_not parse("HTTP/A.0")
       end
     end
   end

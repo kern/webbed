@@ -10,7 +10,7 @@ module Webbed
     # @return [Exception]
     attr_reader :cause
    
-    def initialize(message = nil, cause = $!) 
+    def initialize(message, cause = $!) 
       super(message)
       @cause = cause
     end 

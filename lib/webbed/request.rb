@@ -64,7 +64,7 @@ module Webbed
     # @param [Headers, {String => String}] headers the request's headers
     # @param [Hash] options miscellaneous options used for some requests
     # @option options [#each] :entity_body (nil) the request's entity body
-    # @option options [HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the request's HTTP version
+    # @option options [String, HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the request's HTTP version
     # @option options [Boolean] :secure (false) whether the request is secure (uses SSL)
     def initialize(method, request_uri, headers, options = {})
       self.method = method

@@ -1,6 +1,6 @@
-require "webbed/grammars/loader"
-require "webbed/invalid_format"
-Webbed::Grammars::Loader.require("http_version")
+require "webbed/grammars/interpreter"
+require "webbed/grammars/http_version_parser"
+require "webbed/grammars/http_version_transform"
 
 module Webbed
   # `HTTPVersion` represents the HTTP version found in all HTTP messages.
@@ -13,32 +13,30 @@ module Webbed
     # Returns the major version.
     #
     # @return [Fixnum]
-    attr_reader :major
+    attr_reader :major_version
 
     # Returns the minor version.
     #
     # @return [Fixnum]
-    attr_reader :minor
+    attr_reader :minor_version
 
-    # Parses an HTTP version from its string representation.
+    # Interprets an HTTP version.
     #
     # @param [String] string the string representation of the HTTP version
-    # @param [Grammars::HTTPVersionParser] parser the parser to use
-    # @return [HTTPVersion] the HTTP version parsed
+    # @param [Grammars::Interpreter] interpreter the interpreter to use
+    # @return [HTTPVersion] the interpreted HTTP version
     # @raise [InvalidFormat] if the string representation was invalid
-    def self.parse(string, parser = Grammars::HTTPVersionParser.new)
-      node = parser.parse(string)
-      raise InvalidFormat.new unless node
-      new(node.major, node.minor)
+    def self.interpret(string, interpreter = Grammars::Interpreter.new(Grammars::HTTPVersionParser.new, Grammars::HTTPVersionTransform.new))
+      interpreter.interpret(string)
     end
 
     # Creates a new HTTP version.
     #
-    # @param [Fixnum] major the major version
-    # @param [Fixnum] minor the minor version
-    def initialize(major, minor)
-      @major = major
-      @minor = minor
+    # @param [Fixnum] major_version the major version
+    # @param [Fixnum] minor_version the minor version
+    def initialize(major_version, minor_version)
+      @major_version = major_version
+      @minor_version = minor_version
     end
 
     # Compares two HTTP versions.
@@ -46,7 +44,7 @@ module Webbed
     # @param [HTTPVersion] other
     # @return [-1, 0, 1, nil]
     def <=>(other)
-      [major, minor] <=> [other.major, other.minor]
+      [major_version, minor_version] <=> [other.major_version, other.minor_version]
     rescue NoMethodError
       nil
     end

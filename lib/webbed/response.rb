@@ -56,7 +56,7 @@ module Webbed
     # @param [Headers, {String => String}] headers the response's headers
     # @param [#each] entity_body the response's entity body
     # @param [Hash] options miscellaneous options used for some responses
-    # @option options [HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the response's HTTP version
+    # @option options [String, HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the response's HTTP version
     def initialize(status_code, headers, entity_body, options = {})
       self.status_code = status_code
       self.headers = headers

@@ -68,7 +68,7 @@ module Webbed
       let(:http_version) { double(:http_version) }
 
       before do
-        HTTPVersion.stub(:parse).with("HTTP/1.0") { http_version }
+        HTTPVersion.stub(:interpret).with("HTTP/1.0") { http_version }
       end
 
       it "uses that HTTP version" do

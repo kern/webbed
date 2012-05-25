@@ -27,7 +27,7 @@ module Webbed
     # @param [HTTPVersion, String] http_version
     # @return [HTTPVersion]
     def HTTPVersion(http_version)
-      HTTPVersion === http_version ? http_version : HTTPVersion.parse(http_version)
+      HTTPVersion === http_version ? http_version : HTTPVersion.interpret(http_version)
     end
 
     # Converts an object to a method.
