@@ -30,7 +30,7 @@ module Webbed
     #
     # @param [Object] lookup_key the lookup key
     # @return [#lookup_key]
-    # @raises [KeyError] if the object could not be found
+    # @raise [KeyError] if the object could not be found
     def look_up(lookup_key)
       @registry.fetch(lookup_key)
     end

@@ -10,7 +10,7 @@ module Webbed
 
     # Creates a new method.
     #
-    # @param [String] the string representation of the method
+    # @param [String] string the string representation of the method
     # @param [Hash] options miscellaneous options for the method
     # @option options [Boolean] :safe whether or not the method is safe
     # @option options [Boolean] :idempotent whether or not the method is idempotent
