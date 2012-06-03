@@ -7,13 +7,13 @@ module Webbed
     describe Interpreter do
       let(:parser) { stub(:parser) }
       let(:transform) { stub(:transform) }
-      subject { Interpreter.new(parser, transform) }
+      let(:interpreter) { Interpreter.new(parser, transform) }
 
       context "when parsing valid input" do
         it "interprets the input" do
           parser.stub(:parse).with("foo") { "bar" }
           transform.stub(:apply).with("bar") { "baz" }
-          subject.interpret("foo").should == "baz"
+          interpreter.interpret("foo").should == "baz"
         end
       end
 
@@ -21,7 +21,7 @@ module Webbed
         it "raises an error" do
           parser.stub(:parse).with("foo") { raise Parslet::ParseFailed, "foo" }
           expect do
-            subject.interpret("foo")
+            interpreter.interpret("foo")
           end.to raise_error(InvalidFormat)
         end
       end

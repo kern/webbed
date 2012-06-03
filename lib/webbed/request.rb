@@ -78,8 +78,8 @@ module Webbed
     # Returns the request's URL.
     #
     # @return [Addressable::URI]
-    def url
-      URLRecreator.new(self).recreate
+    def url(recreator = URLRecreator.new(self))
+      recreator.recreate
     end
   end
 end

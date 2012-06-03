@@ -9,7 +9,7 @@ module Webbed
     let(:request_uri) { double(:request_uri) }
     let(:headers) { double(:headers) }
     let(:options) { {} }
-    subject { Request.new("GET", "/", {}, options) }
+    let(:request) { Request.new("GET", "/", {}, options) }
 
     before do
       Method.stub(:look_up).with("GET") { method }
@@ -18,20 +18,20 @@ module Webbed
     end
 
     it "converts the method to an instance of Webbed::Method" do
-      subject.method.should == method
+      request.method.should == method
     end
 
     it "converts the request URI to an instance of Addressable::URI" do
-      subject.request_uri.should == request_uri
+      request.request_uri.should == request_uri
     end
 
     it "converts the headers to an instance of Webbed::Headers" do
-      subject.headers.should == headers
+      request.headers.should == headers
     end
 
     context "when not provided with an entity body" do
       it "has no entity body" do
-        subject.entity_body.should == nil
+        request.entity_body.should == nil
       end
     end
 
@@ -39,13 +39,13 @@ module Webbed
       let(:options) { { entity_body: ["test"] } }
 
       it "has an entity body" do
-        subject.entity_body.should == ["test"]
+        request.entity_body.should == ["test"]
       end
     end
 
     context "when the request's security has not been specified" do
       it "is unsafe" do
-        subject.should_not be_secure
+        request.should_not be_secure
       end
     end
 
@@ -53,13 +53,13 @@ module Webbed
       let(:options) { { secure: true } }
 
       it "uses that security parameter" do
-        subject.should be_secure
+        request.should be_secure
       end
     end
     
     context "when not provided with an HTTP version" do
       it "uses HTTP/1.1" do
-        subject.http_version.should == HTTPVersion::ONE_POINT_ONE
+        request.http_version.should == HTTPVersion::ONE_POINT_ONE
       end
     end    
 
@@ -72,14 +72,13 @@ module Webbed
       end
 
       it "uses that HTTP version" do
-        subject.http_version.should == http_version
+        request.http_version.should == http_version
       end
     end
 
     it "can recreate the URL of the request" do
       recreator = double(:recreator, recreate: "http://google.com")
-      URLRecreator.stub(:new).with(subject) { recreator }
-      subject.url.should == "http://google.com"
+      request.url(recreator).should == "http://google.com"
     end
   end
 end

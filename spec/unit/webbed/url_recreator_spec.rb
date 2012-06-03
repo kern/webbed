@@ -8,11 +8,11 @@ module Webbed
     let(:headers) { { "Host" => "google.com" } }
     let(:secure) { false }
     let(:request) { double(:request, request_uri: request_uri, headers: headers, secure?: secure) }
-    subject { URLRecreator.new(request) }
+    let(:recreator) { URLRecreator.new(request) }
 
     context "when the request URI has a host" do
       it "returns the request URI" do
-        subject.recreate.should == request_uri
+        recreator.recreate.should == request_uri
       end
     end
 
@@ -22,7 +22,7 @@ module Webbed
       context "when the Host header is present" do
         context "when the request is insecure" do
           it "recreates a URL using the request URI, Host header, and the HTTP scheme" do
-            subject.recreate.should == Addressable::URI.parse("http://google.com/")
+            recreator.recreate.should == Addressable::URI.parse("http://google.com/")
           end
         end
 
@@ -30,7 +30,7 @@ module Webbed
           let(:secure) { true }
           
           it "recreates a URL using the request URI, Host header, and the HTTPS scheme" do
-            subject.recreate.should == Addressable::URI.parse("https://google.com/")
+            recreator.recreate.should == Addressable::URI.parse("https://google.com/")
           end
         end
       end
@@ -39,7 +39,7 @@ module Webbed
         let(:headers) { {} }
 
         it "returns the request URI" do
-          subject.recreate.should == request_uri
+          recreator.recreate.should == request_uri
         end
       end
     end
