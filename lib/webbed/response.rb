@@ -27,10 +27,10 @@ module Webbed
       @headers = Headers(headers)
     end
 
-    # Returns the response's entity body.
+    # Returns the response's body.
     #
     # @return [#each]
-    attr_accessor :entity_body
+    attr_accessor :body
 
     # Returns the response's HTTP version.
     #
@@ -54,13 +54,13 @@ module Webbed
     #
     # @param [StatusCode, Fixnum] status_code the response's status code
     # @param [Headers, {String => String}] headers the response's headers
-    # @param [#each] entity_body the response's entity body
+    # @param [#each] body the response's body
     # @param [Hash] options miscellaneous options used for some responses
     # @option options [String, HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the response's HTTP version
-    def initialize(status_code, headers, entity_body, options = {})
+    def initialize(status_code, headers, body, options = {})
       self.status_code = status_code
       self.headers = headers
-      self.entity_body = entity_body
+      self.body = body
       self.http_version = options.fetch(:http_version, HTTPVersion::ONE_POINT_ONE)
       self.reason_phrase = options[:reason_phrase]
     end

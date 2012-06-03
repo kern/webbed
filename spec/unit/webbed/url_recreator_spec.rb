@@ -4,24 +4,24 @@ require "webbed/url_recreator"
 
 module Webbed
   describe URLRecreator do
-    let(:request_uri) { Addressable::URI.parse("http://google.com/") }
+    let(:target) { Addressable::URI.parse("http://google.com/") }
     let(:headers) { { "Host" => "google.com" } }
     let(:secure) { false }
-    let(:request) { double(:request, request_uri: request_uri, headers: headers, secure?: secure) }
+    let(:request) { double(:request, target: target, headers: headers, secure?: secure) }
     let(:recreator) { URLRecreator.new(request) }
 
-    context "when the request URI has a host" do
-      it "returns the request URI" do
-        recreator.recreate.should == request_uri
+    context "when the target has a host" do
+      it "returns the target" do
+        recreator.recreate.should == target
       end
     end
 
-    context "when the request URI does not have a host" do
-      let(:request_uri) { Addressable::URI.parse("/") }
+    context "when the target does not have a host" do
+      let(:target) { Addressable::URI.parse("/") }
 
       context "when the Host header is present" do
         context "when the request is insecure" do
-          it "recreates a URL using the request URI, Host header, and the HTTP scheme" do
+          it "recreates a URL using the target, Host header, and the HTTP scheme" do
             recreator.recreate.should == Addressable::URI.parse("http://google.com/")
           end
         end
@@ -29,7 +29,7 @@ module Webbed
         context "when the request is secure" do
           let(:secure) { true }
           
-          it "recreates a URL using the request URI, Host header, and the HTTPS scheme" do
+          it "recreates a URL using the target, Host header, and the HTTPS scheme" do
             recreator.recreate.should == Addressable::URI.parse("https://google.com/")
           end
         end
@@ -38,8 +38,8 @@ module Webbed
       context "when the Host header is not present" do
         let(:headers) { {} }
 
-        it "returns the request URI" do
-          recreator.recreate.should == request_uri
+        it "returns the target" do
+          recreator.recreate.should == target
         end
       end
     end

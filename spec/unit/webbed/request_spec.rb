@@ -6,14 +6,14 @@ require "webbed/http_version"
 module Webbed
   describe Request do
     let(:method) { double(:method) }
-    let(:request_uri) { double(:request_uri) }
+    let(:target) { double(:target) }
     let(:headers) { double(:headers) }
     let(:options) { {} }
     let(:request) { Request.new("GET", "/", {}, options) }
 
     before do
       Method.stub(:look_up).with("GET") { method }
-      Addressable::URI.stub(:parse).with("/") { request_uri }
+      Addressable::URI.stub(:parse).with("/") { target }
       Headers.stub(:new).with({}) { headers }
     end
 
@@ -21,25 +21,25 @@ module Webbed
       request.method.should == method
     end
 
-    it "converts the request URI to an instance of Addressable::URI" do
-      request.request_uri.should == request_uri
+    it "converts the target to an instance of Addressable::URI" do
+      request.target.should == target
     end
 
     it "converts the headers to an instance of Webbed::Headers" do
       request.headers.should == headers
     end
 
-    context "when not provided with an entity body" do
-      it "has no entity body" do
-        request.entity_body.should == nil
+    context "when not provided with a body" do
+      it "has no body" do
+        request.body.should be_nil
       end
     end
 
-    context "when provided with an entity body" do
-      let(:options) { { entity_body: ["test"] } }
+    context "when provided with a body" do
+      let(:options) { { body: ["test"] } }
 
-      it "has an entity body" do
-        request.entity_body.should == ["test"]
+      it "has a body" do
+        request.body.should == ["test"]
       end
     end
 

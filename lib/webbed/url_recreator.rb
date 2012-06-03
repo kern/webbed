@@ -13,16 +13,15 @@ module Webbed
 
     # Returns the recreated URL.
     #
-    # If the request URI is an absolute path, this method returns the request
-    # URI. Otherwise, if the Host header is present, this method returns a
-    # modified request URI that uses the Host header and whether the request is
-    # secure. If the Host header is not present, this method returns the
-    # request URI untouched.
+    # If the target is an absolute path, this method returns the target.
+    # Otherwise, if the Host header is present, this method returns a modified
+    # target that uses the Host header and whether the request is secure. If the
+    # Host header is not present, this method returns the target untouched.
     # 
     # @return [Addressable::URI]
     def recreate
-      request_uri.dup.tap do |r|
-        if !request_uri_has_host? && host_header
+      target.dup.tap do |r|
+        if !target_has_host? && host_header
           r.scheme = scheme
           r.host = host_header
         end
@@ -31,11 +30,11 @@ module Webbed
 
     private
 
-    # Returns the request URI.
+    # Returns the request's target.
     #
     # @return [Addressable::URI]
-    def request_uri
-      @request.request_uri
+    def target
+      @request.target
     end
 
     # Returns the value of the Host header.
@@ -59,11 +58,11 @@ module Webbed
       secure? ? "https" : "http"
     end
 
-    # Returns whether or not the request URI has a host.
+    # Returns whether or not the request's target has a host.
     #
     # @return [Boolean]
-    def request_uri_has_host?
-      request_uri.host
+    def target_has_host?
+      target.host
     end
   end
 end

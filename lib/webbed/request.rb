@@ -19,13 +19,13 @@ module Webbed
       @method = Method(method)
     end
     
-    # Returns the request's request URI.
+    # Returns the request's target.
     #
     # @return [Addressable::URI]
-    attr_accessor :request_uri
+    attr_accessor :target
 
-    def request_uri=(request_uri)
-      @request_uri = URI(request_uri)
+    def target=(target)
+      @target = URI(target)
     end
 
     # Returns the request's headers.
@@ -37,10 +37,10 @@ module Webbed
       @headers = Headers(headers)
     end
 
-    # Returns the request's entity body.
+    # Returns the request's body.
     #
     # @return [#each, nil]
-    attr_accessor :entity_body
+    attr_accessor :body
 
     # Returns the request's HTTP version.
     #
@@ -60,17 +60,17 @@ module Webbed
     # Creates a request.
     #
     # @param [Method] method the request's method.
-    # @param [Addressable::URI, String] request_uri the request's request URI
+    # @param [Addressable::URI, String] target the request's target
     # @param [Headers, {String => String}] headers the request's headers
     # @param [Hash] options miscellaneous options used for some requests
-    # @option options [#each] :entity_body (nil) the request's entity body
+    # @option options [#each] :body (nil) the request's body
     # @option options [String, HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the request's HTTP version
     # @option options [Boolean] :secure (false) whether the request is secure (uses SSL)
-    def initialize(method, request_uri, headers, options = {})
+    def initialize(method, target, headers, options = {})
       self.method = method
-      self.request_uri = request_uri
+      self.target = target
       self.headers = headers
-      self.entity_body = options[:entity_body]
+      self.body = options[:body]
       self.http_version = options.fetch(:http_version, HTTPVersion::ONE_POINT_ONE)
       self.secure = options.fetch(:secure, false)
     end

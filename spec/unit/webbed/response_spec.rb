@@ -7,9 +7,9 @@ module Webbed
   describe Response do
     let(:status_code) { double(:status_code, default_reason_phrase: "OK") }
     let(:headers) { double(:headers) }
-    let(:entity_body) { double(:entity_body) }
+    let(:body) { double(:body) }
     let(:options) { {} }
-    let(:response) { Response.new(200, {}, entity_body, options) }
+    let(:response) { Response.new(200, {}, body, options) }
 
     before do
       StatusCode.stub(:look_up).with(200) { status_code }
@@ -24,8 +24,8 @@ module Webbed
       response.headers.should == headers
     end
 
-    it "has an entity body" do
-      response.entity_body.should == entity_body
+    it "has a body" do
+      response.body.should == body
     end
 
     context "when not provided with an HTTP version" do

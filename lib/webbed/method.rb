@@ -14,14 +14,14 @@ module Webbed
     # @param [Hash] options miscellaneous options for the method
     # @option options [Boolean] :safe whether or not the method is safe
     # @option options [Boolean] :idempotent whether or not the method is idempotent
-    # @option options [Boolean] :allows_request_entity whether or not the method allows a request entity
-    # @option options [Boolean] :allows_response_entity whether or not the method allows a response entity
+    # @option options [Boolean] :allows_request_body whether or not the method allows a request body
+    # @option options [Boolean] :allows_response_body whether or not the method allows a response body
     def initialize(string, options)
       @string = string
       @safe = options.fetch(:safe)
       @idempotent = options.fetch(:idempotent)
-      @allows_request_entity = options.fetch(:allows_request_entity)
-      @allows_response_entity = options.fetch(:allows_response_entity)
+      @allows_request_body = options.fetch(:allows_request_body)
+      @allows_response_body = options.fetch(:allows_response_body)
     end
 
     # Converts the method to a string.
@@ -47,18 +47,18 @@ module Webbed
       @idempotent
     end
 
-    # Returns whether or not the method allows a request entity.
+    # Returns whether or not the method allows a request body.
     #
     # @return [Boolean]
-    def allows_request_entity?
-      @allows_request_entity
+    def allows_request_body?
+      @allows_request_body
     end
 
-    # Returns whether or not the method allows a response entity.
+    # Returns whether or not the method allows a response body.
     #
     # @return [Boolean]
-    def allows_response_entity?
-      @allows_response_entity
+    def allows_response_body?
+      @allows_response_body
     end
 
     # Returns whether or not two methods are equal.
@@ -69,20 +69,20 @@ module Webbed
       to_s == other.to_s &&
         safe? == other.safe? &&
         idempotent? == other.idempotent? &&
-        allows_request_entity? == other.allows_request_entity? &&
-        allows_response_entity? == other.allows_response_entity?
+        allows_request_body? == other.allows_request_body? &&
+        allows_response_body? == other.allows_response_body?
     rescue NoMethodError
       nil
     end
 
-    OPTIONS = register(new("OPTIONS", safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
-    GET     = register(new("GET",     safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
-    HEAD    = register(new("HEAD",    safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: false))
-    POST    = register(new("POST",    safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
-    PUT     = register(new("PUT",     safe: false, idempotent: true,  allows_request_entity: true,  allows_response_entity: true))
-    DELETE  = register(new("DELETE",  safe: false, idempotent: true,  allows_request_entity: false, allows_response_entity: true))
-    TRACE   = register(new("TRACE",   safe: true,  idempotent: true,  allows_request_entity: false, allows_response_entity: true))
-    CONNECT = register(new("CONNECT", safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
-    PATCH   = register(new("PATCH",   safe: false, idempotent: false, allows_request_entity: true,  allows_response_entity: true))
+    OPTIONS = register(new("OPTIONS", safe: true,  idempotent: true,  allows_request_body: false, allows_response_body: true))
+    GET     = register(new("GET",     safe: true,  idempotent: true,  allows_request_body: false, allows_response_body: true))
+    HEAD    = register(new("HEAD",    safe: true,  idempotent: true,  allows_request_body: false, allows_response_body: false))
+    POST    = register(new("POST",    safe: false, idempotent: false, allows_request_body: true,  allows_response_body: true))
+    PUT     = register(new("PUT",     safe: false, idempotent: true,  allows_request_body: true,  allows_response_body: true))
+    DELETE  = register(new("DELETE",  safe: false, idempotent: true,  allows_request_body: false, allows_response_body: true))
+    TRACE   = register(new("TRACE",   safe: true,  idempotent: true,  allows_request_body: false, allows_response_body: true))
+    CONNECT = register(new("CONNECT", safe: false, idempotent: false, allows_request_body: true,  allows_response_body: true))
+    PATCH   = register(new("PATCH",   safe: false, idempotent: false, allows_request_body: true,  allows_response_body: true))
   end
 end
