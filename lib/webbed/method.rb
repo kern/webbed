@@ -6,7 +6,10 @@ module Webbed
   # @author Alex Kern
   # @api public
   class Method
-    extend Registry
+    extend SingleForwardable
+
+    @registry = Registry.new { |obj| obj.to_s }
+    def_single_delegators :@registry, :register, :unregister, :look_up
 
     # Creates a new method.
     #
@@ -30,8 +33,6 @@ module Webbed
     def to_s
       @string
     end
-
-    alias_method :lookup_key, :to_s
 
     # Returns whether or not the method is safe.
     #

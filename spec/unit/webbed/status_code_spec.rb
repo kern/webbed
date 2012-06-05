@@ -6,6 +6,13 @@ module Webbed
     let(:integer) { 200 }
     let(:status_code) { StatusCode.new(integer, "OK") }
 
+    it_behaves_like "a registry" do
+      let(:registry) { StatusCode }
+      let(:lookup_key) { 200 }
+      let(:obj1) { double(:status_code_1, to_i: 200) }
+      let(:obj2) { double(:status_code_2, to_i: 200) }
+    end
+
     it "can be converted to an integer" do
       status_code.to_i.should == 200
     end
@@ -120,10 +127,6 @@ module Webbed
         status_code.should_not be_a_server_error
         status_code.should_not be_an_error
       end
-    end
-
-    it "uses its integer representation as its lookup key" do
-      status_code.lookup_key.should == 200
     end
 
     it "can be compared to other status codes based on its integer representation and default reason phrase" do

@@ -1,22 +1,22 @@
 module Webbed
   # `Registry` provides a consistent interface to create object registries.
-  # Classes that extend this class must have an instance method named
-  # `#lookup_key` for the objects that they register.
   #
   # @author Alex Kern
   # @api public
-  module Registry
-    def self.extended(base)
-      base.class_eval do
-        @registry = {}
-      end
+  class Registry
+    # Creates a new registry.
+    #
+    # @param [#call] lookup_key_fetcher a lambda called on registered objects to retrieve their lookup keys
+    def initialize(&lookup_key_fetcher)
+      @lookup_key_fetcher = lookup_key_fetcher
+      @registry = {}
     end
 
     # Registers a method by its lookup key.
     #
-    # @param [#lookup_key] obj the object to register
+    # @param [Object] obj the object to register
     def register(obj)
-      @registry[obj.lookup_key] = obj
+      @registry[@lookup_key_fetcher.call(obj)] = obj
     end
 
     # Unregisters an object by its lookup key.
@@ -29,7 +29,7 @@ module Webbed
     # Looks up an object by its lookup key.
     #
     # @param [Object] lookup_key the lookup key
-    # @return [#lookup_key]
+    # @return [Object]
     # @raise [KeyError] if the object could not be found
     def look_up(lookup_key)
       @registry.fetch(lookup_key)

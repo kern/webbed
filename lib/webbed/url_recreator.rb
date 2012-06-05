@@ -4,6 +4,10 @@ module Webbed
   # @author Alex Kern
   # @api private
   class URLRecreator
+    extend Forwardable
+
+    delegate [:target, :secure?] => :@request
+
     # Creates a new URL recreator.
     #
     # @param [Request] request the request from which to recreate the URL
@@ -30,25 +34,11 @@ module Webbed
 
     private
 
-    # Returns the request's target.
-    #
-    # @return [Addressable::URI]
-    def target
-      @request.target
-    end
-
     # Returns the value of the Host header.
     #
     # @return [String, nil]
     def host_header
       @request.headers["Host"]
-    end
-
-    # Returns whether or not the request is secure.
-    #
-    # @return [Boolean]
-    def secure?
-      @request.secure?
     end
 
     # Returns the scheme of the request.

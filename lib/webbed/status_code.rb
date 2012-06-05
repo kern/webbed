@@ -7,8 +7,11 @@ module Webbed
   # @author Alex Kern
   # @api public
   class StatusCode
-    extend Registry
+    extend SingleForwardable
     include Comparable
+
+    @registry = Registry.new { |obj| obj.to_i }
+    def_single_delegators :@registry, :register, :unregister, :look_up
 
     # Returns the default reason phrase of the status code.
     #
@@ -30,8 +33,6 @@ module Webbed
     def to_i
       @integer
     end
-
-    alias_method :lookup_key, :to_i
 
     # Returns whether or not the status code is informational.
     #

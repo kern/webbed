@@ -8,13 +8,17 @@ module Webbed
     let(:method) { double(:method) }
     let(:target) { double(:target) }
     let(:headers) { double(:headers) }
+    let(:http_version) { double(:http_version) }
+    let(:conversions) { double(:conversions) }
     let(:options) { {} }
-    let(:request) { Request.new("GET", "/", {}, options) }
+    let(:request) { Request.new("GET", "/", {}, { conversions: conversions }.merge(options)) }
 
     before do
-      Method.stub(:look_up).with("GET") { method }
-      Addressable::URI.stub(:parse).with("/") { target }
-      Headers.stub(:new).with({}) { headers }
+      conversions.stub(:Method).with("GET") { method }
+      conversions.stub(:URI).with("/") { target }
+      conversions.stub(:Headers).with({}) { headers }
+      conversions.stub(:HTTPVersion).with(HTTPVersion::ONE_POINT_ONE) { HTTPVersion::ONE_POINT_ONE }
+      conversions.stub(:HTTPVersion).with("HTTP/1.0") { http_version }
     end
 
     it "converts the method to an instance of Webbed::Method" do
@@ -65,11 +69,6 @@ module Webbed
 
     context "when provided with an HTTP version" do
       let(:options) { { http_version: "HTTP/1.0" } }
-      let(:http_version) { double(:http_version) }
-
-      before do
-        HTTPVersion.stub(:interpret).with("HTTP/1.0") { http_version }
-      end
 
       it "uses that HTTP version" do
         request.http_version.should == http_version

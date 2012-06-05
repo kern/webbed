@@ -8,12 +8,16 @@ module Webbed
     let(:status_code) { double(:status_code, default_reason_phrase: "OK") }
     let(:headers) { double(:headers) }
     let(:body) { double(:body) }
+    let(:http_version) { double(:http_version) }
+    let(:conversions) { double(:conversions) }
     let(:options) { {} }
-    let(:response) { Response.new(200, {}, body, options) }
+    let(:response) { Response.new(200, {}, body, { conversions: conversions }.merge(options)) }
 
     before do
-      StatusCode.stub(:look_up).with(200) { status_code }
-      Headers.stub(:new).with({}) { headers }
+      conversions.stub(:StatusCode).with(200) { status_code }
+      conversions.stub(:Headers).with({}) { headers }
+      conversions.stub(:HTTPVersion).with(HTTPVersion::ONE_POINT_ONE) { HTTPVersion::ONE_POINT_ONE }
+      conversions.stub(:HTTPVersion).with("HTTP/1.0") { http_version }
     end
 
     it "converts the status code to an instance of Webbed::StatusCode" do
@@ -36,11 +40,6 @@ module Webbed
 
     context "when provided with an HTTP version" do
       let(:options) { { http_version: "HTTP/1.0" } }
-      let(:http_version) { double(:http_version) }
-
-      before do
-        HTTPVersion.stub(:interpret).with("HTTP/1.0") { http_version }
-      end
 
       it "uses that HTTP version" do
         response.http_version.should == http_version

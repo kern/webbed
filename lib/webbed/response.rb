@@ -7,7 +7,9 @@ module Webbed
   # @author Alex Kern
   # @api public
   class Response
-    include Conversions
+    extend Forwardable
+
+    delegate [:StatusCode, :Headers, :HTTPVersion] => :@conversions
 
     # Returns the response's status code.
     #
@@ -56,8 +58,11 @@ module Webbed
     # @param [Headers, {String => String}] headers the response's headers
     # @param [#each] body the response's body
     # @param [Hash] options miscellaneous options used for some responses
+    # @option options [Object] :conversions (Conversions) the module that implements conversions
     # @option options [String, HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the response's HTTP version
     def initialize(status_code, headers, body, options = {})
+      @conversions = options.fetch(:conversions, Conversions)
+
       self.status_code = status_code
       self.headers = headers
       self.body = body

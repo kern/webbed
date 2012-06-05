@@ -8,7 +8,9 @@ module Webbed
   # @author Alex Kern
   # @api public
   class Request
-    include Conversions
+    extend Forwardable
+
+    delegate [:Method, :URI, :Headers, :HTTPVersion] => :@conversions
 
     # Returns the request's method.
     #
@@ -48,7 +50,7 @@ module Webbed
     attr_reader :http_version
 
     def http_version=(http_version)
-      @http_version = HTTPVersion(http_version)
+      @http_version = @conversions.HTTPVersion(http_version)
     end
 
     # Returns whether or not the request is secure.
@@ -63,10 +65,13 @@ module Webbed
     # @param [Addressable::URI, String] target the request's target
     # @param [Headers, {String => String}] headers the request's headers
     # @param [Hash] options miscellaneous options used for some requests
+    # @option options [Object] :conversions (Conversions) the module that implements conversions
     # @option options [#each] :body (nil) the request's body
     # @option options [String, HTTPVersion] :http_version (HTTPVersion::ONE_POINT_ONE) the request's HTTP version
     # @option options [Boolean] :secure (false) whether the request is secure (uses SSL)
     def initialize(method, target, headers, options = {})
+      @conversions = options.fetch(:conversions, Conversions)
+
       self.method = method
       self.target = target
       self.headers = headers
