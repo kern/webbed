@@ -10,8 +10,6 @@ module Webbed
   class Request
     extend Forwardable
 
-    delegate [:Method, :URI, :Headers, :HTTPVersion] => :@conversions
-
     # Returns the request's method.
     #
     # @return [Method]
@@ -86,5 +84,9 @@ module Webbed
     def url(recreator = URLRecreator.new(self))
       recreator.recreate
     end
+
+    private
+
+    delegate [:Method, :URI, :Headers, :HTTPVersion] => :@conversions
   end
 end

@@ -9,8 +9,6 @@ module Webbed
   class Response
     extend Forwardable
 
-    delegate [:StatusCode, :Headers, :HTTPVersion] => :@conversions
-
     # Returns the response's status code.
     #
     # @return [StatusCode]
@@ -69,5 +67,9 @@ module Webbed
       self.http_version = options.fetch(:http_version, HTTPVersion::ONE_POINT_ONE)
       self.reason_phrase = options[:reason_phrase]
     end
+
+    private
+
+    delegate [:StatusCode, :Headers, :HTTPVersion] => :@conversions
   end
 end
