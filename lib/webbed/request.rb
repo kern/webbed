@@ -48,7 +48,7 @@ module Webbed
     attr_reader :http_version
 
     def http_version=(http_version)
-      @http_version = @conversions.HTTPVersion(http_version)
+      @http_version = HTTPVersion(http_version)
     end
 
     # Returns whether or not the request is secure.
