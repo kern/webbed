@@ -1,6 +1,5 @@
 require "spec_helper"
 require "webbed/grammars/http_version_transform"
-require "webbed/http_version"
 
 module Webbed
   module Grammars

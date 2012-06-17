@@ -6,7 +6,9 @@ module Webbed
     describe Transform do
       let(:klass) do
         Class.new(Transform) do
-          context foo: :foo
+          context do
+            { foo: :foo }
+          end
 
           rule(:test1) { foo }
           rule(:test2) { [foo, bar] }
