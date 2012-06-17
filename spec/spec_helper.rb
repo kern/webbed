@@ -1,4 +1,5 @@
 require "bundler/setup"
+require "parslet/rig/rspec"
 
 Dir[File.expand_path("../shared/**/*.rb", __FILE__)].each { |file| require file }
 

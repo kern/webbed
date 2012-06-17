@@ -1,5 +1,4 @@
 require "spec_helper"
-require "parslet/rig/rspec"
 require "webbed/grammars/http_version_parser"
 
 module Webbed
