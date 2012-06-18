@@ -19,7 +19,7 @@ shared_examples "a registry" do
     registry.unregister(lookup_key)
     expect do
       registry.look_up(lookup_key)
-    end.to raise_error(KeyError)
+    end.to raise_error(IndexError)
   end 
 
   context "when registering an object with an already registered look-up key" do
