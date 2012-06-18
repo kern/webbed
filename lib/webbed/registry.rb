@@ -1,7 +1,7 @@
 module Webbed
   # `Registry` provides a consistent interface to create object registries.
   #
-  # @author Alex Kern
+  # @author Alexander Simon Kern (alex@kernul)
   # @api public
   class Registry
     # Creates a new registry.

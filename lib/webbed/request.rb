@@ -5,7 +5,7 @@ require "webbed/url_recreator"
 module Webbed
   # `Request` represents a single HTTP request.
   #
-  # @author Alex Kern
+  # @author Alexander Simon Kern (alex@kernul.com)
   # @api public
   class Request
     extend Forwardable

@@ -1,8 +1,12 @@
 require "parslet"
-require "webbed/invalid_format"
 
 module Webbed
   module Grammars
+    # `Interpreter` combines a parser and a transform into a single object,
+    # allowing you to pass them around as a composite.
+    #
+    # @author Alexander Simon Kern (alex@kernul)
+    # @api private
     class Interpreter
       extend Forwardable
 
@@ -13,8 +17,6 @@ module Webbed
 
       def interpret(input, context = {})
         apply(parse(input), context)
-      rescue Parslet::ParseFailed => e
-        raise InvalidFormat, e.message
       end
 
       private

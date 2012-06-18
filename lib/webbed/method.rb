@@ -3,7 +3,7 @@ require "webbed/registry"
 module Webbed
   # `Method` represents an HTTP method (i.e. GET, HEAD, POST).
   #
-  # @author Alex Kern
+  # @author Alexander Simon Kern (alex@kernul)
   # @api public
   class Method
     extend SingleForwardable

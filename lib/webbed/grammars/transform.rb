@@ -6,6 +6,9 @@ module Webbed
     # specify default contexts on the entire class or the individual instances
     # of the transform. This allows you to use dependency injection is a
     # pricipled way.
+    #
+    # @author Alexander Simon Kern (alex@kernul)
+    # @api private
     class Transform < Parslet::Transform
       # Sets the class context of the transform.
       #
@@ -16,9 +19,15 @@ module Webbed
       # there are any key conflicts.
       #
       # @yieldreturn [Hash, #merge] the class context
+      # @return [Hash, #merge, nil] the class context or nil if the context is
+      #   being set
       def self.context(&block)
-        @context = block if block_given?
-        @context || lambda {}
+        if block_given?
+          @context = block 
+          nil
+        else
+          @context.call || {}
+        end
       end
 
       # Creates a new transform.
@@ -32,7 +41,7 @@ module Webbed
       # @yield Runs in the metaclass of the instance.
       def initialize(instance_context = {}, &block)
         super(&block)
-        @class_context = self.class.context.call
+        @class_context = self.class.context
         @instance_context = instance_context
       end
 
@@ -41,8 +50,9 @@ module Webbed
       # The optional application context will override the class and instance
       # contexts if there are any key conflicts.
       #
-      # @param [Object] the object to apply the transformation to
-      # @param [Hash, #merge] the application context
+      # @param [Object] obj the object to apply the transformation to
+      # @param [Hash, #merge] application_context the application context
+      # @return [Object] the transformed object
       def apply(obj, application_context = {})
         super(obj, merge_contexts(application_context))
       end

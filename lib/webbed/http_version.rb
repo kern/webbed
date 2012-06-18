@@ -5,7 +5,7 @@ require "webbed/grammars/http_version_transform"
 module Webbed
   # `HTTPVersion` represents the HTTP version found in all HTTP messages.
   #
-  # @author Alex Kern
+  # @author Alexander Simon Kern (alex@kernul)
   # @api public
   class HTTPVersion
     include Comparable

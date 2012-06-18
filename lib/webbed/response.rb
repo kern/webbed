@@ -4,7 +4,7 @@ require "webbed/http_version"
 module Webbed
   # `Response` represents a single HTTP response.
   #
-  # @author Alex Kern
+  # @author Alexander Simon Kern (alex@kernul)
   # @api public
   class Response
     extend Forwardable

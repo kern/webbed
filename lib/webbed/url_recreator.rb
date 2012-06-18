@@ -1,12 +1,10 @@
 module Webbed
   # `URLRecreator` recreates the URL of the request.
   #
-  # @author Alex Kern
+  # @author Alexander Simon Kern (alex@kernul)
   # @api private
   class URLRecreator
     extend Forwardable
-
-    delegate [:target, :secure?] => :@request
 
     # Creates a new URL recreator.
     #
@@ -33,6 +31,8 @@ module Webbed
     end
 
     private
+
+    delegate [:target, :secure?] => :@request
 
     # Returns the value of the Host header.
     #

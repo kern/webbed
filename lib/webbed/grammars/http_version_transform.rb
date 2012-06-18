@@ -3,6 +3,11 @@ require "webbed/http_version"
 
 module Webbed
   module Grammars
+    # `HTTPVersionTransform` transforms a hash of a major and minor version of
+    # an HTTP version into an actual HTTP version.
+    #
+    # @author Alexander Simon Kern (alex@kernul)
+    # @api private
     class HTTPVersionTransform < Transform
       context do
         {

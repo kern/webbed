@@ -9,7 +9,7 @@ module Webbed
   # Webbed. When mixed in to a class, the methods become private methods, so you
   # can safely use these without increasing your class's surface area.
   #
-  # @author Alex Kern (alex@kernul)
+  # @author Alexander Simon Kern (alex@kernul)
   # @api public
   module Conversions
     module_function
@@ -40,8 +40,8 @@ module Webbed
 
     # Converts an object to a request URI.
     #
-    # This uses the same name as the standard Kernel#URI method but returns the
-    # more full-featured implementation of URIs offered by Addressable.
+    # This uses the same name as the standard `Kernel#URI` method but returns
+    # the more full-featured implementation of URIs offered by Addressable.
     #
     # @param [Addressable::URI, String] request_uri
     # @return [Addressable::URI]

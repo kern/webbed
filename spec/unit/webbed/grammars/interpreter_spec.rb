@@ -26,15 +26,6 @@ module Webbed
           end
         end
       end
-
-      context "when parsing invalid input" do
-        it "raises an error" do
-          parser.stub(:parse).with("foo") { raise Parslet::ParseFailed, "foo" }
-          expect do
-            interpreter.interpret("foo")
-          end.to raise_error(InvalidFormat)
-        end
-      end
     end
   end
 end

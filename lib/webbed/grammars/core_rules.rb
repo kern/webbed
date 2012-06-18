@@ -2,6 +2,15 @@ require "parslet"
 
 module Webbed
   module Grammars
+    # `CoreRules` defines all of the basic rules found in the HTTP standard
+    # according to HTTPbis and RFC 5234.
+    #
+    # @see http://tools.ietf.org/html/draft-ietf-httpbis-p1-messaging-19
+    #   HTTP/1.1, part 1: URIs, Connections, and Message Parsing
+    # @see http://tools.ietf.org/html/rfc5234#appendix-B.1
+    #   RFC 5234, Appendix B.1
+    # @author Alexander Simon Kern (alex@kernul)
+    # @api private
     module CoreRules
       include Parslet
 

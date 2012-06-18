@@ -4,7 +4,7 @@ module Webbed
   # found in Rack.
   #
   # @see https://github.com/rack/rack/blob/master/lib/rack/utils.rb#L371 the Rack class that this class is based on
-  # @author Alex Kern
+  # @author Alexander Simon Kern (alex@kernul)
   # @api public
   class Headers < Hash
     def initialize(hash = {})

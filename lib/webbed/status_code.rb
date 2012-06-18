@@ -4,7 +4,7 @@ module Webbed
   # `StatusCode` represents an HTTP status code. It also sets the status code's
   # default reason phrase.
   #
-  # @author Alex Kern
+  # @author Alexander Simon Kern (alex@kernul)
   # @api public
   class StatusCode
     extend SingleForwardable
