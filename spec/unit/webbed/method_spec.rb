@@ -3,42 +3,42 @@ require "webbed/method"
 
 module Webbed
   describe Method do
-    let(:method) { Method.new("GET", safe: true, idempotent: true, allows_request_body: false, allows_response_body: true) }
+    subject(:method) { Method.new("GET", safe: true, idempotent: true, allows_request_body: false, allows_response_body: true) }
 
     it_behaves_like "a registry" do
-      let(:registry) { Method }
+      subject(:registry) { Method }
       let(:lookup_key) { "GET" }
       let(:obj1) { double(:method_1, to_s: "GET") }
       let(:obj2) { double(:method_2, to_s: "GET") }
     end
 
     it "can be converted to a string representation" do
-      method.to_s.should == "GET"
+      expect(method.to_s).to eq("GET")
     end
 
     it "can be safe" do
-      method.should be_safe
+      expect(method).to be_safe
     end
 
     it "can be idempotent" do
-      method.should be_idempotent
+      expect(method).to be_idempotent
     end
 
     it "can allow a request body" do
-      method.should_not allow_a_request_body
+      expect(method).not_to allow_a_request_body
     end
 
     it "can allow a response body" do
-      method.should allow_a_response_body
+      expect(method).to allow_a_response_body
     end
 
     it "is equal to methods with identical properties" do
-      method.should == Method.new("GET", safe: true, idempotent: true, allows_request_body: false, allows_response_body: true)
-      method.should_not == Method.new("HEAD", safe: true, idempotent: true, allows_request_body: false, allows_response_body: true)
-      method.should_not == Method.new("GET", safe: false, idempotent: true, allows_request_body: false, allows_response_body: true)
-      method.should_not == Method.new("GET", safe: true, idempotent: false, allows_request_body: false, allows_response_body: true)
-      method.should_not == Method.new("GET", safe: true, idempotent: true, allows_request_body: true, allows_response_body: true)
-      method.should_not == Method.new("GET", safe: true, idempotent: true, allows_request_body: false, allows_response_body: false)
+      expect(method).to eq(Method.new("GET", safe: true, idempotent: true, allows_request_body: false, allows_response_body: true))
+      expect(method).not_to eq(Method.new("HEAD", safe: true, idempotent: true, allows_request_body: false, allows_response_body: true))
+      expect(method).not_to eq(Method.new("GET", safe: false, idempotent: true, allows_request_body: false, allows_response_body: true))
+      expect(method).not_to eq(Method.new("GET", safe: true, idempotent: false, allows_request_body: false, allows_response_body: true))
+      expect(method).not_to eq(Method.new("GET", safe: true, idempotent: true, allows_request_body: true, allows_response_body: true))
+      expect(method).not_to eq(Method.new("GET", safe: true, idempotent: true, allows_request_body: false, allows_response_body: false))
     end
   end
 end

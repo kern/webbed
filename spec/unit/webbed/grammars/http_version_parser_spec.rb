@@ -4,21 +4,21 @@ require "webbed/grammars/http_version_parser"
 module Webbed
   module Grammars
     describe HTTPVersionParser do
-      let(:parser) { HTTPVersionParser.new }
+      subject(:parser) { HTTPVersionParser.new }
 
       it "can parse a valid string" do
-        parser.should parse("HTTP/1.0").as({
+        expect(parser).to parse("HTTP/1.0").as({
           major_version: "1",
           minor_version: "0"
         })
       end
 
       it "cannot parse an invalid string" do
-        parser.should_not parse("HTT/1.0")
-        parser.should_not parse("HTTP/1.")
-        parser.should_not parse("HTTP/1.00")
-        parser.should_not parse("HTTP1.0")
-        parser.should_not parse("HTTP/A.0")
+        expect(parser).not_to parse("HTT/1.0")
+        expect(parser).not_to parse("HTTP/1.")
+        expect(parser).not_to parse("HTTP/1.00")
+        expect(parser).not_to parse("HTTP1.0")
+        expect(parser).not_to parse("HTTP/A.0")
       end
     end
   end

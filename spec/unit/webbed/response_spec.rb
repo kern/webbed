@@ -11,7 +11,7 @@ module Webbed
     let(:http_version) { double(:http_version) }
     let(:conversions) { double(:conversions) }
     let(:options) { {} }
-    let(:response) { Response.new(200, {}, body, { conversions: conversions }.merge(options)) }
+    subject(:response) { Response.new(200, {}, body, { conversions: conversions }.merge(options)) }
 
     before do
       conversions.stub(:StatusCode).with(200) { status_code }
@@ -21,20 +21,20 @@ module Webbed
     end
 
     it "converts the status code to an instance of Webbed::StatusCode" do
-      response.status_code.should == status_code
+      expect(response.status_code).to eq(status_code)
     end
 
     it "converts the headers to an instance of Webbed::Headers" do
-      response.headers.should == headers
+      expect(response.headers).to eq(headers)
     end
 
     it "has a body" do
-      response.body.should == body
+      expect(response.body).to eq(body)
     end
 
     context "when not provided with an HTTP version" do
       it "uses HTTP/1.1" do
-        response.http_version.should == HTTPVersion::ONE_POINT_ONE
+        expect(response.http_version).to eq(HTTPVersion::ONE_POINT_ONE)
       end
     end    
 
@@ -42,13 +42,13 @@ module Webbed
       let(:options) { { http_version: "HTTP/1.0" } }
 
       it "uses that HTTP version" do
-        response.http_version.should == http_version
+        expect(response.http_version).to eq(http_version)
       end
     end
 
     context "when not provided with a reason phrase" do
       it "uses the default reason phrase" do
-        response.reason_phrase.should == "OK"
+        expect(response.reason_phrase).to eq("OK")
       end
     end
 
@@ -56,7 +56,7 @@ module Webbed
       let(:options) { { reason_phrase: "LOL" } }
 
       it "uses that reason phrase" do
-        response.reason_phrase.should == "LOL"
+        expect(response.reason_phrase).to eq("LOL")
       end
     end
   end

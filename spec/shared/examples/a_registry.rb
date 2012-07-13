@@ -3,16 +3,8 @@ shared_examples "a registry" do
     registry.register(obj1)
   end
 
-  it "can register objects" do
-    registry.look_up(lookup_key) == obj1
-  end
-
-  it "can unregister objects" do
-    registry.register(obj1)
-  end
-
   it "can find objects given their look-up keys" do
-    registry.look_up(lookup_key).should == obj1
+    expect(registry.look_up(lookup_key)).to eq(obj1)
   end
 
   it "can unregister objects" do
@@ -25,7 +17,7 @@ shared_examples "a registry" do
   context "when registering an object with an already registered look-up key" do
     it "overwrites the previous object" do
       registry.register(obj2)
-      registry.look_up(lookup_key).should == obj2
+      expect(registry.look_up(lookup_key)).to eq(obj2)
     end
   end
 end

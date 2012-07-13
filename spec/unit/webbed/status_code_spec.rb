@@ -4,37 +4,37 @@ require "webbed/status_code"
 module Webbed
   describe StatusCode do
     let(:integer) { 200 }
-    let(:status_code) { StatusCode.new(integer, "OK") }
+    subject(:status_code) { StatusCode.new(integer, "OK") }
 
     it_behaves_like "a registry" do
-      let(:registry) { StatusCode }
+      subject(:registry) { StatusCode }
       let(:lookup_key) { 200 }
       let(:obj1) { double(:status_code_1, to_i: 200) }
       let(:obj2) { double(:status_code_2, to_i: 200) }
     end
 
     it "can be converted to an integer" do
-      status_code.to_i.should == 200
+      expect(status_code.to_i).to eq(200)
     end
 
     it "has a default reason phrase" do
-      status_code.default_reason_phrase.should == "OK"
+      expect(status_code.default_reason_phrase).to eq("OK")
     end
 
     context "when the status code is in the 100s" do
       let(:integer) { 137 }
 
       it "is informational" do
-        status_code.should be_informational
+        expect(status_code).to be_informational
       end
 
       it "is not any of the other types of status codes" do
-        status_code.should_not be_successful
-        status_code.should_not be_a_redirection
-        status_code.should_not be_a_client_error
-        status_code.should_not be_a_server_error
-        status_code.should_not be_an_error
-        status_code.should_not be_unknown
+        expect(status_code).not_to be_successful
+        expect(status_code).not_to be_a_redirection
+        expect(status_code).not_to be_a_client_error
+        expect(status_code).not_to be_a_server_error
+        expect(status_code).not_to be_an_error
+        expect(status_code).not_to be_unknown
       end
     end
 
@@ -42,16 +42,16 @@ module Webbed
       let(:integer) { 277 }
 
       it "is successful" do
-        status_code.should be_successful
+        expect(status_code).to be_successful
       end
       
       it "is not any of the other types of status codes" do
-        status_code.should_not be_informational
-        status_code.should_not be_a_redirection
-        status_code.should_not be_a_client_error
-        status_code.should_not be_a_server_error
-        status_code.should_not be_an_error
-        status_code.should_not be_unknown
+        expect(status_code).not_to be_informational
+        expect(status_code).not_to be_a_redirection
+        expect(status_code).not_to be_a_client_error
+        expect(status_code).not_to be_a_server_error
+        expect(status_code).not_to be_an_error
+        expect(status_code).not_to be_unknown
       end
     end
 
@@ -59,16 +59,16 @@ module Webbed
       let(:integer) { 324 }
 
       it "is a redirection" do
-        status_code.should be_a_redirection
+        expect(status_code).to be_a_redirection
       end
       
       it "is not any of the other types of status codes" do
-        status_code.should_not be_informational
-        status_code.should_not be_successful
-        status_code.should_not be_a_client_error
-        status_code.should_not be_a_server_error
-        status_code.should_not be_an_error
-        status_code.should_not be_unknown
+        expect(status_code).not_to be_informational
+        expect(status_code).not_to be_successful
+        expect(status_code).not_to be_a_client_error
+        expect(status_code).not_to be_a_server_error
+        expect(status_code).not_to be_an_error
+        expect(status_code).not_to be_unknown
       end
     end
 
@@ -76,19 +76,19 @@ module Webbed
       let(:integer) { 444 }
 
       it "is a client error" do
-        status_code.should be_a_client_error
+        expect(status_code).to be_a_client_error
       end
 
       it "is an error" do
-        status_code.should be_an_error
+        expect(status_code).to be_an_error
       end
 
       it "is not any of the other types of status codes" do
-        status_code.should_not be_informational
-        status_code.should_not be_successful
-        status_code.should_not be_a_redirection
-        status_code.should_not be_a_server_error
-        status_code.should_not be_unknown
+        expect(status_code).not_to be_informational
+        expect(status_code).not_to be_successful
+        expect(status_code).not_to be_a_redirection
+        expect(status_code).not_to be_a_server_error
+        expect(status_code).not_to be_unknown
       end
     end
 
@@ -96,19 +96,19 @@ module Webbed
       let(:integer) { 530 }
 
       it "is a server error" do
-        status_code.should be_a_server_error
+        expect(status_code).to be_a_server_error
       end
 
       it "is an error" do
-        status_code.should be_an_error
+        expect(status_code).to be_an_error
       end
 
       it "is not any of the other types of status codes" do
-        status_code.should_not be_informational
-        status_code.should_not be_successful
-        status_code.should_not be_a_redirection
-        status_code.should_not be_a_client_error
-        status_code.should_not be_unknown
+        expect(status_code).not_to be_informational
+        expect(status_code).not_to be_successful
+        expect(status_code).not_to be_a_redirection
+        expect(status_code).not_to be_a_client_error
+        expect(status_code).not_to be_unknown
       end
     end
 
@@ -116,25 +116,25 @@ module Webbed
       let(:integer) { 606 }
 
       it "is unknown" do
-        status_code.should be_unknown
+        expect(status_code).to be_unknown
       end
 
       it "is not any of the other types of status codes" do
-        status_code.should_not be_informational
-        status_code.should_not be_successful
-        status_code.should_not be_a_redirection
-        status_code.should_not be_a_client_error
-        status_code.should_not be_a_server_error
-        status_code.should_not be_an_error
+        expect(status_code).not_to be_informational
+        expect(status_code).not_to be_successful
+        expect(status_code).not_to be_a_redirection
+        expect(status_code).not_to be_a_client_error
+        expect(status_code).not_to be_a_server_error
+        expect(status_code).not_to be_an_error
       end
     end
 
     it "can be compared to other status codes based on its integer representation and default reason phrase" do
-      status_code.should == StatusCode.new(200, "OK")
-      status_code.should > StatusCode.new(200, "Awesome")
-      status_code.should < StatusCode.new(200, "Somewhat Okay")
-      status_code.should > StatusCode.new(100, "Continue")
-      status_code.should < StatusCode.new(302, "Found")
+      expect(status_code).to eq(StatusCode.new(200, "OK"))
+      expect(status_code).to be > StatusCode.new(200, "Awesome")
+      expect(status_code).to be < StatusCode.new(200, "Somewhat Okay")
+      expect(status_code).to be > StatusCode.new(100, "Continue")
+      expect(status_code).to be < StatusCode.new(302, "Found")
     end
   end
 end

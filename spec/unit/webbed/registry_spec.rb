@@ -4,7 +4,7 @@ require "webbed/registry"
 module Webbed
   describe Registry do
     it_behaves_like "a registry" do
-      let(:registry) { Registry.new { |o| 123 } }
+      subject(:registry) { Registry.new { |o| 123 } }
       let(:lookup_key) { 123 }
       let(:obj1) { double(:obj1) }
       let(:obj2) { double(:obj2) }
