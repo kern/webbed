@@ -6,6 +6,16 @@ module Webbed
   class URLRecreator
     extend Forwardable
 
+    # Creates a new recreator and recreates the URL.
+    #
+    # @param (see #initialize)
+    # @return (see #recreate)
+    # @see #recreate
+    def self.recreate(request)
+      recreator = new(request)
+      recreator.recreate
+    end
+
     # Creates a new URL recreator.
     #
     # @param [Request] request the request from which to recreate the URL
@@ -22,10 +32,10 @@ module Webbed
     # 
     # @return [Addressable::URI]
     def recreate
-      target.dup.tap do |r|
-        if !target_has_host? && host_header
-          r.scheme = scheme
-          r.host = host_header
+      target.dup.tap do |t|
+        if requires_recreation?
+          t.scheme = scheme
+          t.host = host_header
         end
       end
     end
@@ -33,6 +43,13 @@ module Webbed
     private
 
     delegate [:target, :secure?] => :@request
+
+    # Returns whether or not the request's target requires recreation.
+    #
+    # @return [Boolean]
+    def requires_recreation?
+      !target_has_host? && host_header
+    end
 
     # Returns the value of the Host header.
     #
